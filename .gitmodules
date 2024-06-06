@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://git.utec.edu.uy/CodigoCreativo/infraestructura/frontend.git
+[submodule "backend"]
+	path = backend
+	url = https://git.utec.edu.uy/CodigoCreativo/infraestructura/backend.git

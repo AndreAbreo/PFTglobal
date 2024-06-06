@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  nodejs:
+    image: node:latest
+    container_name: nodejs
+    volumes:
+      - ./frontend:/usr/src/app
+    working_dir: /usr/src/app
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    networks:
+      - dev-network
+
+  wildfly:
+    image: jboss/wildfly:latest
+    container_name: wildfly
+    volumes:
+      - ./backend:/opt/jboss/wildfly/standalone/deployments
+    ports:
+      - "8080:8080"
+    networks:
+      - dev-network
+
+  oracle-db:
+    image: oracleinanutshell/oracle-xe-11g
+    container_name: oracle-db
+    environment:
+      - ORACLE_ALLOW_REMOTE=true
+      - ORACLE_DISABLE_ASYNCH_IO=true
+    ports:
+      - "1521:1521"
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
+    driver: bridge
