@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "ubuntu/jammy64"
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 4096
@@ -26,9 +26,19 @@ Vagrant.configure("2") do |config|
     curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
 
+    # Install nvm (Node Version Manager)
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+    # Install Node.js using nvm
+    nvm install 20
+
     # Movemos node_modules a una carpeta compartida para evitar problemas de carpetas compartidas
     mkdir -p /vagrant_node_modules
     mount --bind /vagrant_node_modules /vagrant/frontend/node_modules
+    chmod -R 777 /vagrant/frontend/node_modules
   SHELL
 
   config.trigger.after :up, :reload do |trigger|
