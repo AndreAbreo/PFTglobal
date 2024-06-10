@@ -38,6 +38,8 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
+      - ORACLE_PASSWORD=${DB_PASSWORD}
+
     ports:
       - "${DB_PORT}:1521"
     networks:
