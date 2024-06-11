@@ -10,13 +10,14 @@ services:
       - "3000:3000"
     networks:
       - dev-network
+    restart: unless-stopped
 
   wildfly:
     build:
       context: .
     container_name: wildfly
-    #volumes:
-    #  - ./backend/deployments:/opt/jboss/wildfly/standalone/deployments
+    volumes:
+      - ./backend/deployments:/opt/jboss/wildfly/standalone/deployments
     ports:
       - "8080:8080"
       - "9990:9990"
@@ -25,6 +26,7 @@ services:
     environment:
       - MGMT_USER=${WILDFLY_USERNAME}
       - MGMT_PASS=${WILDFLY_PASSWORD}
+    restart: unless-stopped
 
 
   oracle-db:
@@ -39,15 +41,16 @@ services:
       - ORACLE_DATABASE=${DB_NAME}
       - APP_USER=${DB_USERNAME}
       - APP_USER_PASSWORD=${DB_PASSWORD}
-
     ports:
       - "${DB_PORT}:1521"
     networks:
       - dev-network
+    restart: unless-stopped
 
 volumes:
-  oracle-data:  # Add this line
+  oracle-data:
 
 networks:
   dev-network:
     driver: bridge
+

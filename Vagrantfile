@@ -41,9 +41,5 @@ Vagrant.configure("2") do |config|
     chmod -R 777 /vagrant/frontend/node_modules
   SHELL
 
-  config.trigger.after :up, :reload do |trigger|
-    trigger.name = "Launching Docker Compose"
-    trigger.info = "Running docker-compose up -d"
-    trigger.run_remote = {inline: "cd /vagrant/ && docker-compose up -d"}
-  end
+
 end
