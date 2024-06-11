@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Build y enviar a Wildfly" type="ShConfigurationType">
+    <option name="SCRIPT_TEXT" value="vagrant ssh -c &quot;sudo docker cp /vagrant/backend/deployments/ServidorApp-1.0-SNAPSHOT.war wildfly:/opt/jboss/wildfly/standalone/deployments/ServidorApp-1.0-SNAPSHOT.war&quot;" />
+    <option name="INDEPENDENT_SCRIPT_PATH" value="false" />
+    <option name="SCRIPT_PATH" value="$PROJECT_DIR$/copiar-deployment.sh" />
+    <option name="SCRIPT_OPTIONS" value="" />
+    <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+    <option name="INTERPRETER_PATH" value="powershell.exe" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="EXECUTE_IN_TERMINAL" value="false" />
+    <option name="EXECUTE_SCRIPT_FILE" value="false" />
+    <envs />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="false" run_configuration_name="Enviar a docker" run_configuration_type="MavenRunConfiguration" />
+    </method>
+  </configuration>
+</component>
