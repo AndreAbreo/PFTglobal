@@ -15,8 +15,8 @@ services:
     build:
       context: .
     container_name: wildfly
-    volumes:
-      - ./backend:/opt/jboss/wildfly/standalone/deployments
+    #volumes:
+    #  - ./backend/deployments:/opt/jboss/wildfly/standalone/deployments
     ports:
       - "8080:8080"
       - "9990:9990"
@@ -30,20 +30,23 @@ services:
   oracle-db:
     image: gvenzl/oracle-xe:18.4.0
     container_name: oracle-db
+    volumes:
+      - oracle-data:/opt/oracle/oradata
     environment:
       - ORACLE_ALLOW_REMOTE=true
       - ORACLE_DISABLE_ASYNCH_IO=true
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
       - ORACLE_PASSWORD=${DB_PASSWORD}
+      - ORACLE_DATABASE=${DB_NAME}
+      - APP_USER=${DB_USERNAME}
+      - APP_USER_PASSWORD=${DB_PASSWORD}
 
     ports:
       - "${DB_PORT}:1521"
     networks:
       - dev-network
+
+volumes:
+  oracle-data:  # Add this line
 
 networks:
   dev-network:

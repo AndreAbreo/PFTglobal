@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 3000, host: 3000
 
   config.vm.synced_folder "./frontend", "/usr/src/app"
-  config.vm.synced_folder "./backend", "/opt/jboss/wildfly/standalone/deployments"
+  config.vm.synced_folder "./backend/deployments", "/opt/jboss/wildfly/standalone/deployments"
 
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
