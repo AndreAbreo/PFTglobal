@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 JBOSS_CLI=/opt/jboss/wildfly/bin/jboss-cli.sh
 JBOSS_HOME=/opt/jboss/wildfly
