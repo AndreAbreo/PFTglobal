@@ -1,16 +1,4 @@
 services:
-  nodejs:
-    image: node:latest
-    container_name: nodejs
-    volumes:
-      - ./frontend:/usr/src/app
-    working_dir: /usr/src/app
-    command: sh -c "npm install && npm run dev"
-    ports:
-      - "3000:3000"
-    networks:
-      - dev-network
-    restart: unless-stopped
 
   wildfly:
     build:
@@ -26,7 +14,6 @@ services:
     environment:
       - MGMT_USER=${WILDFLY_USERNAME}
       - MGMT_PASS=${WILDFLY_PASSWORD}
-    restart: unless-stopped
 
 
   oracle-db:
@@ -45,7 +32,6 @@ services:
       - "${DB_PORT}:1521"
     networks:
       - dev-network
-    restart: unless-stopped
 
 volumes:
   oracle-data:
