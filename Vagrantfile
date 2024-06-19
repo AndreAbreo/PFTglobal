@@ -48,7 +48,8 @@
         # Install Node.js using nvm
         nvm install 20
 
-        # Configure Docker to listen on TCP socket
+        # Confirugamos Docker para que escuche en el puerto 2375 (para poder usarlo desde el host windows con IntelliJ)
+        # En caso de que no funcionen los comandos, ejecutarlos manualmente en la máquina virtual
         sudo mkdir -p /etc/systemd/system/docker.service.d
         echo '[Service]' | sudo tee /etc/systemd/system/docker.service.d/override.conf
         echo 'ExecStart=' | sudo tee -a /etc/systemd/system/docker.service.d/override.conf
