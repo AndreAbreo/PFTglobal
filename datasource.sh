@@ -8,7 +8,7 @@ function wait_for_server() {
     sleep 1
   done
 }
-
+# ..
 # Start WildFly in the background
 $JBOSS_HOME/bin/standalone.sh &
 
