@@ -9,22 +9,22 @@ function wait_for_server() {
   done
 }
 # ..
-# Start WildFly in the background
+# Iniciar WildFly
 $JBOSS_HOME/bin/standalone.sh &
 
-# Wait for WildFly to start
+# Esperamos a que el servidor esté listo
 wait_for_server
 
-# Add the Oracle JDBC driver as a module
+# Añadir el módulo de Oracle
 $JBOSS_CLI -c "module add --name=com.oracle.ojdbc --resources=$JBOSS_HOME/modules/system/layers/base/com/oracle/ojdbc/main/ojdbc11.jar --dependencies=javax.api,javax.transaction.api"
 
-# Register the JDBC driver
+# Registrar el driver de Oracle
 $JBOSS_CLI -c "/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle.ojdbc,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)"
 
-# Check if the datasource exists
+# Comprobar si el datasource ya existe ante
 if $JBOSS_CLI -c "/subsystem=datasources/data-source=OracleDS:read-resource" | grep -q 'outcome => success'; then
   echo "Datasource OracleDS already exists, skipping addition."
 else
-  # Run the datasource configuration commands
+  # Añadir el datasource de Oracle
   $JBOSS_CLI -c "/subsystem=datasources/data-source=OracleDS: add(jndi-name=java:/OracleDS,driver-name=oracle,connection-url=jdbc:oracle:thin:@//oracle-db:1521/DESARROLLO,user-name=pinfra,password=pinfra)"
 fi

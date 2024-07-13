@@ -1,28 +1,29 @@
-# Use the jboss/wildfly image as the base
+# Usamos la imagen de WildFly con Java 17
 FROM quay.io/wildfly/wildfly:latest-jdk17
 
-# Copy the Oracle JDBC driver to the WildFly modules directory
+# Copiamos el driver de Oracle
 COPY drivers/ojdbc11.jar /opt/jboss/wildfly/modules/system/layers/base/com/oracle/ojdbc/main/
 
-# Expose the management port
+# Exponemos el puerto de la consola de administración
 EXPOSE 9990
 
-# Run WildFly in standalone mode and allow management from any host
+# Creamos el usuario admin
 RUN /opt/jboss/wildfly/bin/add-user.sh admin Admin#007 --silent
 
-# Copy the startup script to the WildFly bin directory
+# Copiamos el script de configuración de datasource
 COPY datasource.sh /opt/jboss/wildfly/bin/datasource.sh
 
-# Switch to the root user
+# Cambiamos el usuario a root para poder cambiar los permisos del script
 USER root
 
-# Change ownership of the startup script to the jboss user and make it executable
+# cambiamos los permisos del script
 RUN chown jboss:jboss /opt/jboss/wildfly/bin/datasource.sh && chmod +x /opt/jboss/wildfly/bin/datasource.sh
 
-# Switch back to the jboss user
+# Cambiamos el usuario a jboss
 USER jboss
 
-# Run the startup script as the jboss user
+# Ejectuamos el script de configuración de datasource
 RUN /opt/jboss/wildfly/bin/datasource.sh
 
+#Definimos el comando de arranque
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
