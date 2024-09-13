@@ -5,7 +5,7 @@ services:
       context: .
     container_name: wildfly
     volumes:
-      - ./backend/deployments:/opt/jboss/wildfly/standalone/deployments
+      - ./deployments:/opt/jboss/wildfly/standalone/deployments
     ports:
       - "8080:8080"
       - "9990:9990"
@@ -14,10 +14,11 @@ services:
     environment:
       - MGMT_USER=${WILDFLY_USERNAME}
       - MGMT_PASS=${WILDFLY_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
 
 
   oracle-db:
-    image: gvenzl/oracle-xe:18.4.0
+    image: gvenzl/oracle-xe
     container_name: oracle-db
     volumes:
       - oracle-data:/opt/oracle/oradata
