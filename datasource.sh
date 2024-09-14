@@ -26,5 +26,7 @@ if $JBOSS_CLI -c "/subsystem=datasources/data-source=OracleDS:read-resource" | g
   echo "Datasource OracleDS already exists, skipping addition."
 else
   # Añadir el datasource de Oracle
-  $JBOSS_CLI -c "/subsystem=datasources/data-source=OracleDS: add(jndi-name=java:/OracleDS,driver-name=oracle,connection-url=jdbc:oracle:thin:@//oracle-db:1521/DESARROLLO,user-name=pinfra,password=pinfra)"
+  $JBOSS_CLI -c "/subsystem=datasources/data-source=OracleDS: add(jndi-name=java:/OracleDS,driver-name=oracle,connection-url=jdbc:oracle:thin:@//oracle-db:1521/DESARROLLO,user-name=PFT,password=PFT)"
 fi
+# desacrivar el escaneo de despliegues
+$JBOSS_CLI -c "/subsystem=deployment-scanner/scanner=default:write-attribute(name=\"scan-enabled\",value=false)"

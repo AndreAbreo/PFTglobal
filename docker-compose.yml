@@ -5,7 +5,7 @@ services:
       context: .
     container_name: wildfly
     volumes:
-      - ./backend/deployments:/opt/jboss/wildfly/standalone/deployments
+      - ./deployments:/opt/jboss/wildfly/standalone/deployments
     ports:
       - "8080:8080"
       - "9990:9990"
@@ -14,16 +14,16 @@ services:
     environment:
       - MGMT_USER=${WILDFLY_USERNAME}
       - MGMT_PASS=${WILDFLY_PASSWORD}
-
+      - SECRET_KEY=${SECRET_KEY}
 
   oracle-db:
-    image: gvenzl/oracle-xe:18.4.0
+    image: gvenzl/oracle-free:23.5-slim-faststart
     container_name: oracle-db
     volumes:
-      - oracle-data:/opt/oracle/oradata
+      - oracle-data:/opt/oracle/oradata # Persistencia de datos
+      - ./basededatos.sql:/sql/basededatos.sql:ro # Archivo SQL para cargar
+      - ./cargarbasededatos.sh:/container-entrypoint-initdb.d/cargarbasededatos.sh:ro # Script para cargar la base de datos
     environment:
-      - ORACLE_ALLOW_REMOTE=true
-      - ORACLE_DISABLE_ASYNCH_IO=true
       - ORACLE_PASSWORD=${DB_PASSWORD}
       - ORACLE_DATABASE=${DB_NAME}
       - APP_USER=${DB_USERNAME}
@@ -39,4 +39,3 @@ volumes:
 networks:
   dev-network:
     driver: bridge
-
