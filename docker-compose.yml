@@ -16,15 +16,14 @@ services:
       - MGMT_PASS=${WILDFLY_PASSWORD}
       - SECRET_KEY=${SECRET_KEY}
 
-
   oracle-db:
-    image: gvenzl/oracle-xe
+    image: gvenzl/oracle-free:23.5-slim-faststart
     container_name: oracle-db
     volumes:
-      - oracle-data:/opt/oracle/oradata
+      - oracle-data:/opt/oracle/oradata # Persistencia de datos
+      - ./basededatos.sql:/sql/basededatos.sql:ro # Archivo SQL para cargar
+      - ./cargarbasededatos.sh:/container-entrypoint-initdb.d/cargarbasededatos.sh:ro # Script para cargar la base de datos
     environment:
-      - ORACLE_ALLOW_REMOTE=true
-      - ORACLE_DISABLE_ASYNCH_IO=true
       - ORACLE_PASSWORD=${DB_PASSWORD}
       - ORACLE_DATABASE=${DB_NAME}
       - APP_USER=${DB_USERNAME}
@@ -40,4 +39,3 @@ volumes:
 networks:
   dev-network:
     driver: bridge
-
