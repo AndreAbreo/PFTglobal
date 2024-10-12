@@ -1,4 +1,3 @@
-
 # Sistema de gestion de mantenimiento
 
 En este documento estara presentado los pasos necesarios y requisitos para instalar y ejecutar los servicios que haran funcionar el aplicativo pedido. 
@@ -37,8 +36,8 @@ To run this project, you will need to add the following environment variables to
 - Abrir una terminal de comandos en el sitio donde desea guardar el proyecto
 - Con el comando git clone clonar el repositorio
 ```cmd
-  git clone http://......
-  cd proyecto
+  git clone --recurse-submodules https://git.utec.edu.uy/CodigoCreativo/pft/proyecto-final-tecnicatura.git
+  cd proyecto-final-tecnicatura
 ```
 - Recuerda usar el comando cd para acceder a la raiz
 - Con un editor como VSCode abra el archivo consola.sh y asdasd.sh y verifique que el archivo se encuentra en elformato correcto como LT y no CSRL 
