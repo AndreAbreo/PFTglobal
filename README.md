@@ -40,7 +40,8 @@ To run this project, you will need to add the following environment variables to
   cd proyecto-final-tecnicatura
 ```
 - Recuerda usar el comando cd para acceder a la raiz
-- Con un editor como VSCode abra el archivo consola.sh y asdasd.sh y verifique que el archivo se encuentra en elformato correcto como LT y no CSRL 
+- Con un editor como VSCode abra el archivo datasource.sh y cargarbasededatos.sh cuenten con tipo de retorno LT
+- verifique que esos archivos se encuentran en el formato correcto como LT y no CRLF 
 - En consola anterior colocar el comando docker
 ```cmd
 docker-compose up -d
