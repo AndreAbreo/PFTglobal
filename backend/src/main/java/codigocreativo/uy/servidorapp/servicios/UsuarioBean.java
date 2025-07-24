@@ -356,8 +356,8 @@ public class UsuarioBean implements UsuarioRemote {
         
         // Verificar que el solicitante sea administrador o aux administrativo
         String perfilSolicitante = solicitante.getIdPerfil().getNombrePerfil();
-        if (!perfilSolicitante.equals(ADMINISTRADOR) && !perfilSolicitante.equals("Aux administrativo")) {
-            throw new ServiciosException("Requiere ser Administrador o Aux administrativo para inactivar usuarios");
+        if (!perfilSolicitante.equals(ADMINISTRADOR) && !perfilSolicitante.equals("Aux Administrativo")) {
+            throw new ServiciosException("Requiere ser Administrador o Aux Administrativo para inactivar usuarios");
         }
         
         // Obtener el usuario a inactivar

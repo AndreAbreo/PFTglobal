@@ -283,9 +283,9 @@ public class UsuarioResource {
             String perfilSolicitante = claims.get(PERFIL, String.class);
 
             // Verificar que el usuario es administrador o aux administrativo
-            if (!ADMINISTRADOR.equals(perfilSolicitante) && !"Aux administrativo".equals(perfilSolicitante)) {
+            if (!ADMINISTRADOR.equals(perfilSolicitante) && !"Aux Administrativo".equals(perfilSolicitante)) {
                 return Response.status(Response.Status.FORBIDDEN)
-                        .entity("{\"message\":\"Requiere ser Administrador o Aux administrativo para inactivar usuarios\"}")
+                        .entity("{\"message\":\"Requiere ser Administrador o Aux Administrativo para inactivar usuarios\"}")
                         .build();
             }
 
