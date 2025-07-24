@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="sonarsource.scanner.maven.sonar.plugin" type="repository">
+    <properties maven-id="org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/sonarsource/scanner/maven/sonar-maven-plugin/3.9.1.2184/sonar-maven-plugin-3.9.1.2184.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/sonatype/plexus/plexus-sec-dispatcher/1.4/plexus-sec-dispatcher-1.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/sonatype/plexus/plexus-cipher/1.4/plexus-cipher-1.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-utils/3.2.1/plexus-utils-3.2.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/sonarsource/scanner/api/sonar-scanner-api/2.16.2.588/sonar-scanner-api-2.16.2.588.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
