@@ -1,9 +1,0 @@
-[submodule "frontend"]
-	path = frontend
-	url = https://git.utec.edu.uy/CodigoCreativo/pft/frontend.git
-[submodule "backend"]
-	path = backend
-	url = https://git.utec.edu.uy/CodigoCreativo/pft/backend.git
-[submodule "mobile"]
-	path = mobile
-	url = https://git.utec.edu.uy/CodigoCreativo/pft/mobile.git
