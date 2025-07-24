@@ -1,8 +1,9 @@
-import NextAuth, { DefaultSession, User } from "next-auth";
+import NextAuth, { DefaultSession, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { jwtDecode } from "jwt-decode";
 
+// Interfaces extendidas
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
@@ -52,10 +53,16 @@ const handler = NextAuth({
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
+        usarLdap: { label: "usarLdap", type: "text" }, // importante para decidir login
       },
       authorize: async (credentials) => {
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/usuarios/login`, {
+          const usarLdap = credentials?.usarLdap?.toString() === "true";
+          const endpoint = usarLdap
+            ? `${process.env.NEXT_PUBLIC_API_URL}/usuarios/loginLdap`
+            : `${process.env.NEXT_PUBLIC_API_URL}/usuarios/login`;
+
+          const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -78,9 +85,8 @@ const handler = NextAuth({
             apellido: data.user.apellido,
             rol: data.user.idPerfil?.nombrePerfil || "Usuario",
             jwt: data.token,
-          } as User;
+          } as NextAuthUser;
         } catch (error) {
-          
           console.error("Credentials authentication error:", error);
           return null;
         }
@@ -96,7 +102,7 @@ const handler = NextAuth({
           response_type: "code",
         },
       },
-      profile: async (_, account): Promise<User> => {
+      profile: async (_, account): Promise<NextAuthUser> => {
         try {
           const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/usuarios/google-login`, {
             method: "POST",
@@ -119,7 +125,7 @@ const handler = NextAuth({
             rol: data.user.idPerfil?.nombrePerfil || "Usuario",
             jwt: data.token,
             needsAdditionalInfo: data.userNeedsAdditionalInfo || false,
-          } as User;
+          } as NextAuthUser;
         } catch (error) {
           console.error("Google authentication error:", error);
           throw new Error("Google authentication failed");
@@ -127,8 +133,9 @@ const handler = NextAuth({
       },
     }),
   ],
+
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       const newToken = { ...token };
 
       if (user) {
@@ -172,29 +179,31 @@ const handler = NextAuth({
 
       return newToken;
     },
+
     async session({ session, token }) {
-        session.user = {
-          ...session.user,
-          id: typeof token.id === "string" ? token.id : "",
-          email: typeof token.email === "string" ? token.email : "",
-          nombre: typeof token.nombre === "string" ? token.nombre : "",
-          apellido: typeof token.apellido === "string" ? token.apellido : "",
-          rol: typeof token.rol === "string" ? token.rol : "",
-          needsAdditionalInfo:
-            typeof token.needsAdditionalInfo === "boolean"
-              ? token.needsAdditionalInfo
-              : false,
-        };
-      
-        session.jwt = typeof token.jwt === "string" ? token.jwt : "";
-        return session;
-      }
-      ,
+      session.user = {
+        ...session.user,
+        id: typeof token.id === "string" ? token.id : "",
+        email: typeof token.email === "string" ? token.email : "",
+        nombre: typeof token.nombre === "string" ? token.nombre : "",
+        apellido: typeof token.apellido === "string" ? token.apellido : "",
+        rol: typeof token.rol === "string" ? token.rol : "",
+        needsAdditionalInfo:
+          typeof token.needsAdditionalInfo === "boolean"
+            ? token.needsAdditionalInfo
+            : false,
+      };
+
+      session.jwt = typeof token.jwt === "string" ? token.jwt : "";
+      return session;
+    },
   },
+
   pages: {
     signIn: "/auth/login",
     newUser: "/auth/register",
   },
+
   session: {
     strategy: "jwt",
     maxAge: 8 * 60 * 60,

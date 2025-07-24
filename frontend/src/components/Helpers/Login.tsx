@@ -1,80 +1,98 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation"; // Importa useRouter y usePathname
+import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React from "react";
 
 const LoginForm = () => {
-    const router = useRouter(); // Instancia de useRouter
-    const { data: session, status } = useSession();
-    const pathname = usePathname();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+  const router = useRouter();
+  const pathname = usePathname();
+  const { data: session, status } = useSession();
 
-    // Redirige si ya está autenticado y la sesión es válida, o fuerza logout si está vacía/incompleta
-    React.useEffect(() => {
-        if (
-            status === "authenticated" &&
-            session &&
-            (session.user?.email || session.jwt)
-        ) {
-            router.replace("/usuarios");
-        } else if (
-            status === "authenticated" &&
-            (!session || (!session.user?.email && !session.jwt)) &&
-            pathname !== "/auth/signin" && pathname !== "/auth/login"
-        ) {
-            signOut({ callbackUrl: "/auth/signin" });
-        } else if (
-            status === "unauthenticated" &&
-            pathname !== "/auth/signin" && pathname !== "/auth/login"
-        ) {
-            signOut({ callbackUrl: "/auth/signin" });
-        }
-    }, [status, session, router, pathname]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [usarLdap, setUsarLdap] = useState(true); // ✅ visible y editable
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setError(""); // Reset error message
+  useEffect(() => {
+    if (status === "authenticated" && session && (session.user?.email || session.jwt)) {
+      if (!successMessage) {
+        router.replace("/usuarios");
+      }
+    } else if (
+      status === "authenticated" &&
+      (!session || (!session.user?.email && !session.jwt)) &&
+      pathname !== "/auth/signin" &&
+      pathname !== "/auth/login"
+    ) {
+      signOut({ callbackUrl: "/auth/signin" });
+    } else if (
+      status === "unauthenticated" &&
+      pathname !== "/auth/signin" &&
+      pathname !== "/auth/login"
+    ) {
+      signOut({ callbackUrl: "/auth/signin" });
+    }
+  }, [status, session, router, pathname, successMessage]);
 
-        const result = await signIn("credentials", {
-            redirect: false,
-            email,
-            password,
-        });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setSuccessMessage("");
 
-        if (result?.error) {
-            if (result.error === "CredentialsSignin") {
-                setError("Email o contraseña incorrectos.");
-            } else {
-                setError(result.error);
-            }
-        } else if (result) {
-            console.log("Logged in successfully");
-            router.push("/usuarios");
-        } else {
-            console.error("Unexpected error during login");
-        }
-    };
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+      usarLdap: usarLdap.toString(), // Se envía como string
+    });
 
-    const handleGoogleSignIn = async () => {
+    if (result?.error) {
+      if (result.error === "CredentialsSignin") {
+        setError("Email o contraseña incorrectos.");
+      } else {
+        setError(result.error);
+      }
+    } else if (result) {
+      const origen = usarLdap ? "Active Directory (AD)" : "Base de Datos";
+      setSuccessMessage(`✅ Inicio de sesión exitoso mediante ${origen}. Redirigiendo...`);
+
+      setTimeout(() => {
+        router.push("/usuarios");
+      }, 5000);
+    } else {
+      console.error("Unexpected error during login");
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
     const result = await signIn("google", { redirect: false });
-        if (result?.error) {
-            setError(result.error);
-        } else if (result) {
-            console.log("Logged in with Google successfully");
-            router.push("/usuarios");
-        } else {
-            console.error("Unexpected error during Google login");
-        }
-    };
+    if (result?.error) {
+      setError(result.error);
+    } else if (result) {
+      console.log("Logged in with Google successfully");
+      router.push("/usuarios");
+    } else {
+      console.error("Unexpected error during Google login");
+    }
+  };
 
-
-    return (
+  return (
     <form onSubmit={handleSubmit}>
+      {successMessage && (
+        <div className="mb-4 rounded-lg border-l-4 border-green-500 bg-green-100 p-4 text-green-800 shadow">
+          {successMessage}
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-4 rounded-lg border-l-4 border-red-500 bg-red-100 p-4 text-red-800 shadow">
+          {error}
+        </div>
+      )}
         {error && <div className="flex w-full border-l-6 border-[#F87171] bg-[#F87171] bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
             <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#F87171]">
                 <svg
@@ -170,6 +188,18 @@ const LoginForm = () => {
                     </span>
                     </div>
     </div>
+    <div className="mb-4 flex items-center">
+        <input
+          id="usarLdap"
+          type="checkbox"
+          checked={usarLdap}
+          onChange={(e) => setUsarLdap(e.target.checked)}
+          className="mr-2"
+        />
+        <label htmlFor="usarLdap" className="text-black dark:text-white">
+          Usar Active Directory (LDAP)
+        </label>
+      </div>
 
     <div className="mb-5.5">
         <button
