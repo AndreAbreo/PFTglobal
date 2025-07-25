@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import ListarUbicaciones from "@/components/Paginas/Ubicaciones/Listar";
 
 export const metadata = {
   title: "Gestión de ubicaciones",
@@ -10,9 +11,7 @@ export default function UbicacionesPage() {
     <DefaultLayout>
       <Breadcrumb pageName="Gestión de Ubicaciones" />
       <div className="flex flex-col gap-10">
-        <h1 className="text-xl font-semibold text-black dark:text-white">
-          Gestión de Ubicaciones
-        </h1>
+        <ListarUbicaciones />
       </div>
     </DefaultLayout>
   );
