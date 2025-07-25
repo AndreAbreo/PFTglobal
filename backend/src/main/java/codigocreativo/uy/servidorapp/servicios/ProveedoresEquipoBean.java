@@ -104,28 +104,44 @@ public class ProveedoresEquipoBean implements ProveedoresEquipoRemote {
         return proveedoresEquipoMapper.toDto(q.getResultList());
     }
 
-    public List<ProveedoresEquipoDto> filtrarProveedores(String nombre, String estado) {
+    public List<ProveedoresEquipoDto> filtrarProveedores(String nombre, String estado, String pais) {
         Estados estadoEnum = null;
         if (estado != null && !estado.trim().isEmpty()) {
             estadoEnum = Estados.valueOf(estado);
         }
-        
+
         boolean tieneEstado = estadoEnum != null;
         boolean tieneNombre = nombre != null && !nombre.trim().isEmpty();
-        
-        if (tieneEstado && tieneNombre) {
-            // Filtrar por estado y nombre
-            return buscarProveedoresPorEstadoYNombre(estadoEnum, nombre.trim());
-        } else if (tieneEstado && !tieneNombre) {
-            // Filtrar solo por estado
-            return buscarProveedoresPorEstado(estadoEnum);
-        } else if (!tieneEstado && tieneNombre) {
-            // Filtrar solo por nombre
-            return buscarProveedoresPorNombre(nombre.trim());
-        } else {
-            // Sin filtros, devolver todos
+        boolean tienePais = pais != null && !pais.trim().isEmpty();
+
+        if (!tieneEstado && !tieneNombre && !tienePais) {
             return obtenerProveedores();
         }
+
+        String jpql = "SELECT p FROM ProveedoresEquipo p WHERE 1=1";
+        if (tieneEstado) {
+            jpql += " AND p.estado = :estado";
+        }
+        if (tieneNombre) {
+            jpql += " AND UPPER(p.nombre) LIKE UPPER(:nombre)";
+        }
+        if (tienePais) {
+            jpql += " AND UPPER(p.pais.nombre) LIKE UPPER(:pais)";
+        }
+        jpql += " ORDER BY p.nombre ASC";
+
+        var query = em.createQuery(jpql, ProveedoresEquipo.class);
+        if (tieneEstado) {
+            query.setParameter("estado", estadoEnum.name());
+        }
+        if (tieneNombre) {
+            query.setParameter("nombre", "%" + nombre.trim() + "%");
+        }
+        if (tienePais) {
+            query.setParameter("pais", "%" + pais.trim() + "%");
+        }
+
+        return proveedoresEquipoMapper.toDto(query.getResultList());
     }
 
     private List<ProveedoresEquipoDto> buscarProveedoresPorEstado(Estados estado) {

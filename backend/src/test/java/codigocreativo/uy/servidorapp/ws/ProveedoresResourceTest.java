@@ -142,56 +142,68 @@ class ProveedoresResourceTest {
     @Test
     void testFiltrarProveedores_soloNombre() {
         List<ProveedoresEquipoDto> expectedList = Arrays.asList(proveedorDto);
-        when(er.filtrarProveedores("test", null)).thenReturn(expectedList);
+        when(er.filtrarProveedores("test", null, null)).thenReturn(expectedList);
 
-        Response response = resource.filtrarProveedores("test", null);
+        Response response = resource.filtrarProveedores("test", null, null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
-        verify(er, times(1)).filtrarProveedores("test", null);
+        verify(er, times(1)).filtrarProveedores("test", null, null);
     }
 
     @Test
     void testFiltrarProveedores_soloEstado() {
         List<ProveedoresEquipoDto> expectedList = Arrays.asList(proveedorDto);
-        when(er.filtrarProveedores(null, "ACTIVO")).thenReturn(expectedList);
+        when(er.filtrarProveedores(null, "ACTIVO", null)).thenReturn(expectedList);
 
-        Response response = resource.filtrarProveedores(null, "ACTIVO");
+        Response response = resource.filtrarProveedores(null, "ACTIVO", null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
-        verify(er, times(1)).filtrarProveedores(null, "ACTIVO");
+        verify(er, times(1)).filtrarProveedores(null, "ACTIVO", null);
     }
 
     @Test
     void testFiltrarProveedores_nombreYEstado() {
         List<ProveedoresEquipoDto> expectedList = Arrays.asList(proveedorDto);
-        when(er.filtrarProveedores("test", "ACTIVO")).thenReturn(expectedList);
+        when(er.filtrarProveedores("test", "ACTIVO", null)).thenReturn(expectedList);
 
-        Response response = resource.filtrarProveedores("test", "ACTIVO");
+        Response response = resource.filtrarProveedores("test", "ACTIVO", null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
-        verify(er, times(1)).filtrarProveedores("test", "ACTIVO");
+        verify(er, times(1)).filtrarProveedores("test", "ACTIVO", null);
+    }
+
+    @Test
+    void testFiltrarProveedores_porPais() {
+        List<ProveedoresEquipoDto> expectedList = Arrays.asList(proveedorDto);
+        when(er.filtrarProveedores(null, null, "Uruguay")).thenReturn(expectedList);
+
+        Response response = resource.filtrarProveedores(null, null, "Uruguay");
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(expectedList, response.getEntity());
+        verify(er, times(1)).filtrarProveedores(null, null, "Uruguay");
     }
 
     @Test
     void testFiltrarProveedores_sinFiltros() {
         List<ProveedoresEquipoDto> expectedList = Arrays.asList(proveedorDto);
-        when(er.filtrarProveedores(null, null)).thenReturn(expectedList);
+        when(er.filtrarProveedores(null, null, null)).thenReturn(expectedList);
 
-        Response response = resource.filtrarProveedores(null, null);
+        Response response = resource.filtrarProveedores(null, null, null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
-        verify(er, times(1)).filtrarProveedores(null, null);
+        verify(er, times(1)).filtrarProveedores(null, null, null);
     }
 
     @Test
     void testFiltrarProveedores_estadoInvalido() {
-        when(er.filtrarProveedores(null, "ESTADO_INVALIDO")).thenThrow(new IllegalArgumentException("Estado inválido"));
+        when(er.filtrarProveedores(null, "ESTADO_INVALIDO", null)).thenThrow(new IllegalArgumentException("Estado inválido"));
 
-        Response response = resource.filtrarProveedores(null, "ESTADO_INVALIDO");
+        Response response = resource.filtrarProveedores(null, "ESTADO_INVALIDO", null);
 
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
         Map<String, String> entity = (Map<String, String>) response.getEntity();

@@ -106,16 +106,24 @@ public class MarcasModeloBean implements MarcasModeloRemote{
         );
     }
 
-    public List<MarcasModeloDto> obtenerMarcasPorEstadoLista(Estados estado) throws ServiciosException {
+    public List<MarcasModeloDto> obtenerMarcasPorEstadoLista(Estados estado, String nombre) throws ServiciosException {
         if (estado == null) {
             throw new ServiciosException("El estado es obligatorio para filtrar");
         }
-        
-        return marcasModeloMapper.toDto(
-            em.createQuery("SELECT marcasModelo FROM MarcasModelo marcasModelo WHERE marcasModelo.estado = :estado ORDER BY marcasModelo.id DESC", MarcasModelo.class)
-                .setParameter("estado", estado.name())
-                .getResultList()
-        );
+
+        String jpql = "SELECT marcasModelo FROM MarcasModelo marcasModelo WHERE marcasModelo.estado = :estado";
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            jpql += " AND UPPER(marcasModelo.nombre) LIKE UPPER(:nombre)";
+        }
+        jpql += " ORDER BY marcasModelo.id DESC";
+
+        var query = em.createQuery(jpql, MarcasModelo.class)
+                .setParameter("estado", estado.name());
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            query.setParameter("nombre", "%" + nombre.trim() + "%");
+        }
+
+        return marcasModeloMapper.toDto(query.getResultList());
     }
 
     @Override
