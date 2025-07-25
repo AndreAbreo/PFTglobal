@@ -38,6 +38,7 @@ public class UsuarioBean implements UsuarioRemote {
     private static final int EDAD_MINIMA = 18;
     private static final String QUERY_USUARIO_POR_EMAIL = "SELECT u FROM Usuario u WHERE u.email = :email";
     private static final String ADMINISTRADOR = "Administrador";
+    private static final String SUPER_ADMIN = "SuperAdmin";
 
     @Override
     public void crearUsuario(UsuarioDto u) throws ServiciosException {
@@ -356,7 +357,7 @@ public class UsuarioBean implements UsuarioRemote {
         
         // Verificar que el solicitante sea administrador o aux administrativo
         String perfilSolicitante = solicitante.getIdPerfil().getNombrePerfil();
-        if (!perfilSolicitante.equals(ADMINISTRADOR) && !perfilSolicitante.equals("Aux Administrativo")) {
+        if (!perfilSolicitante.equals(ADMINISTRADOR) && !perfilSolicitante.equals(SUPER_ADMIN) && !perfilSolicitante.equals("Aux Administrativo")) {
             throw new ServiciosException("Requiere ser Administrador o Aux Administrativo para inactivar usuarios");
         }
         
@@ -372,7 +373,8 @@ public class UsuarioBean implements UsuarioRemote {
         }
         
         // Verificar que no se esté intentando inactivar a otro administrador
-        if (usuarioAInactivar.getIdPerfil().getNombrePerfil().equals(ADMINISTRADOR)) {
+        if (usuarioAInactivar.getIdPerfil().getNombrePerfil().equals(ADMINISTRADOR) ||
+                usuarioAInactivar.getIdPerfil().getNombrePerfil().equals(SUPER_ADMIN)) {
             throw new ServiciosException("No puedes inactivar a otro administrador");
         }
     }
@@ -432,7 +434,8 @@ public class UsuarioBean implements UsuarioRemote {
             throw new ServiciosException("Usuario solicitante no encontrado");
         }
         
-        if (!solicitante.getIdPerfil().getNombrePerfil().equals(ADMINISTRADOR)) {
+        if (!solicitante.getIdPerfil().getNombrePerfil().equals(ADMINISTRADOR)
+                && !solicitante.getIdPerfil().getNombrePerfil().equals(SUPER_ADMIN)) {
             throw new ServiciosException("Solo los administradores pueden modificar usuarios");
         }
         

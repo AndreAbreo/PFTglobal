@@ -28,6 +28,7 @@ export default function Registrar() {
         { type: Number, value: 3, label: 'Ingeniero Biomedico' },
         { type: Number, value: 4, label: 'Tecnico' },
         { type: Number, value: 5, label: 'Tecnologo' },
+        { type: Number, value: 6, label: 'SuperAdmin' },
     ];
 
     useEffect(() => {

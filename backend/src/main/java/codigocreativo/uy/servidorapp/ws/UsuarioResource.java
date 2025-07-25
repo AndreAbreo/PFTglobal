@@ -44,6 +44,7 @@ public class UsuarioResource {
     private static final String BEARER = "bearer";
     private static final String PERFIL = "perfil";
     private static final String ADMINISTRADOR = "Administrador";
+    private static final String SUPER_ADMIN = "SuperAdmin";
     private static final String MESSAGE = "message";
     private static final String ERROR = "error";
 
@@ -283,7 +284,7 @@ public class UsuarioResource {
             String perfilSolicitante = claims.get(PERFIL, String.class);
 
             // Verificar que el usuario es administrador o aux administrativo
-            if (!ADMINISTRADOR.equals(perfilSolicitante) && !"Aux Administrativo".equals(perfilSolicitante)) {
+            if (!ADMINISTRADOR.equals(perfilSolicitante) && !SUPER_ADMIN.equals(perfilSolicitante) && !"Aux Administrativo".equals(perfilSolicitante)) {
                 return Response.status(Response.Status.FORBIDDEN)
                         .entity("{\"message\":\"Requiere ser Administrador o Aux Administrativo para inactivar usuarios\"}")
                         .build();
@@ -305,7 +306,7 @@ public class UsuarioResource {
             }
 
             // Verificar que no se está inactivando a otro administrador
-            if (ADMINISTRADOR.equals(usuarioAInactivar.getIdPerfil().getNombrePerfil())) {
+            if (ADMINISTRADOR.equals(usuarioAInactivar.getIdPerfil().getNombrePerfil()) || SUPER_ADMIN.equals(usuarioAInactivar.getIdPerfil().getNombrePerfil())) {
                 return Response.status(Response.Status.FORBIDDEN)
                         .entity("{\"message\":\"No puedes inactivar a otro administrador\"}")
                         .build();

@@ -219,8 +219,8 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 
         // Verificar si es una modificación de usuario
         if (path.equals("/usuarios/modificar")) {
-            // Solo permitir que administradores modifiquen a otros administradores
-            if (perfil.equals("Administrador")) {
+            // Solo permitir que administradores o super administradores modifiquen a otros administradores
+            if (perfil.equals("Administrador") || perfil.equals("SuperAdmin")) {
                 return true;
             } else {
                 LOGGER.log(Level.WARNING, "Usuario con perfil {0} intentando modificar - Acceso denegado", perfil);
