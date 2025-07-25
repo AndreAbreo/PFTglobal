@@ -400,7 +400,7 @@ class UsuarioResourceTest {
         Response response = usuarioResource.inactivarUsuario(idUsuario, token);
 
         assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
-        assertEquals("{\"message\":\"Requiere ser Administrador o Aux administrativo para inactivar usuarios\"}", response.getEntity());
+        assertEquals("{\"message\":\"Requiere ser Administrador o Aux Administrativo para inactivar usuarios\"}", response.getEntity());
         verify(usuarioRemote, never()).inactivarUsuario(anyString(), anyString());
     }
 
