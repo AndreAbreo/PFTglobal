@@ -192,7 +192,7 @@ const CreateDynamic: React.FC<Props> = ({ fields, createUrl, successMessage, err
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="p-6 bg-white dark:bg-boxdark rounded-lg shadow-md">
       <form onSubmit={handleSubmit}>
         {fields.map(f => (
           <div className="mb-4" key={f.accessor}>
