@@ -48,7 +48,8 @@ const CrearTipoEquipo: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-md mt-8">
+    <div className="max-w-2xl mx-auto mt-8 p-8 rounded-lg shadow-md border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+
       <h2 className="text-2xl font-bold mb-6 text-blue-700">Registrar nuevo tipo de equipo</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-4">
@@ -59,7 +60,8 @@ const CrearTipoEquipo: React.FC = () => {
               type="text"
               value={nombreTipo}
               onChange={e => setNombreTipo(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             />
           </div>

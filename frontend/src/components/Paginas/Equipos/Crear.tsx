@@ -181,7 +181,8 @@ const CrearEquipo: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-md mt-8">
+    <div className="max-w-2xl mx-auto mt-8 p-8 rounded-lg shadow-md border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+
       <h2 className="text-2xl font-bold mb-6 text-blue-700">Registrar nuevo equipo</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -192,7 +193,8 @@ const CrearEquipo: React.FC = () => {
               type="text"
               value={nombre}
               onChange={e => setNombre(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             />
           </div>
@@ -202,7 +204,8 @@ const CrearEquipo: React.FC = () => {
               id="tipo"
               value={idTipo}
               onChange={e => setIdTipo(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             >
               <option value="">Seleccione</option>
@@ -215,7 +218,8 @@ const CrearEquipo: React.FC = () => {
               id="marca"
               value={idMarca}
               onChange={e => setIdMarca(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             >
               <option value="">Seleccione</option>
@@ -228,7 +232,8 @@ const CrearEquipo: React.FC = () => {
               id="modelo"
               value={idModelo}
               onChange={e => setIdModelo(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             >
               <option value="">Seleccione</option>
@@ -242,7 +247,8 @@ const CrearEquipo: React.FC = () => {
               type="text"
               value={nroSerie}
               onChange={e => setNroSerie(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             />
           </div>
@@ -253,7 +259,8 @@ const CrearEquipo: React.FC = () => {
               type="date"
               value={garantia}
               onChange={e => setGarantia(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             />
           </div>
@@ -263,7 +270,8 @@ const CrearEquipo: React.FC = () => {
               id="pais"
               value={idPais}
               onChange={e => setIdPais(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             >
               <option value="">Seleccione</option>
@@ -276,7 +284,8 @@ const CrearEquipo: React.FC = () => {
               id="proveedor"
               value={idProveedor}
               onChange={e => setIdProveedor(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             >
               <option value="">Seleccione</option>
@@ -290,7 +299,8 @@ const CrearEquipo: React.FC = () => {
               type="date"
               value={fechaAdquisicion}
               onChange={e => setFechaAdquisicion(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             />
           </div>
@@ -301,7 +311,8 @@ const CrearEquipo: React.FC = () => {
               type="text"
               value={idInterno}
               onChange={e => setIdInterno(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             />
           </div>
@@ -311,7 +322,8 @@ const CrearEquipo: React.FC = () => {
               id="ubicacion"
               value={idUbicacion}
               onChange={e => setIdUbicacion(e.target.value)}
-              className="w-full rounded border border-gray-300 p-2"
+              className="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
               required
             >
               <option value="">Seleccione</option>
