@@ -3,12 +3,14 @@ package codigocreativo.uy.servidorapp.dtos;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * DTO for {@link codigocreativo.uy.servidorapp.entidades.EquiposUbicacione}
  */
 public class EquiposUbicacioneDto implements Serializable {
     private Long id;
+    @JsonBackReference
     private EquipoDto idEquipo;
     private UbicacionDto idUbicacion;
     private LocalDate fecha;
