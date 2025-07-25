@@ -18,7 +18,6 @@ const ListarTiposEquipos: React.FC = () => {
   const [tipoAEliminar, setTipoAEliminar] = useState<TipoEquipo | null>(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
-  // Los datos se obtendrán automáticamente desde DynamicTable usando filterUrl
 
   const columns: Column<TipoEquipo>[] = [
     { header: "ID", accessor: "id", type: "number", filterable: false },
@@ -56,6 +55,10 @@ const ListarTiposEquipos: React.FC = () => {
       });
       setShowDeleteModal(false);
       (window as any).__resolveDelete({ message: "Tipo de equipo inactivado correctamente" });
+
+      const refreshed = await fetcher<TipoEquipo[]>("/tipoEquipos/filtrar", { method: "GET" });
+      setTipos(refreshed);
+
     } catch (err: any) {
       (window as any).__rejectDelete({ message: err.message || "Error al inactivar" });
     }
@@ -66,16 +69,18 @@ const ListarTiposEquipos: React.FC = () => {
     <>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
       <DynamicTable
-        columns={columns}
-        data={tipos}
-        withFilters={true}
-        filterUrl="/tipoEquipos/filtrar"
-        onDataUpdate={setTipos}
-        withActions={true}
-        deleteUrl="/tipoEquipos/inactivar"
-        basePath="/tipoEquipos"
-        onDelete={handleDeleteWithModal}
-      />
+
+          columns={columns}
+          data={tipos}
+          withFilters={true}
+          filterUrl="/tipoEquipos/filtrar"
+          onDataUpdate={setTipos}
+          withActions={true}
+          deleteUrl="/tipoEquipos/inactivar"
+          basePath="/tipoEquipos"
+          onDelete={handleDeleteWithModal}
+        />
+
       {/* Modal de inactivación */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">

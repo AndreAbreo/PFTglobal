@@ -36,14 +36,16 @@ const ListarBajasTiposEquipos: React.FC = () => {
       <h2 className="text-xl font-bold mb-4">Tipos de equipos inactivos</h2>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
       <DynamicTable
-        columns={columns}
-        data={tipos}
-        withFilters={true}
-        filterUrl="/tipoEquipos/filtrar"
-        initialFilters={{ estado: "INACTIVO" }}
-        onDataUpdate={setTipos}
-        withActions={false}
-      />
+
+          columns={columns}
+          data={tipos}
+          withFilters={true}
+          filterUrl="/tipoEquipos/filtrar"
+          initialFilters={{ estado: "INACTIVO" }}
+          onDataUpdate={setTipos}
+          withActions={false}
+        />
+
     </>
   );
 };
