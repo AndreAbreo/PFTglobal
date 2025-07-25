@@ -102,9 +102,9 @@ const ListarEquipos: React.FC = () => {
           objectFit: "cover"
         }
       },
-      { header: "ID Interno", accessor: "idInterno", type: "text", filterable: true },
+      { header: "ID Interno", accessor: "idInterno", type: "text", filterable: true, filterKey: "identificacionInterna" },
     { header: "Nombre", accessor: "nombre", type: "text", filterable: true },
-    { header: "Número de Serie", accessor: "nroSerie", type: "text", filterable: true },
+    { header: "Número de Serie", accessor: "nroSerie", type: "text", filterable: true, filterKey: "numeroSerie" },
     { 
       header: "Tipo", 
       accessor: (row) => row.idTipo?.nombreTipo || "-",
