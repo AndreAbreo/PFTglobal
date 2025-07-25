@@ -79,7 +79,7 @@ const ListarUsuarios: React.FC = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Usuarios</h2>
         <a
-          href="/registroUsuario"
+          href="/usuarios/crear"
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <svg 

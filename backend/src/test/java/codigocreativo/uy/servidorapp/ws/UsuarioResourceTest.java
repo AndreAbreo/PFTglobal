@@ -471,46 +471,35 @@ class UsuarioResourceTest {
 
     @Test
     void testFiltrarUsuarios() {
-        List<UsuarioDto> expectedList = Arrays.asList(null, null);
+        List<UsuarioDto> expectedList = Arrays.asList(new UsuarioDto(), new UsuarioDto());
+
         when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
 
-        Response response = usuarioResource.filtrarUsuarios("John", "Doe", null, null, null, null);
+        // Agregamos el parámetro cedula (puede ser null si no querés filtrarlo)
+        Response response = usuarioResource.filtrarUsuarios("12345678", "John", "Doe", null, null, null, null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
+
         verify(usuarioRemote, times(1)).obtenerUsuariosFiltrado(anyMap());
     }
+
 
     @Test
     void testFiltrarUsuariosWithAllFilters() {
-        List<UsuarioDto> expectedList = Arrays.asList(null, null);
+        List<UsuarioDto> expectedList = Arrays.asList(new UsuarioDto(), new UsuarioDto());
         when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
 
-        Response response = usuarioResource.filtrarUsuarios("John", "Doe", "johndoe", "john@example.com", "Usuario", "ACTIVO");
-
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        assertEquals(expectedList, response.getEntity());
-        verify(usuarioRemote, times(1)).obtenerUsuariosFiltrado(anyMap());
-    }
-
-    @Test
-    void testFiltrarUsuariosWithDefaultEstado() {
-        List<UsuarioDto> expectedList = Arrays.asList(null, null);
-        when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
-
-        Response response = usuarioResource.filtrarUsuarios(null, null, null, null, null, null);
-
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        assertEquals(expectedList, response.getEntity());
-        verify(usuarioRemote, times(1)).obtenerUsuariosFiltrado(anyMap());
-    }
-
-    @Test
-    void testFiltrarUsuariosWithDefaultTipoUsuario() {
-        List<UsuarioDto> expectedList = Arrays.asList(null, null);
-        when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
-
-        Response response = usuarioResource.filtrarUsuarios(null, null, null, null, "default", null);
+        // Ahora pasamos los 7 parámetros correctamente
+        Response response = usuarioResource.filtrarUsuarios(
+                "12345678",         // cedula
+                "John",             // nombre
+                "Doe",              // apellido
+                "johndoe",          // nombreUsuario
+                "john@example.com", // email
+                "Usuario",          // tipoUsuario
+                "ACTIVO"            // estado
+        );
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());

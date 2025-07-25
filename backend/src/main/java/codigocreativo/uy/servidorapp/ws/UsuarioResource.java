@@ -337,42 +337,57 @@ public class UsuarioResource {
 
     @GET
     @Path("/filtrar")
-    @Operation(summary = "Filtrar usuarios", description = "Filtra los usuarios según los criterios proporcionados", tags = { "Usuarios" })
+    @Operation(
+            summary = "Filtrar usuarios",
+            description = "Filtra los usuarios según los criterios proporcionados",
+            tags = { "Usuarios" }
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de usuarios filtrada correctamente", content = @Content(schema = @Schema(implementation = UsuarioDto.class))),
             @ApiResponse(responseCode = "500", description = "Error al filtrar los usuarios", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    public Response filtrarUsuarios(@Parameter(description = "Nombre del usuario") @QueryParam("nombre") String nombre,
-                                            @Parameter(description = "Apellido del usuario") @QueryParam("apellido") String apellido,
-                                            @Parameter(description = "Nombre de usuario") @QueryParam("nombreUsuario") String nombreUsuario,
-                                            @Parameter(description = "Email del usuario") @QueryParam("email") String email,
-                                            @Parameter(description = "Tipo de perfil del usuario") @QueryParam("perfil") String tipoUsuario,
-                                            @Parameter(description = "Estado del usuario") @QueryParam("estado") String estado) {
-
+    public Response filtrarUsuarios(
+            @Parameter(description = "Cédula del usuario") @QueryParam("cedula") String cedula,
+            @Parameter(description = "Nombre del usuario") @QueryParam("nombre") String nombre,
+            @Parameter(description = "Apellido del usuario") @QueryParam("apellido") String apellido,
+            @Parameter(description = "Nombre de usuario") @QueryParam("nombreUsuario") String nombreUsuario,
+            @Parameter(description = "Email del usuario") @QueryParam("email") String email,
+            @Parameter(description = "Tipo de perfil del usuario") @QueryParam("tipoUsuario") String tipoUsuario,
+            @Parameter(description = "Estado del usuario") @QueryParam("estado") String estado
+    ) {
         try {
             Map<String, String> filtros = new HashMap<>();
-            if (nombre != null) filtros.put("nombre", nombre);
-            if (apellido != null) filtros.put("apellido", apellido);
-            if (nombreUsuario != null) filtros.put("nombreUsuario", nombreUsuario);
-            if (email != null) filtros.put(EMAIL, email);
 
+            // Agregar filtros si están presentes
+            if (cedula != null && !cedula.isEmpty()) filtros.put("cedula", cedula);
+            if (nombre != null && !nombre.isEmpty()) filtros.put("nombre", nombre);
+            if (apellido != null && !apellido.isEmpty()) filtros.put("apellido", apellido);
+            if (nombreUsuario != null && !nombreUsuario.isEmpty()) filtros.put("nombreUsuario", nombreUsuario);
+            if (email != null && !email.isEmpty()) filtros.put(EMAIL, email);
+
+            // Filtro por estado: default "ACTIVO"
             if (estado == null || estado.isEmpty()) {
                 filtros.put("estado", "ACTIVO");
-            } else if (!estado.equals("default")) {
+            } else if (!estado.equalsIgnoreCase("default")) {
                 filtros.put("estado", estado);
             }
-            if (tipoUsuario != null && !tipoUsuario.isEmpty() && !tipoUsuario.equals("default")) {
+
+            // Filtro por tipo de usuario (rol)
+            if (tipoUsuario != null && !tipoUsuario.isEmpty() && !tipoUsuario.equalsIgnoreCase("default")) {
                 filtros.put("tipoUsuario", tipoUsuario);
             }
 
+            // Llamar al servicio con los filtros armados
             List<UsuarioDto> usuarios = er.obtenerUsuariosFiltrado(filtros);
             return Response.ok(usuarios).build();
+
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("{\"error\":\"Error al filtrar usuarios: " + e.getMessage() + "\"}")
                     .build();
         }
     }
+
 
     @GET
     @Path("/seleccionar")

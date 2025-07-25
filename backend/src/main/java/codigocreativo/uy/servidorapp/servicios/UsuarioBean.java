@@ -250,7 +250,10 @@ public class UsuarioBean implements UsuarioRemote {
     @Override
     public List<UsuarioDto> obtenerUsuariosFiltrado(Map<String, String> filtros) {
         StringBuilder queryBuilder = new StringBuilder("SELECT u FROM Usuario u WHERE 1=1");
-        
+
+        if (filtros.containsKey("cedula")) {
+            queryBuilder.append(" AND LOWER(u.cedula) LIKE LOWER(:cedula)");
+        }
         if (filtros.containsKey("nombre")) {
             queryBuilder.append(" AND LOWER(u.nombre) LIKE LOWER(:nombre)");
         }
@@ -263,8 +266,7 @@ public class UsuarioBean implements UsuarioRemote {
         if (filtros.containsKey(EMAIL)) {
             queryBuilder.append(" AND LOWER(u.email) LIKE LOWER(:email)");
         }
-        
-        // Check if estado is valid before adding to query
+
         boolean estadoValido = false;
         Estados estadoEnum = null;
         if (filtros.containsKey("estado")) {
@@ -274,16 +276,19 @@ public class UsuarioBean implements UsuarioRemote {
                 queryBuilder.append(" AND u.estado = :estado");
                 estadoValido = true;
             } catch (IllegalArgumentException e) {
-                // Invalid estado value, skip this filter
+                // Estado inválido, se ignora
             }
         }
-        
+
         if (filtros.containsKey("tipoUsuario")) {
             queryBuilder.append(" AND u.idPerfil.nombrePerfil = :tipoUsuario");
         }
-        
+
         var query = em.createQuery(queryBuilder.toString(), Usuario.class);
-        
+
+        if (filtros.containsKey("cedula")) {
+            query.setParameter("cedula", "%" + filtros.get("cedula") + "%");
+        }
         if (filtros.containsKey("nombre")) {
             query.setParameter("nombre", "%" + filtros.get("nombre") + "%");
         }
@@ -302,10 +307,11 @@ public class UsuarioBean implements UsuarioRemote {
         if (filtros.containsKey("tipoUsuario")) {
             query.setParameter("tipoUsuario", filtros.get("tipoUsuario"));
         }
-        
+
         return usuarioMapper.toDto(query.getResultList(), new CycleAvoidingMappingContext());
     }
-    
+
+
     /**
      * Valida la contraseña según las reglas de negocio
      */
