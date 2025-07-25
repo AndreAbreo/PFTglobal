@@ -159,5 +159,32 @@ public class PerfilBean implements PerfilRemote {
                 .getResultList());
     }
 
+    public List<PerfilDto> filtrarPerfiles(String estado, String nombre) {
+        Estados estadoEnum = null;
+        if (estado != null && !estado.trim().isEmpty()) {
+            estadoEnum = Estados.valueOf(estado);
+        }
+
+        boolean tieneEstado = estadoEnum != null;
+        boolean tieneNombre = nombre != null && !nombre.trim().isEmpty();
+
+        if (tieneEstado && tieneNombre) {
+            return listarPerfilesPorEstadoYNombre(estadoEnum, nombre.trim());
+        } else if (tieneEstado) {
+            return listarPerfilesPorEstado(estadoEnum);
+        } else if (tieneNombre) {
+            return listarPerfilesPorNombre(nombre.trim());
+        } else {
+            return obtenerPerfiles();
+        }
+    }
+
+    private List<PerfilDto> listarPerfilesPorEstadoYNombre(Estados estado, String nombre) {
+        return perfilMapper.toDtoList(em.createQuery("SELECT p FROM Perfil p WHERE p.estado = :estado AND UPPER(p.nombrePerfil) LIKE UPPER(:nombre)", Perfil.class)
+                .setParameter("estado", estado)
+                .setParameter("nombre", "%" + nombre + "%")
+                .getResultList());
+    }
+
     
 }

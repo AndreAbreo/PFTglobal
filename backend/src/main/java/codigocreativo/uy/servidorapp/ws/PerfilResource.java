@@ -166,4 +166,21 @@ public class PerfilResource {
     public List<PerfilDto> listarPerfilesPorEstado(@Parameter(description = "Estado del perfil a buscar") @QueryParam("estado") Estados estado) {
         return perfilRemote.listarPerfilesPorEstado(estado);
     }
+
+    @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar perfiles por estado y/o nombre", description = "Obtiene una lista de perfiles filtrados", tags = { "Perfiles" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Estado inválido", content = @Content(schema = @Schema(example = "{\"error\": \"Estado inválido\"}")))
+    })
+    public Response filtrarPerfiles(@QueryParam("estado") String estado, @QueryParam("nombre") String nombre) {
+        try {
+            return Response.ok(perfilRemote.filtrarPerfiles(estado, nombre)).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(java.util.Map.of("error", "Estado inválido: " + e.getMessage()))
+                    .build();
+        }
+    }
 }

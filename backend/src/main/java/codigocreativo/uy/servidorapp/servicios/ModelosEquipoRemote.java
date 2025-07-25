@@ -13,4 +13,5 @@ public interface ModelosEquipoRemote {
     ModelosEquipoDto obtenerModelos(Long id) throws ServiciosException;
     List<ModelosEquipoDto> listarModelos();
     void eliminarModelos(Long id) throws ServiciosException;
+    List<ModelosEquipoDto> filtrarModelos(String estado, String nombre);
 }

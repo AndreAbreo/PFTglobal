@@ -82,4 +82,19 @@ public class TipoIntervencionesResource {
     public TiposIntervencioneDto buscarPorId(@Parameter(description = "ID del tipo de intervención a buscar", required = true) @QueryParam("id") Long id) {
         return this.er.obtenerTipoIntervencion(id);
     }
+
+    @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar tipos de intervención por estado y/o nombre", description = "Obtiene una lista filtrada de tipos de intervención", tags = { "Tipos de Intervenciones" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Estado inválido", content = @Content(schema = @Schema(example = "{\"error\": \"Estado inválido\"}")))
+    })
+    public Response filtrarTiposIntervenciones(@QueryParam("estado") String estado, @QueryParam("nombre") String nombre) {
+        try {
+            return Response.ok(er.filtrarTiposIntervenciones(estado, nombre)).build();
+        } catch (Exception e) {
+            return Response.status(400).entity(java.util.Map.of("error", "Estado inválido: " + e.getMessage())).build();
+        }
+    }
 }

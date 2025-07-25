@@ -189,4 +189,52 @@ public class ModelosEquipoBean implements ModelosEquipoRemote {
             // El nombre no existe, es válido
         }
     }
+
+    public List<ModelosEquipoDto> filtrarModelos(String estado, String nombre) {
+        Estados estadoEnum = null;
+        if (estado != null && !estado.trim().isEmpty()) {
+            estadoEnum = Estados.valueOf(estado);
+        }
+
+        boolean tieneEstado = estadoEnum != null;
+        boolean tieneNombre = nombre != null && !nombre.trim().isEmpty();
+
+        if (tieneEstado && tieneNombre) {
+            return obtenerModelosPorEstadoYNombre(estadoEnum, nombre.trim());
+        } else if (tieneEstado) {
+            return obtenerModelosPorEstado(estadoEnum);
+        } else if (tieneNombre) {
+            return obtenerModelosPorNombre(nombre.trim());
+        } else {
+            return listarModelos();
+        }
+    }
+
+    private List<ModelosEquipoDto> obtenerModelosPorEstado(Estados estado) {
+        List<ModelosEquipo> modelos = em.createQuery(
+                "SELECT m FROM ModelosEquipo m WHERE m.estado = :estado ORDER BY m.nombre ASC",
+                ModelosEquipo.class)
+                .setParameter("estado", estado.name())
+                .getResultList();
+        return modelosEquipoMapper.toDto(modelos);
+    }
+
+    private List<ModelosEquipoDto> obtenerModelosPorNombre(String nombre) {
+        List<ModelosEquipo> modelos = em.createQuery(
+                "SELECT m FROM ModelosEquipo m WHERE UPPER(m.nombre) LIKE UPPER(:nombre) ORDER BY m.nombre ASC",
+                ModelosEquipo.class)
+                .setParameter("nombre", "%" + nombre + "%")
+                .getResultList();
+        return modelosEquipoMapper.toDto(modelos);
+    }
+
+    private List<ModelosEquipoDto> obtenerModelosPorEstadoYNombre(Estados estado, String nombre) {
+        List<ModelosEquipo> modelos = em.createQuery(
+                "SELECT m FROM ModelosEquipo m WHERE m.estado = :estado AND UPPER(m.nombre) LIKE UPPER(:nombre) ORDER BY m.nombre ASC",
+                ModelosEquipo.class)
+                .setParameter("estado", estado.name())
+                .setParameter("nombre", "%" + nombre + "%")
+                .getResultList();
+        return modelosEquipoMapper.toDto(modelos);
+    }
 }

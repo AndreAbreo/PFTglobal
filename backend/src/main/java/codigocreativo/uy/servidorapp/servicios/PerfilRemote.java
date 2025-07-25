@@ -16,5 +16,6 @@ public interface PerfilRemote {
     public List<PerfilDto> obtenerPerfiles();
     public List<PerfilDto> listarPerfilesPorNombre(String nombre);
     public List<PerfilDto> listarPerfilesPorEstado(Estados estado);
+    List<PerfilDto> filtrarPerfiles(String estado, String nombre);
 
 }

@@ -120,4 +120,19 @@ public class TipoEquipoResource {
                 .build();
         }
     }
+
+    @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar tipos de equipos por estado y/o nombre", description = "Obtiene una lista filtrada de tipos de equipos", tags = { "Tipos de Equipos" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Estado inválido", content = @Content(schema = @Schema(example = "{\"error\": \"Estado inválido\"}")))
+    })
+    public Response filtrarTiposEquipos(@QueryParam("estado") String estado, @QueryParam("nombre") String nombre) {
+        try {
+            return Response.ok(er.filtrarTiposEquipos(estado, nombre)).build();
+        } catch (Exception e) {
+            return Response.status(400).entity(Map.of(ERROR, "Estado inválido: " + e.getMessage())).build();
+        }
+    }
 }

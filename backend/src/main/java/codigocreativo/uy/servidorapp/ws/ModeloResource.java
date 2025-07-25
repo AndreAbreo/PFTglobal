@@ -119,4 +119,19 @@ public class ModeloResource {
                 .build();
         }
     }
+
+    @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar modelos por estado y/o nombre", description = "Obtiene una lista de modelos filtrados por estado y/o nombre", tags = { "Modelos" })
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de modelos filtrada correctamente"),
+        @ApiResponse(responseCode = "400", description = "Estado inválido", content = @Content(schema = @Schema(example = "{\"error\": \"Estado inválido\"}")))
+    })
+    public Response filtrarModelos(@QueryParam("estado") String estado, @QueryParam("nombre") String nombre) {
+        try {
+            return Response.ok(er.filtrarModelos(estado, nombre)).build();
+        } catch (Exception e) {
+            return Response.status(400).entity(java.util.Map.of(ERROR, "Estado inválido: " + e.getMessage())).build();
+        }
+    }
 }

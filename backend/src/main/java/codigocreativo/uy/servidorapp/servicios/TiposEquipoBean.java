@@ -126,6 +126,48 @@ public class TiposEquipoBean implements TiposEquipoRemote{
         List<TiposEquipo> tiposEquipos = em.createQuery("SELECT t FROM TiposEquipo t ORDER BY t.nombreTipo ASC", TiposEquipo.class).getResultList();
         return tiposEquipoMapper.toDto(tiposEquipos);
     }
+
+    public List<TiposEquipoDto> filtrarTiposEquipos(String estado, String nombre) {
+        Estados estadoEnum = null;
+        if (estado != null && !estado.trim().isEmpty()) {
+            estadoEnum = Estados.valueOf(estado);
+        }
+
+        boolean tieneEstado = estadoEnum != null;
+        boolean tieneNombre = nombre != null && !nombre.trim().isEmpty();
+
+        if (tieneEstado && tieneNombre) {
+            return obtenerPorEstadoYNombre(estadoEnum, nombre.trim());
+        } else if (tieneEstado) {
+            return obtenerPorEstado(estadoEnum);
+        } else if (tieneNombre) {
+            return obtenerPorNombre(nombre.trim());
+        } else {
+            return listarTiposEquipo();
+        }
+    }
+
+    private List<TiposEquipoDto> obtenerPorEstado(Estados estado) {
+        List<TiposEquipo> tipos = em.createQuery("SELECT t FROM TiposEquipo t WHERE t.estado = :estado ORDER BY t.nombreTipo ASC", TiposEquipo.class)
+                .setParameter("estado", estado.name())
+                .getResultList();
+        return tiposEquipoMapper.toDto(tipos);
+    }
+
+    private List<TiposEquipoDto> obtenerPorNombre(String nombre) {
+        List<TiposEquipo> tipos = em.createQuery("SELECT t FROM TiposEquipo t WHERE UPPER(t.nombreTipo) LIKE UPPER(:nombre) ORDER BY t.nombreTipo ASC", TiposEquipo.class)
+                .setParameter("nombre", "%" + nombre + "%")
+                .getResultList();
+        return tiposEquipoMapper.toDto(tipos);
+    }
+
+    private List<TiposEquipoDto> obtenerPorEstadoYNombre(Estados estado, String nombre) {
+        List<TiposEquipo> tipos = em.createQuery("SELECT t FROM TiposEquipo t WHERE t.estado = :estado AND UPPER(t.nombreTipo) LIKE UPPER(:nombre) ORDER BY t.nombreTipo ASC", TiposEquipo.class)
+                .setParameter("estado", estado.name())
+                .setParameter("nombre", "%" + nombre + "%")
+                .getResultList();
+        return tiposEquipoMapper.toDto(tipos);
+    }
     
     /**
      * Valida que el nombre del tipo de equipo sea único en la base de datos

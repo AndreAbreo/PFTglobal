@@ -52,4 +52,46 @@ public class TipoIntervencioneBean implements TipoIntervencioneRemote {
                 .setParameter("id", id)
                 .executeUpdate();
     }
+
+    public List<TiposIntervencioneDto> filtrarTiposIntervenciones(String estado, String nombre) {
+        codigocreativo.uy.servidorapp.enumerados.Estados estadoEnum = null;
+        if (estado != null && !estado.trim().isEmpty()) {
+            estadoEnum = codigocreativo.uy.servidorapp.enumerados.Estados.valueOf(estado);
+        }
+
+        boolean tieneEstado = estadoEnum != null;
+        boolean tieneNombre = nombre != null && !nombre.trim().isEmpty();
+
+        if (tieneEstado && tieneNombre) {
+            return obtenerPorEstadoYNombre(estadoEnum, nombre.trim());
+        } else if (tieneEstado) {
+            return obtenerPorEstado(estadoEnum);
+        } else if (tieneNombre) {
+            return obtenerPorNombre(nombre.trim());
+        } else {
+            return obtenerTiposIntervenciones();
+        }
+    }
+
+    private List<TiposIntervencioneDto> obtenerPorEstado(codigocreativo.uy.servidorapp.enumerados.Estados estado) {
+        List<TiposIntervencione> tipos = em.createQuery("SELECT t FROM TiposIntervencione t WHERE t.estado = :estado ORDER BY t.nombreTipo ASC", TiposIntervencione.class)
+                .setParameter("estado", estado.name())
+                .getResultList();
+        return tiposIntervencioneMapper.toDto(tipos);
+    }
+
+    private List<TiposIntervencioneDto> obtenerPorNombre(String nombre) {
+        List<TiposIntervencione> tipos = em.createQuery("SELECT t FROM TiposIntervencione t WHERE UPPER(t.nombreTipo) LIKE UPPER(:nombre) ORDER BY t.nombreTipo ASC", TiposIntervencione.class)
+                .setParameter("nombre", "%" + nombre + "%")
+                .getResultList();
+        return tiposIntervencioneMapper.toDto(tipos);
+    }
+
+    private List<TiposIntervencioneDto> obtenerPorEstadoYNombre(codigocreativo.uy.servidorapp.enumerados.Estados estado, String nombre) {
+        List<TiposIntervencione> tipos = em.createQuery("SELECT t FROM TiposIntervencione t WHERE t.estado = :estado AND UPPER(t.nombreTipo) LIKE UPPER(:nombre) ORDER BY t.nombreTipo ASC", TiposIntervencione.class)
+                .setParameter("estado", estado.name())
+                .setParameter("nombre", "%" + nombre + "%")
+                .getResultList();
+        return tiposIntervencioneMapper.toDto(tipos);
+    }
 }

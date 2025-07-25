@@ -13,4 +13,5 @@ public interface TiposEquipoRemote {
     public void eliminarTiposEquipo(Long id) throws ServiciosException;
     public TiposEquipoDto obtenerPorId(Long id) throws ServiciosException;
     public List<TiposEquipoDto> listarTiposEquipo();
+    List<TiposEquipoDto> filtrarTiposEquipos(String estado, String nombre);
 }
