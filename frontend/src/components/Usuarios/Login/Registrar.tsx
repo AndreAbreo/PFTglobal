@@ -24,9 +24,10 @@ export default function Registrar() {
 
     const perfilOptions = [
         { type: Number, value: 1, label: 'Administrador' },
-        { type: Number, value: 2, label: 'Aux administrativo' },
-        { type: Number, value: 3, label: 'Ingeniero biomédico' },
-        { type: Number, value: 4, label: 'Tecnico' }
+        { type: Number, value: 2, label: 'Aux Administrativo' },
+        { type: Number, value: 3, label: 'Ingeniero Biomedico' },
+        { type: Number, value: 4, label: 'Tecnico' },
+        { type: Number, value: 5, label: 'Tecnologo' },
     ];
 
     useEffect(() => {
