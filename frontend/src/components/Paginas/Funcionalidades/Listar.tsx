@@ -22,26 +22,18 @@ const ListarFuncionalidades: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Callback para búsqueda (filtros) desde DynamicTable
-  const handleSearch = async (filters: Record<string, string>) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value) params.append(key, value);
-      });
-      const queryString = params.toString() ? `?${params.toString()}` : "";
-      const data = await fetcher<Funcionalidad[]>(`/funcionalidades/listar${queryString}`, { method: "GET" });
-      setFuncionalidades(data);
-    } catch (err: any) {
-      setError(err.message);
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
-    // Cargar datos sin filtros al montar el componente
-    handleSearch({});
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetcher<Funcionalidad[]>("/funcionalidades/filtrar", { method: "GET" });
+        setFuncionalidades(data);
+      } catch (err: any) {
+        setError(err.message);
+      }
+      setLoading(false);
+    };
+    loadData();
   }, []);
 
   const columns: Column<Funcionalidad>[] = [
@@ -66,7 +58,8 @@ const ListarFuncionalidades: React.FC = () => {
           columns={columns}
           data={funcionalidades}
           withFilters={true}
-          onSearch={handleSearch}
+          filterUrl="/funcionalidades/filtrar"
+          onDataUpdate={setFuncionalidades}
           withActions={true}
           deleteUrl="/funcionalidades/eliminar"
           basePath="/funcionalidades"

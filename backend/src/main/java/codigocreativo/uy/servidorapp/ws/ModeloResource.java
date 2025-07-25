@@ -102,6 +102,20 @@ public class ModeloResource {
     }
 
     @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar modelos", description = "Filtra modelos por nombre y/o estado", tags = { "Modelos" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada correctamente", content = @Content(schema = @Schema(implementation = ModelosEquipoDto.class)))
+    })
+    public Response filtrar(@QueryParam("nombre") String nombre, @QueryParam("estado") String estado) {
+        try {
+            return Response.ok(this.er.filtrarModelos(nombre, estado)).build();
+        } catch (Exception e) {
+            return Response.status(400).entity(java.util.Map.of(ERROR, e.getMessage())).build();
+        }
+    }
+
+    @GET
     @Path("/seleccionar")
     @Operation(summary = "Buscar un modelo por ID", description = "Obtiene la información de un modelo específico por su ID", tags = { "Modelos" })
     @ApiResponses(value = {

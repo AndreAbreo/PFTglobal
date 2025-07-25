@@ -109,4 +109,31 @@ public class FuncionalidadBean implements FuncionalidadRemote {
         Funcionalidad funcionalidad = em.find(Funcionalidad.class, id);
         return funcionalidadMapper.toDto(funcionalidad, new CycleAvoidingMappingContext());
     }
+
+    @Override
+    public List<FuncionalidadDto> filtrarFuncionalidades(String nombre, String estado) {
+        Estados estadoEnum = null;
+        if (estado != null && !estado.trim().isEmpty()) {
+            estadoEnum = Estados.valueOf(estado);
+        }
+
+        StringBuilder jpql = new StringBuilder("SELECT f FROM Funcionalidad f WHERE 1=1");
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            jpql.append(" AND UPPER(f.nombreFuncionalidad) LIKE UPPER(:nombre)");
+        }
+        if (estadoEnum != null) {
+            jpql.append(" AND f.estado = :estado");
+        }
+        jpql.append(" ORDER BY f.nombreFuncionalidad ASC");
+
+        var query = em.createQuery(jpql.toString(), Funcionalidad.class);
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            query.setParameter("nombre", "%" + nombre.trim() + "%");
+        }
+        if (estadoEnum != null) {
+            query.setParameter("estado", estadoEnum.name());
+        }
+
+        return funcionalidadMapper.toDto(query.getResultList(), new CycleAvoidingMappingContext());
+    }
 }

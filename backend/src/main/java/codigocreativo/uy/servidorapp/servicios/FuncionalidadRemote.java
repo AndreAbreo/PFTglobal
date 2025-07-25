@@ -20,4 +20,13 @@ public interface FuncionalidadRemote {
 
     FuncionalidadDto buscarPorId(Long id);
 
+    /**
+     * Filtra las funcionalidades por nombre y/o estado.
+     *
+     * @param nombre nombre de la funcionalidad
+     * @param estado estado de la funcionalidad (ACTIVO, INACTIVO, ...)
+     * @return lista filtrada
+     */
+    List<FuncionalidadDto> filtrarFuncionalidades(String nombre, String estado);
+
 }

@@ -107,6 +107,22 @@ public class FuncionalidadResource {
     }
 
     @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar funcionalidades", description = "Filtra funcionalidades por nombre y/o estado", tags = { "Funcionalidades" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada correctamente", content = @Content(schema = @Schema(implementation = FuncionalidadDto.class)))
+    })
+    public Response filtrar(@QueryParam("nombre") String nombre, @QueryParam("estado") String estado) {
+        try {
+            return Response.ok(this.funcionalidadRemote.filtrarFuncionalidades(nombre, estado)).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(java.util.Map.of("error", e.getMessage()))
+                    .build();
+        }
+    }
+
+    @GET
     @Path("/seleccionar/{id}")
     @Operation(summary = "Buscar una funcionalidad por ID", description = "Obtiene la información de una funcionalidad específica por su ID", tags = { "Funcionalidades" })
     @ApiResponses(value = {

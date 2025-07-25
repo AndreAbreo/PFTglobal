@@ -202,4 +202,16 @@ class FuncionalidadResourceTest {
         assertTrue(responseBody.contains("El ID de la funcionalidad es obligatorio para la eliminación"));
         verify(funcionalidadRemote, never()).eliminar(anyLong());
     }
+
+    @Test
+    void testFiltrarFuncionalidades() {
+        List<FuncionalidadDto> expected = List.of(new FuncionalidadDto());
+        when(funcionalidadRemote.filtrarFuncionalidades("Test", "ACTIVO")).thenReturn(expected);
+
+        Response response = funcionalidadResource.filtrar("Test", "ACTIVO");
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(expected, response.getEntity());
+        verify(funcionalidadRemote, times(1)).filtrarFuncionalidades("Test", "ACTIVO");
+    }
 }

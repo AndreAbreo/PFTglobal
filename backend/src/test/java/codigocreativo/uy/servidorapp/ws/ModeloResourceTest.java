@@ -158,6 +158,18 @@ class ModeloResourceTest {
         verify(er, times(1)).listarModelos();
     }
 
+    @Test
+    void testFiltrarModelos() {
+        List<ModelosEquipoDto> expectedList = List.of(modeloDto);
+        when(er.filtrarModelos("Test", "ACTIVO")).thenReturn(expectedList);
+
+        Response response = modeloResource.filtrar("Test", "ACTIVO");
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(expectedList, response.getEntity());
+        verify(er, times(1)).filtrarModelos("Test", "ACTIVO");
+    }
+
     // ========== TESTS PARA BUSCAR POR ID ==========
 
     @Test

@@ -132,6 +132,33 @@ public class ModelosEquipoBean implements ModelosEquipoRemote {
     }
 
     @Override
+    public List<ModelosEquipoDto> filtrarModelos(String nombre, String estado) {
+        Estados estadoEnum = null;
+        if (estado != null && !estado.trim().isEmpty()) {
+            estadoEnum = Estados.valueOf(estado);
+        }
+
+        StringBuilder jpql = new StringBuilder("SELECT m FROM ModelosEquipo m WHERE 1=1");
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            jpql.append(" AND UPPER(m.nombre) LIKE UPPER(:nombre)");
+        }
+        if (estadoEnum != null) {
+            jpql.append(" AND m.estado = :estado");
+        }
+        jpql.append(" ORDER BY m.nombre ASC");
+
+        var query = em.createQuery(jpql.toString(), ModelosEquipo.class);
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            query.setParameter("nombre", "%" + nombre.trim() + "%");
+        }
+        if (estadoEnum != null) {
+            query.setParameter("estado", estadoEnum.name());
+        }
+
+        return modelosEquipoMapper.toDto(query.getResultList());
+    }
+
+    @Override
     public void eliminarModelos(Long id) throws ServiciosException {
         if (id == null) {
             throw new ServiciosException("El ID es obligatorio");
