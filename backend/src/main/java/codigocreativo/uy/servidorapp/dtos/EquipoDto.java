@@ -3,6 +3,7 @@ package codigocreativo.uy.servidorapp.dtos;
 import codigocreativo.uy.servidorapp.entidades.Equipo;
 import codigocreativo.uy.servidorapp.enumerados.Estados;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.json.bind.annotation.JsonbTransient;
 
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class EquipoDto implements Serializable {
     private ProveedoresEquipoDto idProveedor;
     private PaisDto idPais;
     private ModelosEquipoDto idModelo;
+    @JsonManagedReference
     private Set<EquiposUbicacioneDto> equiposUbicaciones = new LinkedHashSet<>();
     private UbicacionDto idUbicacion;
     private String nombre;
@@ -265,7 +267,6 @@ public class EquipoDto implements Serializable {
         this.idModelo = idModelo;
         return this;
     }
-    @JsonbTransient
     public Set<EquiposUbicacioneDto> getEquiposUbicaciones() {
         return equiposUbicaciones;
     }
