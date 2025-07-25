@@ -19,4 +19,14 @@ public interface IntervencionRemote {
 
     List<IntervencionDto> obtenerPorRangoDeFecha(LocalDateTime fechaDesde, LocalDateTime fechaHasta, Long idEquipo) throws ServiciosException;
     Map<String, Long> obtenerCantidadPorTipo(LocalDateTime fechaDesde, LocalDateTime fechaHasta, Long idTipo) throws ServiciosException;
+
+    /**
+     * Obtiene las intervenciones aplicando filtros opcionales
+     *
+     * @param technician nombre o usuario del técnico que realizó la intervención
+     * @param type       nombre del tipo de intervención
+     * @param estado     estado del técnico
+     * @return lista de intervenciones que cumplen con los filtros
+     */
+    List<IntervencionDto> filtrarIntervenciones(String technician, String type, String estado) throws ServiciosException;
 }
