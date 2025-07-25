@@ -232,6 +232,7 @@ public class EquipoResource {
             @Parameter(description = "Marca del equipo") @QueryParam("marca") String marca,
             @Parameter(description = "Modelo del equipo") @QueryParam("modelo") String modelo,
             @Parameter(description = "Número de serie del equipo") @QueryParam("numeroSerie") String numeroSerie,
+            @Parameter(description = "Estado del equipo") @QueryParam("estado") String estado,
             @Parameter(description = "País de origen del equipo") @QueryParam("paisOrigen") String paisOrigen,
             @Parameter(description = "Proveedor del equipo") @QueryParam("proveedor") String proveedor,
             @Parameter(description = "Fecha de adquisición del equipo") @QueryParam("fechaAdquisicion") String fechaAdquisicion,
@@ -243,10 +244,11 @@ public class EquipoResource {
         if (marca != null) filtros.put("marca", marca);
         if (modelo != null) filtros.put("modelo", modelo);
         if (numeroSerie != null) filtros.put("numeroSerie", numeroSerie);
+        if (estado != null) filtros.put("estado", estado);
         if (paisOrigen != null) filtros.put("paisOrigen", paisOrigen);
         if (proveedor != null) filtros.put("proveedor", proveedor);
         if (fechaAdquisicion != null) filtros.put("fechaAdquisicion", fechaAdquisicion);
-        if (idInterno != null) filtros.put("idInterno", idInterno);
+        if (idInterno != null) filtros.put("identificacionInterna", idInterno);
         if (ubicacion != null) filtros.put("ubicacion", ubicacion);
 
         return this.er.obtenerEquiposFiltrado(filtros);

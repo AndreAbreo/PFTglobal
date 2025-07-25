@@ -157,6 +157,7 @@ public class EquipoBean implements EquipoRemote {
         agregarCondicion(queryStr, filtros, "proveedor", "LOWER(e.idProveedor.nombre) LIKE LOWER(:proveedor)");
         agregarCondicion(queryStr, filtros, "fechaAdquisicion", "e.fechaAdquisicion = :fechaAdquisicion");
         agregarCondicion(queryStr, filtros, "identificacionInterna", "LOWER(e.idInterno) LIKE LOWER(:identificacionInterna)");
+        agregarCondicion(queryStr, filtros, "estado", "e.estado = :estado");
         agregarCondicion(queryStr, filtros, "ubicacion", "LOWER(e.idUbicacion.nombre) LIKE LOWER(:ubicacion)");
     }
 
