@@ -120,4 +120,17 @@ public class IntervencionesResource {
         LocalDateTime hasta = fechaHasta != null ? LocalDateTime.parse(fechaHasta) : null;
         return this.er.obtenerCantidadPorTipo(desde, hasta, idTipo);
     }
+
+    @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar intervenciones", description = "Filtra las intervenciones según técnico, tipo y estado", tags = { "Intervenciones" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada correctamente", content = @Content(schema = @Schema(implementation = IntervencionDto.class)))
+    })
+    public List<IntervencionDto> filtrar(
+            @Parameter(description = "Técnico que realizó la intervención") @QueryParam("technician") String technician,
+            @Parameter(description = "Tipo de intervención") @QueryParam("type") String type,
+            @Parameter(description = "Estado del técnico") @QueryParam("estado") String estado) throws ServiciosException {
+        return this.er.filtrarIntervenciones(technician, type, estado);
+    }
 }

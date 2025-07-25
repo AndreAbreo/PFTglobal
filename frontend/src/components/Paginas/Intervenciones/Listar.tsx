@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import fetcher from "@/components/Helpers/Fetcher";
+import React, { useState } from "react";
 import DynamicTable, { Column } from "@/components/Helpers/DynamicTable";
 import { formatDateForDisplay } from "@/components/Helpers/DateUtils";
 
@@ -32,22 +31,6 @@ interface Intervencion {
 const ListarIntervenciones: React.FC = () => {
   const [intervenciones, setIntervenciones] = useState<Intervencion[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleSearch = async (filters: Record<string, string>) => {
-    setLoading(true);
-    try {
-      const data = await fetcher<Intervencion[]>("/intervenciones/listar", { method: "GET" });
-      setIntervenciones(data);
-    } catch (err: any) {
-      setError(err.message);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    handleSearch({});
-  }, []);
 
   const columns: Column<Intervencion>[] = [
     { 
@@ -80,11 +63,12 @@ const ListarIntervenciones: React.FC = () => {
       type: "text", 
       filterable: true 
     },
-    { 
-      header: "Tipo de Intervención", 
+    {
+      header: "Tipo de Intervención",
       accessor: (row) => row.idTipo?.nombreTipo || "-",
       type: "text",
-      filterable: true
+      filterable: true,
+      filterKey: "type"
     },
     { 
       header: "Equipo", 
@@ -92,11 +76,12 @@ const ListarIntervenciones: React.FC = () => {
       type: "text",
       filterable: true
     },
-    { 
-      header: "Usuario", 
+    {
+      header: "Usuario",
       accessor: (row) => row.idUsuario ? `${row.idUsuario.nombre} ${row.idUsuario.apellido}` : "-",
       type: "text",
-      filterable: true
+      filterable: true,
+      filterKey: "technician"
     },
     { 
       header: "Comentarios", 
@@ -125,22 +110,17 @@ const ListarIntervenciones: React.FC = () => {
       )}
 
       <div className="p-4 md:p-6 xl:p-7.5">
-        {loading ? (
-          <div className="flex justify-center items-center h-32">
-            <div className="text-gray-600">Cargando...</div>
-          </div>
-        ) : (
-          <DynamicTable
-            columns={columns}
-            data={intervenciones}
-            withFilters={true}
-            onSearch={handleSearch}
-            withActions={true}
-            basePath="/intervenciones"
-            // No hay endpoint de eliminación directa en el backend actual
-            // deleteUrl="/intervenciones/eliminar"
-          />
-        )}
+        <DynamicTable
+          columns={columns}
+          data={intervenciones}
+          withFilters={true}
+          filterUrl="/intervenciones/filtrar"
+          onDataUpdate={setIntervenciones}
+          withActions={true}
+          basePath="/intervenciones"
+          // No hay endpoint de eliminación directa en el backend actual
+          // deleteUrl="/intervenciones/eliminar"
+        />
       </div>
     </div>
   );

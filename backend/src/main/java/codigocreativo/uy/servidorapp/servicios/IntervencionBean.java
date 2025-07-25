@@ -4,6 +4,7 @@ import codigocreativo.uy.servidorapp.dtos.IntervencionDto;
 import codigocreativo.uy.servidorapp.dtos.dtomappers.CycleAvoidingMappingContext;
 import codigocreativo.uy.servidorapp.dtos.dtomappers.IntervencionMapper;
 import codigocreativo.uy.servidorapp.entidades.*;
+import codigocreativo.uy.servidorapp.enumerados.Estados;
 import codigocreativo.uy.servidorapp.excepciones.ServiciosException;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -97,5 +98,47 @@ public class IntervencionBean implements IntervencionRemote {
         return intervenciones.stream()
                 .filter(i -> i.getIdTipo() != null) // Add null check here
                 .collect(Collectors.groupingBy(i -> i.getIdTipo().getNombreTipo(), Collectors.counting()));
+    }
+
+    @Override
+    public List<IntervencionDto> filtrarIntervenciones(String technician, String type, String estado) throws ServiciosException {
+        StringBuilder jpql = new StringBuilder("SELECT i FROM Intervencion i WHERE 1=1");
+
+        if (technician != null && !technician.isBlank()) {
+            jpql.append(" AND (LOWER(i.idUsuario.nombre) LIKE LOWER(:technician)" +
+                    " OR LOWER(i.idUsuario.apellido) LIKE LOWER(:technician)" +
+                    " OR LOWER(i.idUsuario.nombreUsuario) LIKE LOWER(:technician))");
+        }
+
+        if (type != null && !type.isBlank()) {
+            jpql.append(" AND LOWER(i.idTipo.nombreTipo) LIKE LOWER(:type)");
+        }
+
+        Estados estadoEnum = null;
+        boolean estadoValido = false;
+        if (estado != null && !estado.isBlank()) {
+            try {
+                estadoEnum = Estados.valueOf(estado.toUpperCase());
+                jpql.append(" AND i.idUsuario.estado = :estado");
+                estadoValido = true;
+            } catch (IllegalArgumentException ignored) {
+                // Si el estado es inválido se ignora el filtro
+            }
+        }
+
+        TypedQuery<Intervencion> query = em.createQuery(jpql.toString(), Intervencion.class);
+
+        if (technician != null && !technician.isBlank()) {
+            query.setParameter("technician", "%" + technician + "%");
+        }
+        if (type != null && !type.isBlank()) {
+            query.setParameter("type", "%" + type + "%");
+        }
+        if (estadoValido) {
+            query.setParameter("estado", estadoEnum);
+        }
+
+        List<Intervencion> result = query.getResultList();
+        return intervencionMapper.toDto(result, new CycleAvoidingMappingContext());
     }
 }
