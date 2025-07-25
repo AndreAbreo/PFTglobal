@@ -52,4 +52,31 @@ public class TipoIntervencioneBean implements TipoIntervencioneRemote {
                 .setParameter("id", id)
                 .executeUpdate();
     }
+
+    @Override
+    public List<TiposIntervencioneDto> filtrarTiposIntervenciones(String nombre, String estado) {
+        codigocreativo.uy.servidorapp.enumerados.Estados estadoEnum = null;
+        if (estado != null && !estado.trim().isEmpty()) {
+            estadoEnum = codigocreativo.uy.servidorapp.enumerados.Estados.valueOf(estado);
+        }
+
+        StringBuilder jpql = new StringBuilder("SELECT t FROM TiposIntervencione t WHERE 1=1");
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            jpql.append(" AND UPPER(t.nombreTipo) LIKE UPPER(:nombre)");
+        }
+        if (estadoEnum != null) {
+            jpql.append(" AND t.estado = :estado");
+        }
+        jpql.append(" ORDER BY t.nombreTipo ASC");
+
+        var query = em.createQuery(jpql.toString(), TiposIntervencione.class);
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            query.setParameter("nombre", "%" + nombre.trim() + "%");
+        }
+        if (estadoEnum != null) {
+            query.setParameter("estado", estadoEnum.name());
+        }
+
+        return tiposIntervencioneMapper.toDto(query.getResultList());
+    }
 }

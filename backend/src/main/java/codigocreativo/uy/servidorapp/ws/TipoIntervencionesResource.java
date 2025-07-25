@@ -73,6 +73,16 @@ public class TipoIntervencionesResource {
     }
 
     @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar tipos de intervenciones", description = "Filtra tipos de intervenciones por nombre y/o estado", tags = { "Tipos de Intervenciones" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada correctamente", content = @Content(schema = @Schema(implementation = TiposIntervencioneDto.class)))
+    })
+    public List<TiposIntervencioneDto> filtrar(@QueryParam("nombre") String nombre, @QueryParam("estado") String estado) {
+        return this.er.filtrarTiposIntervenciones(nombre, estado);
+    }
+
+    @GET
     @Path("/seleccionar")
     @Operation(summary = "Buscar un tipo de intervención por ID", description = "Obtiene la información de un tipo de intervención específico por su ID", tags = { "Tipos de Intervenciones" })
     @ApiResponses(value = {

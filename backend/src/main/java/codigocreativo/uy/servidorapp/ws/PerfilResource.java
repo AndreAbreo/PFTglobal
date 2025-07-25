@@ -158,6 +158,16 @@ public class PerfilResource {
     }
 
     @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar perfiles", description = "Filtra los perfiles por nombre y/o estado", tags = { "Perfiles" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de perfiles filtrada correctamente", content = @Content(schema = @Schema(implementation = PerfilDto.class)))
+    })
+    public List<PerfilDto> filtrarPerfiles(@QueryParam("nombre") String nombre, @QueryParam("estado") String estado) {
+        return perfilRemote.filtrarPerfiles(nombre, estado);
+    }
+
+    @GET
     @Path("/buscarPorEstado")
     @Operation(summary = "Buscar perfiles por estado", description = "Obtiene una lista de perfiles que coinciden con el estado especificado", tags = { "Perfiles" })
     @ApiResponses(value = {
