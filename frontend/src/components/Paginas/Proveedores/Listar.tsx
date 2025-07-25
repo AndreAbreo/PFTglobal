@@ -21,7 +21,7 @@ const ListarProveedores: React.FC = () => {
 
   const columns: Column<Proveedor>[] = useMemo(() => [
     { header: "Nombre", accessor: "nombre", type: "text", filterable: true },
-    { header: "País", accessor: (row) => row.pais?.nombre || "-", type: "text", filterable: false },
+    { header: "País", accessor: (row) => row.pais?.nombre || "-", type: "text", filterable: true, filterKey: "pais" },
     { header: "Estado", accessor: "estado", type: "text", filterable: true }
   ], []);
 

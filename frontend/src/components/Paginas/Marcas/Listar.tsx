@@ -17,7 +17,7 @@ const ListarMarcas: React.FC = () => {
   // Removemos handleSearch y useEffect ya que DynamicTable manejará la carga automática
 
   const columns: Column<Marca>[] = [
-    { header: "Nombre", accessor: "nombre", type: "text", filterable: false },
+    { header: "Nombre", accessor: "nombre", type: "text", filterable: true },
     { 
       header: "Estado", 
       accessor: "estado",

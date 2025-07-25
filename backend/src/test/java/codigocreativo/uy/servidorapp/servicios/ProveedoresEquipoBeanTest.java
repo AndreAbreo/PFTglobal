@@ -148,7 +148,7 @@ class ProveedoresEquipoBeanTest {
         when(query.getResultList()).thenReturn(List.of(new ProveedoresEquipo()));
         when(proveedoresEquipoMapper.toDto(anyList())).thenReturn(List.of(new ProveedoresEquipoDto()));
         
-        List<ProveedoresEquipoDto> result = bean.filtrarProveedores(null, "ACTIVO");
+        List<ProveedoresEquipoDto> result = bean.filtrarProveedores(null, "ACTIVO", null);
         
         assertNotNull(result);
         verify(query).setParameter("estado", "ACTIVO");
@@ -163,7 +163,7 @@ class ProveedoresEquipoBeanTest {
         when(query.getResultList()).thenReturn(List.of(new ProveedoresEquipo()));
         when(proveedoresEquipoMapper.toDto(anyList())).thenReturn(List.of(new ProveedoresEquipoDto()));
         
-        List<ProveedoresEquipoDto> result = bean.filtrarProveedores("test", null);
+        List<ProveedoresEquipoDto> result = bean.filtrarProveedores("test", null, null);
         
         assertNotNull(result);
         verify(query).setParameter("nombre", "%test%");
@@ -178,11 +178,26 @@ class ProveedoresEquipoBeanTest {
         when(query.getResultList()).thenReturn(List.of(new ProveedoresEquipo()));
         when(proveedoresEquipoMapper.toDto(anyList())).thenReturn(List.of(new ProveedoresEquipoDto()));
         
-        List<ProveedoresEquipoDto> result = bean.filtrarProveedores("test", "ACTIVO");
+        List<ProveedoresEquipoDto> result = bean.filtrarProveedores("test", "ACTIVO", null);
         
         assertNotNull(result);
         verify(query).setParameter("estado", "ACTIVO");
         verify(query).setParameter("nombre", "%test%");
+    }
+
+    @Test
+    void testFiltrarProveedores_porPais() {
+        @SuppressWarnings("unchecked")
+        TypedQuery<ProveedoresEquipo> query = mock(TypedQuery.class);
+        when(em.createQuery(anyString(), eq(ProveedoresEquipo.class))).thenReturn(query);
+        when(query.setParameter(anyString(), any())).thenReturn(query);
+        when(query.getResultList()).thenReturn(List.of(new ProveedoresEquipo()));
+        when(proveedoresEquipoMapper.toDto(anyList())).thenReturn(List.of(new ProveedoresEquipoDto()));
+
+        List<ProveedoresEquipoDto> result = bean.filtrarProveedores(null, null, "Uruguay");
+
+        assertNotNull(result);
+        verify(query).setParameter("pais", "%Uruguay%");
     }
 
     @Test
@@ -193,7 +208,7 @@ class ProveedoresEquipoBeanTest {
         when(query.getResultList()).thenReturn(List.of(new ProveedoresEquipo()));
         when(proveedoresEquipoMapper.toDto(anyList())).thenReturn(List.of(new ProveedoresEquipoDto()));
         
-        List<ProveedoresEquipoDto> result = bean.filtrarProveedores(null, null);
+        List<ProveedoresEquipoDto> result = bean.filtrarProveedores(null, null, null);
         
         assertNotNull(result);
         // Verifica que se llama al método obtenerProveedores() (sin filtro)
@@ -203,7 +218,7 @@ class ProveedoresEquipoBeanTest {
     @Test
     void testFiltrarProveedores_estadoInvalido() {
         assertThrows(IllegalArgumentException.class, () -> {
-            bean.filtrarProveedores(null, "ESTADO_INVALIDO");
+            bean.filtrarProveedores(null, "ESTADO_INVALIDO", null);
         });
     }
 } 

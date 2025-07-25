@@ -11,6 +11,6 @@ public interface MarcasModeloRemote {
     public void modificarMarcasModelo(MarcasModeloDto marcasModelo) throws ServiciosException;
     public MarcasModeloDto obtenerMarca(Long id) throws ServiciosException;
     public List<MarcasModeloDto> obtenerMarcasLista();
-    public List<MarcasModeloDto> obtenerMarcasPorEstadoLista(Estados estado) throws ServiciosException;
+    List<MarcasModeloDto> obtenerMarcasPorEstadoLista(Estados estado, String nombre) throws ServiciosException;
     public void eliminarMarca(Long id) throws ServiciosException;
 }

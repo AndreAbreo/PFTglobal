@@ -124,10 +124,10 @@ public class MarcaResource {
         @ApiResponse(responseCode = "200", description = "Lista de marcas filtrada correctamente"),
         @ApiResponse(responseCode = "400", description = "Estado inválido", content = @Content(schema = @Schema(example = "{\"error\": \"Estado inválido\"}")))
     })
-    public Response filtrarPorEstado(@QueryParam("estado") String estado) {
+    public Response filtrarPorEstado(@QueryParam("estado") String estado, @QueryParam("nombre") String nombre) {
         try {
             Estados estadoEnum = Estados.valueOf(estado);
-            return Response.ok(er.obtenerMarcasPorEstadoLista(estadoEnum)).build();
+            return Response.ok(er.obtenerMarcasPorEstadoLista(estadoEnum, nombre)).build();
         } catch (Exception e) {
             return Response.status(400).entity(Map.of(ERROR, e.getMessage())).build();
         }

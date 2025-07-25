@@ -14,5 +14,5 @@ public interface ProveedoresEquipoRemote {
     List<ProveedoresEquipoDto> obtenerProveedores();
     void eliminarProveedor(Long id);
     List<ProveedoresEquipoDto> buscarProveedores(String nombre, Estados estado);
-    List<ProveedoresEquipoDto> filtrarProveedores(String nombre, String estado);
+    List<ProveedoresEquipoDto> filtrarProveedores(String nombre, String estado, String pais);
 }

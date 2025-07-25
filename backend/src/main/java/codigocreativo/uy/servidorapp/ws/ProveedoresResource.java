@@ -110,9 +110,11 @@ public class ProveedoresResource {
             @ApiResponse(responseCode = "200", description = "Lista de proveedores filtrada correctamente", content = @Content(schema = @Schema(implementation = ProveedoresEquipoDto.class))),
             @ApiResponse(responseCode = "400", description = "Estado inválido", content = @Content(schema = @Schema(example = "{\"error\": \"Estado inválido\"}")))
     })
-    public Response filtrarProveedores(@QueryParam("nombre") String nombre, @QueryParam("estado") String estado) {
+    public Response filtrarProveedores(@QueryParam("nombre") String nombre,
+                                       @QueryParam("estado") String estado,
+                                       @QueryParam("pais") String pais) {
         try {
-            return Response.ok(this.er.filtrarProveedores(nombre, estado)).build();
+            return Response.ok(this.er.filtrarProveedores(nombre, estado, pais)).build();
         } catch (Exception e) {
             return Response.status(400).entity(java.util.Map.of(ERROR, "Estado inválido: " + e.getMessage())).build();
         }
