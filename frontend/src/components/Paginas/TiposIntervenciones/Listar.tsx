@@ -55,7 +55,7 @@ const ListarTiposIntervenciones: React.FC = () => {
           }}
         />
       </div>
-    </div>
+    </>
 
   );
 };
