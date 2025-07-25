@@ -12,6 +12,10 @@ interface TipoIntervencion {
 const ListarTiposIntervenciones: React.FC = () => {
   const [tiposIntervenciones, setTiposIntervenciones] = useState<TipoIntervencion[]>([]);
 
+  const [error, setError] = useState<string | null>(null);
+
+  
+
   const columns: Column<TipoIntervencion>[] = [
     { header: "ID", accessor: "id", type: "number", filterable: false },
     { header: "Nombre del Tipo", accessor: "nombreTipo", type: "text", filterable: true },
@@ -29,19 +33,30 @@ const ListarTiposIntervenciones: React.FC = () => {
           Crear Nuevo Tipo
         </button>
       </div>
-      <DynamicTable
-        columns={columns}
-        data={tiposIntervenciones}
-        withFilters={true}
-        filterUrl="/tipoIntervenciones/filtrar"
-        onDataUpdate={setTiposIntervenciones}
-        withActions={true}
-        deleteUrl="/tipoIntervenciones/inactivar"
-        basePath="/tipoIntervenciones"
-        confirmDeleteMessage="¿Está seguro que desea inactivar este tipo de intervención?"
-        sendOnlyId={true}
-      />
-    </>
+
+      {error && (
+        <div className="mx-4 mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+          Error: {error}
+        </div>
+      )}
+
+      <div className="p-4 md:p-6 xl:p-7.5">
+        <DynamicTable
+          columns={columns}
+          data={tiposIntervenciones}
+          withFilters={true}
+          filterUrl="/tipoIntervenciones/filtrar"
+          onDataUpdate={setTiposIntervenciones}
+          withActions={true}
+          deleteUrl="/tipoIntervenciones/inactivar"
+          basePath="/tipoIntervenciones"
+          onDelete={async (id) => {
+            return await fetcher<{ message: string }>(`/tipoIntervenciones/inactivar?id=${id}`, { method: "DELETE" });
+          }}
+        />
+      </div>
+    </div>
+
   );
 };
 

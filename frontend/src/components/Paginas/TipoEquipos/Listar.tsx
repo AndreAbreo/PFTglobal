@@ -19,10 +19,9 @@ const ListarTiposEquipos: React.FC = () => {
   const [loadingDelete, setLoadingDelete] = useState(false);
 
 
-
   const columns: Column<TipoEquipo>[] = [
     { header: "ID", accessor: "id", type: "number", filterable: false },
-    { header: "Nombre", accessor: "nombreTipo", type: "text", filterable: true },
+    { header: "Nombre", accessor: "nombreTipo", type: "text", filterable: true, filterKey: "nombre" },
     { 
       header: "Estado", 
       accessor: (row) => (
@@ -33,7 +32,8 @@ const ListarTiposEquipos: React.FC = () => {
         </span>
       ),
       type: "text",
-      filterable: true 
+      filterable: true,
+      filterKey: "estado"
     }
   ];
 
@@ -55,8 +55,10 @@ const ListarTiposEquipos: React.FC = () => {
       });
       setShowDeleteModal(false);
       (window as any).__resolveDelete({ message: "Tipo de equipo inactivado correctamente" });
+
       const refreshed = await fetcher<TipoEquipo[]>("/tipoEquipos/filtrar", { method: "GET" });
       setTipos(refreshed);
+
     } catch (err: any) {
       (window as any).__rejectDelete({ message: err.message || "Error al inactivar" });
     }
@@ -67,6 +69,7 @@ const ListarTiposEquipos: React.FC = () => {
     <>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
       <DynamicTable
+
           columns={columns}
           data={tipos}
           withFilters={true}
@@ -77,6 +80,7 @@ const ListarTiposEquipos: React.FC = () => {
           basePath="/tipoEquipos"
           onDelete={handleDeleteWithModal}
         />
+
       {/* Modal de inactivación */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">

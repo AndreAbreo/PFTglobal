@@ -13,10 +13,9 @@ const ListarBajasTiposEquipos: React.FC = () => {
   const [tipos, setTipos] = useState<TipoEquipo[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-
   const columns: Column<TipoEquipo>[] = [
     { header: "ID", accessor: "id", type: "number", filterable: false },
-    { header: "Nombre", accessor: "nombreTipo", type: "text", filterable: true },
+    { header: "Nombre", accessor: "nombreTipo", type: "text", filterable: true, filterKey: "nombre" },
     { 
       header: "Estado", 
       accessor: (row) => (
@@ -27,7 +26,8 @@ const ListarBajasTiposEquipos: React.FC = () => {
         </span>
       ),
       type: "text",
-      filterable: true 
+      filterable: true,
+      filterKey: "estado"
     }
   ];
 
@@ -36,6 +36,7 @@ const ListarBajasTiposEquipos: React.FC = () => {
       <h2 className="text-xl font-bold mb-4">Tipos de equipos inactivos</h2>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
       <DynamicTable
+
           columns={columns}
           data={tipos}
           withFilters={true}
@@ -44,6 +45,7 @@ const ListarBajasTiposEquipos: React.FC = () => {
           onDataUpdate={setTipos}
           withActions={false}
         />
+
     </>
   );
 };
