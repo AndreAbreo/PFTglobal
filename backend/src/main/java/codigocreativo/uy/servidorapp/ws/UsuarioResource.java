@@ -346,6 +346,9 @@ public class UsuarioResource {
                                             @Parameter(description = "Apellido del usuario") @QueryParam("apellido") String apellido,
                                             @Parameter(description = "Nombre de usuario") @QueryParam("nombreUsuario") String nombreUsuario,
                                             @Parameter(description = "Email del usuario") @QueryParam("email") String email,
+                                            @Parameter(description = "Cédula del usuario") @QueryParam("cedula") String cedula,
+                                            @Parameter(description = "Rol del usuario") @QueryParam("rol") String rol,
+                                            @Parameter(description = "Módulo") @QueryParam("modulo") String modulo,
                                             @Parameter(description = "Tipo de perfil del usuario") @QueryParam("perfil") String tipoUsuario,
                                             @Parameter(description = "Estado del usuario") @QueryParam("estado") String estado) {
 
@@ -355,6 +358,9 @@ public class UsuarioResource {
             if (apellido != null) filtros.put("apellido", apellido);
             if (nombreUsuario != null) filtros.put("nombreUsuario", nombreUsuario);
             if (email != null) filtros.put(EMAIL, email);
+            if (cedula != null) filtros.put("cedula", cedula);
+            if (rol != null) filtros.put("rol", rol);
+            if (modulo != null) filtros.put("modulo", modulo);
 
             if (estado == null || estado.isEmpty()) {
                 filtros.put("estado", "ACTIVO");
