@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import fetcher from "@/components/Helpers/Fetcher";
 import DynamicTable, { Column } from "@/components/Helpers/DynamicTable";
 
@@ -12,22 +12,7 @@ interface TipoEquipo {
 const ListarBajasTiposEquipos: React.FC = () => {
   const [tipos, setTipos] = useState<TipoEquipo[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  const handleSearch = async (filters: Record<string, string>) => {
-    setLoading(true);
-    try {
-      const data = await fetcher<TipoEquipo[]>("/tipoEquipos/listar", { method: "GET" });
-      setTipos(data.filter(t => t.estado !== "ACTIVO"));
-    } catch (err: any) {
-      setError(err.message);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    handleSearch({});
-  }, []);
 
   const columns: Column<TipoEquipo>[] = [
     { header: "ID", accessor: "id", type: "number", filterable: false },
@@ -50,17 +35,15 @@ const ListarBajasTiposEquipos: React.FC = () => {
     <>
       <h2 className="text-xl font-bold mb-4">Tipos de equipos inactivos</h2>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
-      {loading ? (
-        <p>Cargando...</p>
-      ) : (
-        <DynamicTable
+      <DynamicTable
           columns={columns}
           data={tipos}
           withFilters={true}
-          onSearch={handleSearch}
+          filterUrl="/tipoEquipos/filtrar"
+          initialFilters={{ estado: "INACTIVO" }}
+          onDataUpdate={setTipos}
           withActions={false}
         />
-      )}
     </>
   );
 };

@@ -12,4 +12,5 @@ public interface TipoIntervencioneRemote {
     void crearTipoIntervencion(TiposIntervencioneDto tipoIntervencion);
     void modificarTipoIntervencion(TiposIntervencioneDto tipoIntervencion);
     void eliminarTipoIntervencion(Long id);
+    List<TiposIntervencioneDto> filtrarTiposIntervenciones(String nombre, String estado);
 }

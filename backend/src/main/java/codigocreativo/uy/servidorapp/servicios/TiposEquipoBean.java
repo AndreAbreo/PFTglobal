@@ -126,6 +126,33 @@ public class TiposEquipoBean implements TiposEquipoRemote{
         List<TiposEquipo> tiposEquipos = em.createQuery("SELECT t FROM TiposEquipo t ORDER BY t.nombreTipo ASC", TiposEquipo.class).getResultList();
         return tiposEquipoMapper.toDto(tiposEquipos);
     }
+
+    @Override
+    public List<TiposEquipoDto> filtrarTiposEquipo(String nombre, String estado) {
+        Estados estadoEnum = null;
+        if (estado != null && !estado.trim().isEmpty()) {
+            estadoEnum = Estados.valueOf(estado);
+        }
+
+        StringBuilder jpql = new StringBuilder("SELECT t FROM TiposEquipo t WHERE 1=1");
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            jpql.append(" AND UPPER(t.nombreTipo) LIKE UPPER(:nombre)");
+        }
+        if (estadoEnum != null) {
+            jpql.append(" AND t.estado = :estado");
+        }
+        jpql.append(" ORDER BY t.nombreTipo ASC");
+
+        var query = em.createQuery(jpql.toString(), TiposEquipo.class);
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            query.setParameter("nombre", "%" + nombre.trim() + "%");
+        }
+        if (estadoEnum != null) {
+            query.setParameter("estado", estadoEnum.name());
+        }
+
+        return tiposEquipoMapper.toDto(query.getResultList());
+    }
     
     /**
      * Valida que el nombre del tipo de equipo sea único en la base de datos

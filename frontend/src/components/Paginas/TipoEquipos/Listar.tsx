@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import fetcher from "@/components/Helpers/Fetcher";
 import DynamicTable, { Column } from "@/components/Helpers/DynamicTable";
 
@@ -12,27 +12,13 @@ interface TipoEquipo {
 const ListarTiposEquipos: React.FC = () => {
   const [tipos, setTipos] = useState<TipoEquipo[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   // Estados para el modal de inactivación
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [tipoAEliminar, setTipoAEliminar] = useState<TipoEquipo | null>(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
-  const handleSearch = async (filters: Record<string, string>) => {
-    setLoading(true);
-    try {
-      const data = await fetcher<TipoEquipo[]>("/tipoEquipos/listar", { method: "GET" });
-      setTipos(data);
-    } catch (err: any) {
-      setError(err.message);
-    }
-    setLoading(false);
-  };
 
-  useEffect(() => {
-    handleSearch({});
-  }, []);
 
   const columns: Column<TipoEquipo>[] = [
     { header: "ID", accessor: "id", type: "number", filterable: false },
@@ -69,7 +55,8 @@ const ListarTiposEquipos: React.FC = () => {
       });
       setShowDeleteModal(false);
       (window as any).__resolveDelete({ message: "Tipo de equipo inactivado correctamente" });
-      handleSearch({}); // Refresh list
+      const refreshed = await fetcher<TipoEquipo[]>("/tipoEquipos/filtrar", { method: "GET" });
+      setTipos(refreshed);
     } catch (err: any) {
       (window as any).__rejectDelete({ message: err.message || "Error al inactivar" });
     }
@@ -79,20 +66,17 @@ const ListarTiposEquipos: React.FC = () => {
   return (
     <>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
-      {loading ? (
-        <p>Cargando...</p>
-      ) : (
-        <DynamicTable
+      <DynamicTable
           columns={columns}
           data={tipos}
           withFilters={true}
-          onSearch={handleSearch}
+          filterUrl="/tipoEquipos/filtrar"
+          onDataUpdate={setTipos}
           withActions={true}
           deleteUrl="/tipoEquipos/inactivar"
           basePath="/tipoEquipos"
           onDelete={handleDeleteWithModal}
         />
-      )}
       {/* Modal de inactivación */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">

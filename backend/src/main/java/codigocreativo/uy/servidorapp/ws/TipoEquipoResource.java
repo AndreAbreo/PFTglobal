@@ -103,6 +103,16 @@ public class TipoEquipoResource {
     }
 
     @GET
+    @Path("/filtrar")
+    @Operation(summary = "Filtrar tipos de equipo", description = "Filtra tipos de equipo por nombre y/o estado", tags = { "Tipos de Equipos" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada correctamente", content = @Content(schema = @Schema(implementation = TiposEquipoDto.class)))
+    })
+    public List<TiposEquipoDto> filtrar(@QueryParam("nombre") String nombre, @QueryParam("estado") String estado) {
+        return this.er.filtrarTiposEquipo(nombre, estado);
+    }
+
+    @GET
     @Path("/seleccionar")
     @Operation(summary = "Buscar un tipo de equipo por ID", description = "Obtiene la información de un tipo de equipo específico por su ID", tags = { "Tipos de Equipos" })
     @ApiResponses(value = {
