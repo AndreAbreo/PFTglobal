@@ -59,17 +59,10 @@ const ListarUsuarios: React.FC = () => {
     { header: "Nombre de Usuario", accessor: "nombreUsuario", type: "text", filterable: true },
     { header: "Email", accessor: "email", type: "email", filterable: true },
     {
-      header: "Módulo",
-      accessor: () => "",
-      type: "text",
-      filterable: true,
-      filterKey: "modulo",
-    },
-    {
       header: "Rol",
       accessor: (row: Usuario) => row.idPerfil?.nombrePerfil || "",
       type: "dropdown",
-      options: perfiles.map(perfil => ({ 
+      options: perfiles.map(perfil => ({
         value: perfil.nombrePerfil, 
         label: perfil.nombrePerfil 
       })), 
