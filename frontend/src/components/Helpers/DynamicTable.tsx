@@ -634,7 +634,7 @@ function DynamicTable<T extends { id: number }>({
               onClick={handleClearFilters}
               className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
             >
-              Borrar Filtros
+              Limpiar filtros
             </button>
           </div>
         </div>
@@ -696,15 +696,25 @@ function DynamicTable<T extends { id: number }>({
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 dark:bg-boxdark dark:divide-boxdark-2">
-          {data.map((row, rowIndex) => (
-            <tr
-              key={`row-${row.id}-${rowIndex}`}
-              className={
-                rowIndex % 2 === 0
-                  ? "bg-gray-50 dark:bg-boxdark-2"
-                  : "bg-white dark:bg-boxdark"
-              }
-            >
+          {data.length === 0 ? (
+            <tr>
+              <td
+                colSpan={columns.length + (withActions ? 1 : 0)}
+                className="px-6 py-4 text-center text-sm text-gray-500"
+              >
+                No se encontraron resultados
+              </td>
+            </tr>
+          ) : (
+            data.map((row, rowIndex) => (
+              <tr
+                key={`row-${row.id}-${rowIndex}`}
+                className={
+                  rowIndex % 2 === 0
+                    ? "bg-gray-50 dark:bg-boxdark-2"
+                    : "bg-white dark:bg-boxdark"
+                }
+              >
               {/* Celdas de datos */}
               {columns.map((col, colIndex) => (
                   <td key={`cell-${row.id}-${col.header}-${colIndex}`} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
@@ -756,7 +766,8 @@ function DynamicTable<T extends { id: number }>({
                 </td>
               )}
             </tr>
-          ))}
+            ))
+          )}
         </tbody>
       </table>
 
