@@ -243,7 +243,8 @@ class EquipoResourceTest {
         List<EquipoDto> equipos = List.of(new EquipoDto(), new EquipoDto());
         when(equipoRemote.obtenerEquiposFiltrado(any(Map.class))).thenReturn(equipos);
 
-        List<EquipoDto> result = equipoResource.filtrar("nombre", "tipo", "marca", "modelo", "12345", "Uruguay", "ProveedorX", "2022-01-01", "001", "sala");
+        List<EquipoDto> result = equipoResource.filtrar("nombre", "tipo", "marca", "modelo", "numeroSerie", "paisOrigen", "proveedor", "fecha", "idInterno", "ubicacion", "ACTIVO");
+
 
         assertNotNull(result);
         assertEquals(2, result.size());

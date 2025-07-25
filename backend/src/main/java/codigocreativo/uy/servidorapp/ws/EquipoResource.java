@@ -236,7 +236,8 @@ public class EquipoResource {
             @Parameter(description = "Proveedor del equipo") @QueryParam("proveedor") String proveedor,
             @Parameter(description = "Fecha de adquisición del equipo") @QueryParam("fechaAdquisicion") String fechaAdquisicion,
             @Parameter(description = "Identificación interna del equipo") @QueryParam("idInterno") String idInterno,
-            @Parameter(description = "Ubicación del equipo") @QueryParam("ubicacion") String ubicacion) {
+            @Parameter(description = "Ubicación del equipo") @QueryParam("ubicacion") String ubicacion,
+            @Parameter(description = "Ubicación del equipo") @QueryParam("estado") String estado) {
         Map<String, String> filtros = new HashMap<>();
         if (nombre != null) filtros.put("nombre", nombre);
         if (tipo != null) filtros.put("tipo", tipo);
@@ -248,6 +249,7 @@ public class EquipoResource {
         if (fechaAdquisicion != null) filtros.put("fechaAdquisicion", fechaAdquisicion);
         if (idInterno != null) filtros.put("idInterno", idInterno);
         if (ubicacion != null) filtros.put("ubicacion", ubicacion);
+        if (estado != null) filtros.put("estado", estado);
 
         return this.er.obtenerEquiposFiltrado(filtros);
     }

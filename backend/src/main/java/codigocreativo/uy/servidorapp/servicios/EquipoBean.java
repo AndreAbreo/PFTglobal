@@ -5,6 +5,7 @@ import codigocreativo.uy.servidorapp.dtos.EquipoDto;
 import codigocreativo.uy.servidorapp.dtos.dtomappers.CycleAvoidingMappingContext;
 import codigocreativo.uy.servidorapp.dtos.dtomappers.EquipoMapper;
 import codigocreativo.uy.servidorapp.entidades.Equipo;
+import codigocreativo.uy.servidorapp.enumerados.Estados;
 import codigocreativo.uy.servidorapp.excepciones.ServiciosException;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -133,7 +134,7 @@ public class EquipoBean implements EquipoRemote {
 
     @Override
     public List<EquipoDto> obtenerEquiposFiltrado(Map<String, String> filtros) {
-        StringBuilder queryStr = new StringBuilder("SELECT e FROM Equipo e WHERE 1=1");
+        StringBuilder queryStr = new StringBuilder("SELECT e FROM Equipo e JOIN e.idModelo m JOIN m.idMarca ma WHERE 1=1");
 
         // Añadir condiciones de filtrado
         agregarCondicionesDeFiltrado(queryStr, filtros);
@@ -150,13 +151,14 @@ public class EquipoBean implements EquipoRemote {
     private void agregarCondicionesDeFiltrado(StringBuilder queryStr, Map<String, String> filtros) {
         agregarCondicion(queryStr, filtros, "nombre", "LOWER(e.nombre) LIKE LOWER(:nombre)");
         agregarCondicion(queryStr, filtros, "tipo", "LOWER(e.idTipo.nombreTipo) LIKE LOWER(:tipo)");
-        agregarCondicion(queryStr, filtros, "marca", "LOWER(e.idModelo.marca.nombre) LIKE LOWER(:marca)");
+        agregarCondicion(queryStr, filtros, "marca", "LOWER(ma.nombre) LIKE LOWER(:marca)");
         agregarCondicion(queryStr, filtros, "modelo", "LOWER(e.idModelo.nombre) LIKE LOWER(:modelo)");
         agregarCondicion(queryStr, filtros, "numeroSerie", "LOWER(e.nroSerie) LIKE LOWER(:numeroSerie)");
         agregarCondicion(queryStr, filtros, "paisOrigen", "LOWER(e.idPais.nombre) LIKE LOWER(:paisOrigen)");
         agregarCondicion(queryStr, filtros, "proveedor", "LOWER(e.idProveedor.nombre) LIKE LOWER(:proveedor)");
         agregarCondicion(queryStr, filtros, "fechaAdquisicion", "e.fechaAdquisicion = :fechaAdquisicion");
-        agregarCondicion(queryStr, filtros, "identificacionInterna", "LOWER(e.idInterno) LIKE LOWER(:identificacionInterna)");
+        agregarCondicion(queryStr, filtros, "idInterno", "LOWER(e.idInterno) LIKE LOWER(:idInterno)");
+        agregarCondicion(queryStr, filtros, "estado", "e.estado = :estado");
         agregarCondicion(queryStr, filtros, "ubicacion", "LOWER(e.idUbicacion.nombre) LIKE LOWER(:ubicacion)");
     }
 
@@ -172,12 +174,15 @@ public class EquipoBean implements EquipoRemote {
         filtros.forEach((key, value) -> {
             if (!value.isEmpty()) {
                 if (key.equals("fechaAdquisicion")) {
-                    query.setParameter(key, LocalDate.parse(value));  // Si es fecha, se parsea
+                    query.setParameter(key, LocalDate.parse(value));
+                } else if (key.equals("estado")) {
+                    query.setParameter(key, Estados.valueOf(value)); // ✅ enum directo, sin %
                 } else {
                     query.setParameter(key, "%" + value + "%");
                 }
             }
         });
+
     }
 
     @Override

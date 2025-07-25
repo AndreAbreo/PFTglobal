@@ -310,7 +310,7 @@ class EquipoBeanTest {
         @SuppressWarnings("unchecked")
         TypedQuery<Equipo> query = mock(TypedQuery.class);
 
-        when(em.createQuery(queryStr.toString(), Equipo.class)).thenReturn(query);
+        when(em.createQuery(anyString(), eq(Equipo.class))).thenReturn(query);
         when(query.setParameter("nombre", "%test%"))
                 .thenReturn(query);
         when(query.getResultList()).thenReturn(Collections.singletonList(new Equipo()));
