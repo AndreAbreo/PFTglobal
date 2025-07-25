@@ -263,6 +263,9 @@ public class UsuarioBean implements UsuarioRemote {
         if (filtros.containsKey(EMAIL)) {
             queryBuilder.append(" AND LOWER(u.email) LIKE LOWER(:email)");
         }
+        if (filtros.containsKey("cedula")) {
+            queryBuilder.append(" AND LOWER(u.cedula) LIKE LOWER(:cedula)");
+        }
         
         // Check if estado is valid before adding to query
         boolean estadoValido = false;
@@ -281,6 +284,12 @@ public class UsuarioBean implements UsuarioRemote {
         if (filtros.containsKey("tipoUsuario")) {
             queryBuilder.append(" AND u.idPerfil.nombrePerfil = :tipoUsuario");
         }
+        if (filtros.containsKey("rol")) {
+            queryBuilder.append(" AND u.idPerfil.nombrePerfil = :rol");
+        }
+        if (filtros.containsKey("modulo")) {
+            queryBuilder.append(" AND EXISTS (SELECT fp FROM FuncionalidadesPerfiles fp JOIN fp.funcionalidad f WHERE fp.perfil = u.idPerfil AND LOWER(f.ruta) LIKE LOWER(:modulo))");
+        }
         
         var query = em.createQuery(queryBuilder.toString(), Usuario.class);
         
@@ -296,11 +305,20 @@ public class UsuarioBean implements UsuarioRemote {
         if (filtros.containsKey(EMAIL)) {
             query.setParameter(EMAIL, "%" + filtros.get(EMAIL) + "%");
         }
+        if (filtros.containsKey("cedula")) {
+            query.setParameter("cedula", "%" + filtros.get("cedula") + "%");
+        }
         if (estadoValido) {
             query.setParameter("estado", estadoEnum);
         }
         if (filtros.containsKey("tipoUsuario")) {
             query.setParameter("tipoUsuario", filtros.get("tipoUsuario"));
+        }
+        if (filtros.containsKey("rol")) {
+            query.setParameter("rol", filtros.get("rol"));
+        }
+        if (filtros.containsKey("modulo")) {
+            query.setParameter("modulo", "%" + filtros.get("modulo") + "%");
         }
         
         return usuarioMapper.toDto(query.getResultList(), new CycleAvoidingMappingContext());

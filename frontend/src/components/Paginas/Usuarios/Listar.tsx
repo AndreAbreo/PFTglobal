@@ -53,21 +53,28 @@ const ListarUsuarios: React.FC = () => {
   }, []);
 
   const columns: Column<Usuario>[] = [
-    { header: "Cédula", accessor: "cedula", type: "text", filterable: true },
+    { header: "Cédula", accessor: "cedula", type: "text", filterable: true, filterKey: "cedula" },
     { header: "Nombre", accessor: "nombre", type: "text", filterable: true },
     { header: "Apellido", accessor: "apellido", type: "text", filterable: true },
     { header: "Nombre de Usuario", accessor: "nombreUsuario", type: "text", filterable: true },
     { header: "Email", accessor: "email", type: "email", filterable: true },
-    { 
-      header: "Rol", 
+    {
+      header: "Módulo",
+      accessor: () => "",
+      type: "text",
+      filterable: true,
+      filterKey: "modulo",
+    },
+    {
+      header: "Rol",
       accessor: (row: Usuario) => row.idPerfil?.nombrePerfil || "",
-      type: "dropdown", 
+      type: "dropdown",
       options: perfiles.map(perfil => ({ 
         value: perfil.nombrePerfil, 
         label: perfil.nombrePerfil 
       })), 
       filterable: true,
-      filterKey: "tipoUsuario" // Campo específico para el filtro en la URL
+      filterKey: "rol" // Campo específico para el filtro en la URL
     },
     { header: "Estado", accessor: "estado", type: "text", filterable: true },
   ];
