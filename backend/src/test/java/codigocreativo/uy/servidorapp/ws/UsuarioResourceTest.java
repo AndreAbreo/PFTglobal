@@ -474,7 +474,7 @@ class UsuarioResourceTest {
         List<UsuarioDto> expectedList = Arrays.asList(null, null);
         when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
 
-        Response response = usuarioResource.filtrarUsuarios("John", "Doe", null, null, null, null);
+        Response response = usuarioResource.filtrarUsuarios("John", "Doe", null, null, null, null, null, null, null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
@@ -486,7 +486,7 @@ class UsuarioResourceTest {
         List<UsuarioDto> expectedList = Arrays.asList(null, null);
         when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
 
-        Response response = usuarioResource.filtrarUsuarios("John", "Doe", "johndoe", "john@example.com", "Usuario", "ACTIVO");
+        Response response = usuarioResource.filtrarUsuarios("John", "Doe", "johndoe", "john@example.com", null, "Usuario", null, null, "ACTIVO");
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
@@ -498,7 +498,7 @@ class UsuarioResourceTest {
         List<UsuarioDto> expectedList = Arrays.asList(null, null);
         when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
 
-        Response response = usuarioResource.filtrarUsuarios(null, null, null, null, null, null);
+        Response response = usuarioResource.filtrarUsuarios(null, null, null, null, null, null, null, null, null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
@@ -510,7 +510,7 @@ class UsuarioResourceTest {
         List<UsuarioDto> expectedList = Arrays.asList(null, null);
         when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
 
-        Response response = usuarioResource.filtrarUsuarios(null, null, null, null, "default", null);
+        Response response = usuarioResource.filtrarUsuarios(null, null, null, null, null, null, null, "default", null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(expectedList, response.getEntity());
