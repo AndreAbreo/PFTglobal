@@ -102,9 +102,10 @@ const ListarEquipos: React.FC = () => {
           objectFit: "cover"
         }
       },
-      { header: "ID Interno", accessor: "idInterno", type: "text", filterable: true },
     { header: "Nombre", accessor: "nombre", type: "text", filterable: true },
-    { header: "Número de Serie", accessor: "nroSerie", type: "text", filterable: true },
+    { header: "Número de Serie", accessor: "nroSerie", type: "text", filterable: true, filterKey: "numeroSerie" },
+    { header: "ID Interno", accessor: "idInterno", type: "text", filterable: true, filterKey: "idInterno" },
+
     { 
       header: "Tipo", 
       accessor: (row) => row.idTipo?.nombreTipo || "-",
@@ -151,8 +152,7 @@ const ListarEquipos: React.FC = () => {
       filterKey: "estado",
       options: [
         { value: "ACTIVO", label: "✅ Activos" },
-        { value: "INACTIVO", label: "❌ Inactivos" },
-        { value: "SIN_VALIDAR", label: "⛔ Sin validar" }
+        { value: "INACTIVO", label: "❌ Inactivos" }
       ]
     }
   ];
