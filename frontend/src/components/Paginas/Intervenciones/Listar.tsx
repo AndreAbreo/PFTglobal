@@ -9,106 +9,73 @@ interface Intervencion {
   motivo: string;
   fechaHora: string;
   comentarios: string;
-  idUsuario: {
-    id: number;
-    nombre: string;
-    apellido: string;
-    nombreUsuario: string;
-    email: string;
-  };
-  idTipo: {
-    id: number;
-    nombreTipo: string;
-    estado: string;
-  };
-  idEquipo: {
-    id: number;
-    idInterno: string;
-    nombre: string;
-    nroSerie: string;
-  };
+  usuario?: string;
+  tipo?: string;
+  equipo?: string;
 }
 
 const ListarIntervenciones: React.FC = () => {
   const [intervenciones, setIntervenciones] = useState<Intervencion[]>([]);
+  const [originalData, setOriginalData] = useState<Intervencion[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async (filters: Record<string, string>) => {
     setLoading(true);
-    try {
-      const data = await fetcher<Intervencion[]>("/intervenciones/listar", { method: "GET" });
-      setIntervenciones(data);
-    } catch (err: any) {
-      setError(err.message);
-    }
+    const filtered = originalData.filter((row) => {
+      return (
+        (!filters.motivo || row.motivo.toLowerCase().includes(filters.motivo.toLowerCase())) &&
+        (!filters.usuario || row.usuario?.toLowerCase().includes(filters.usuario.toLowerCase())) &&
+        (!filters.tipo || row.tipo?.toLowerCase().includes(filters.tipo.toLowerCase())) &&
+        (!filters.equipo || row.equipo?.toLowerCase().includes(filters.equipo.toLowerCase()))
+      );
+    });
+    setIntervenciones(filtered);
     setLoading(false);
   };
 
   useEffect(() => {
-    handleSearch({});
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetcher<any[]>("/intervenciones/listar", { method: "GET" });
+        const parsed = data.map((row) => ({
+          ...row,
+          usuario: row.idUsuario ? `${row.idUsuario.nombre} ${row.idUsuario.apellido}` : "-",
+          tipo: row.idTipo?.nombreTipo || "-",
+          equipo: row.idEquipo ? `${row.idEquipo.idInterno} - ${row.idEquipo.nombre}` : "-",
+        }));
+        setOriginalData(parsed);
+        setIntervenciones(parsed);
+      } catch (err: any) {
+        setError(err.message || "Error al obtener datos");
+      }
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
 
   const columns: Column<Intervencion>[] = [
-    { 
-      header: "Fecha y Hora", 
-      accessor: (row) => {
-        try {
-          // Si la fecha es un número (timestamp), convertirlo
-          let fechaValue = row.fechaHora;
-          if (typeof fechaValue === 'number') {
-            fechaValue = new Date(fechaValue).toISOString();
-          }
-          
-          const fecha = new Date(fechaValue);
-          if (isNaN(fecha.getTime())) {
-            console.warn('Fecha inválida:', row.fechaHora);
-            return 'Fecha no válida';
-          }
-          return formatDateForDisplay(fecha);
-        } catch (error) {
-          console.error('Error al formatear fecha:', error, row.fechaHora);
-          return 'Error al formatear fecha';
-        }
-      },
+    {
+      header: "Fecha y Hora",
+      accessor: (row) => formatDateForDisplay(new Date(row.fechaHora)),
       type: "text",
-      filterable: false 
+      filterable: false
     },
-    { 
-      header: "Motivo", 
-      accessor: "motivo", 
-      type: "text", 
-      filterable: true 
-    },
-    { 
-      header: "Tipo de Intervención", 
-      accessor: (row) => row.idTipo?.nombreTipo || "-",
-      type: "text",
-      filterable: true
-    },
-    { 
-      header: "Equipo", 
-      accessor: (row) => row.idEquipo ? `${row.idEquipo.idInterno} - ${row.idEquipo.nombre}` : "-",
-      type: "text",
-      filterable: true
-    },
-    { 
-      header: "Usuario", 
-      accessor: (row) => row.idUsuario ? `${row.idUsuario.nombre} ${row.idUsuario.apellido}` : "-",
-      type: "text",
-      filterable: true
-    },
-    { 
-      header: "Comentarios", 
-      accessor: (row) => row.comentarios ? 
-        (row.comentarios.length > 50 ? row.comentarios.substring(0, 50) + "..." : row.comentarios) 
+    { header: "Motivo", accessor: "motivo", type: "text", filterable: true },
+    { header: "Tipo de Intervención", accessor: "tipo", type: "text", filterable: true },
+    { header: "Equipo", accessor: "equipo", type: "text", filterable: true },
+    { header: "Usuario", accessor: "usuario", type: "text", filterable: true },
+    {
+      header: "Comentarios",
+      accessor: (row) => row.comentarios ?
+        (row.comentarios.length > 50 ? row.comentarios.substring(0, 50) + "..." : row.comentarios)
         : "-",
       type: "text",
-      filterable: false 
+      filterable: false
     }
   ];
-
-
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -137,8 +104,6 @@ const ListarIntervenciones: React.FC = () => {
             onSearch={handleSearch}
             withActions={true}
             basePath="/intervenciones"
-            // No hay endpoint de eliminación directa en el backend actual
-            // deleteUrl="/intervenciones/eliminar"
           />
         )}
       </div>
@@ -146,4 +111,4 @@ const ListarIntervenciones: React.FC = () => {
   );
 };
 
-export default ListarIntervenciones; 
+export default ListarIntervenciones;

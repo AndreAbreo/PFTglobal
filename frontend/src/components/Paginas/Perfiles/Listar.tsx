@@ -4,32 +4,43 @@ import fetcher from "@/components/Helpers/Fetcher";
 import DynamicTable, { Column } from "@/components/Helpers/DynamicTable";
 import { Perfil } from "@/types/Usuario";
 
-
 const Listar: React.FC = () => {
   const [perfiles, setPerfiles] = useState<Perfil[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [allPerfiles, setAllPerfiles] = useState<Perfil[]>([]);
 
-  // Callback para búsqueda (filtros) desde DynamicTable
+  const applyFilters = (filters: Record<string, string>) => {
+    const nombre = filters["nombrePerfil"]?.toLowerCase() || "";
+    const estado = filters["estado"] || "Todos";
+
+    const filtrados = allPerfiles.filter((perfil) => {
+      const matchNombre = perfil.nombrePerfil.toLowerCase().includes(nombre);
+      const matchEstado = estado === "Todos" || perfil.estado === estado;
+      return matchNombre && matchEstado;
+    });
+
+    setPerfiles(filtrados);
+  };
+
   const handleSearch = async (filters: Record<string, string>) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value) params.append(key, value);
-      });
-      const queryString = params.toString() ? `?${params.toString()}` : "";
-      const data = await fetcher<Perfil[]>(`/perfiles/listar${queryString}`, { method: "GET" });
-      setPerfiles(data);
-    } catch (err: any) {
-      setError(err.message);
-    }
-    setLoading(false);
+    applyFilters(filters);
   };
 
   useEffect(() => {
-    // Cargar datos sin filtros al montar el componente
-    handleSearch({});
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetcher<Perfil[]>(`/perfiles/listar`, { method: "GET" });
+        setAllPerfiles(data);
+        setPerfiles(data);
+      } catch (err: any) {
+        setError(err.message);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
 
   const columns: Column<Perfil>[] = [
@@ -38,8 +49,7 @@ const Listar: React.FC = () => {
   ];
 
   return (
-    
-      <>
+    <>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
       {loading ? (
         <p>Cargando...</p>
@@ -53,7 +63,6 @@ const Listar: React.FC = () => {
           deleteUrl="/perfiles/inactivar"
           basePath="/perfiles"
           onDelete={async (id) => {
-            // El id va en la URL, el body puede ir vacío o no enviarse
             return await fetcher<{ message: string }>(`/perfiles/inactivar?id=${id}`, {
               method: "PUT",
             });

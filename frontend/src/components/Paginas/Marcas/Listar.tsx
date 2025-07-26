@@ -11,19 +11,45 @@ interface Marca {
 
 const ListarMarcas: React.FC = () => {
   const [marcas, setMarcas] = useState<Marca[]>([]);
+  const [filteredMarcas, setFilteredMarcas] = useState<Marca[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Removemos handleSearch y useEffect ya que DynamicTable manejará la carga automática
+  const [filters, setFilters] = useState({ nombre: "", estado: "ACTIVO" });
+
+  const fetchMarcas = async () => {
+    setLoading(true);
+    try {
+      const data = await fetcher<Marca[]>("/marca/listar", { method: "GET" });
+      setMarcas(data);
+      setFilteredMarcas(applyFilters(data, filters));
+    } catch (err: any) {
+      setError(err.message);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchMarcas();
+  }, []);
+
+  const applyFilters = (data: Marca[], filters: { nombre: string; estado: string }) => {
+    return data.filter((marca) => {
+      const matchNombre = marca.nombre.toLowerCase().includes(filters.nombre.toLowerCase());
+      const matchEstado = filters.estado ? marca.estado === filters.estado : true;
+      return matchNombre && matchEstado;
+    });
+  };
+
+  const handleSearch = (newFilters: Record<string, string>) => {
+    const updatedFilters = { ...filters, ...newFilters };
+    setFilters(updatedFilters);
+    setFilteredMarcas(applyFilters(marcas, updatedFilters));
+  };
 
   const columns: Column<Marca>[] = [
-    { header: "Nombre", accessor: "nombre", type: "text", filterable: false },
-    { 
-      header: "Estado", 
-      accessor: "estado",
-      type: "text",
-      filterable: true 
-    },
+    { header: "Nombre", accessor: "nombre", type: "text", filterable: true },
+    { header: "Estado", accessor: "estado", type: "text", filterable: true },
   ];
 
   return (
@@ -35,14 +61,13 @@ const ListarMarcas: React.FC = () => {
       ) : (
         <DynamicTable
           columns={columns}
-          data={marcas}
+          data={filteredMarcas}
           withFilters={true}
-          filterUrl="/marca/filtrar"
-          onDataUpdate={setMarcas}
+          onSearch={handleSearch}
           withActions={true}
           deleteUrl="/marca/inactivar"
           basePath="/marca"
-          initialFilters={{ estado: "ACTIVO" }}
+          initialFilters={filters}
           sendOnlyId={true}
         />
       )}
@@ -50,4 +75,4 @@ const ListarMarcas: React.FC = () => {
   );
 };
 
-export default ListarMarcas; 
+export default ListarMarcas;

@@ -11,19 +11,18 @@ interface TipoEquipo {
 
 const ListarTiposEquipos: React.FC = () => {
   const [tipos, setTipos] = useState<TipoEquipo[]>([]);
+  const [filteredTipos, setFilteredTipos] = useState<TipoEquipo[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Estados para el modal de inactivación
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [tipoAEliminar, setTipoAEliminar] = useState<TipoEquipo | null>(null);
-  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [filters, setFilters] = useState({ nombreTipo: "", estado: "ACTIVO" });
 
-  const handleSearch = async (filters: Record<string, string>) => {
+  const fetchTipos = async () => {
     setLoading(true);
     try {
       const data = await fetcher<TipoEquipo[]>("/tipoEquipos/listar", { method: "GET" });
       setTipos(data);
+      setFilteredTipos(applyFilters(data, filters));
     } catch (err: any) {
       setError(err.message);
     }
@@ -31,27 +30,32 @@ const ListarTiposEquipos: React.FC = () => {
   };
 
   useEffect(() => {
-    handleSearch({});
+    fetchTipos();
   }, []);
 
+  const applyFilters = (data: TipoEquipo[], filters: { nombreTipo: string; estado: string }) => {
+    return data.filter((tipo) => {
+      const matchNombre = tipo.nombreTipo.toLowerCase().includes(filters.nombreTipo.toLowerCase());
+      const matchEstado = filters.estado ? tipo.estado === filters.estado : true;
+      return matchNombre && matchEstado;
+    });
+  };
+
+  const handleSearch = (newFilters: Record<string, string>) => {
+    const updatedFilters = { ...filters, ...newFilters };
+    setFilters(updatedFilters);
+    setFilteredTipos(applyFilters(tipos, updatedFilters));
+  };
+
   const columns: Column<TipoEquipo>[] = [
-    { header: "ID", accessor: "id", type: "number", filterable: false },
     { header: "Nombre", accessor: "nombreTipo", type: "text", filterable: true },
-    { 
-      header: "Estado", 
-      accessor: (row) => (
-        <span className={`px-2 py-1 rounded-full text-xs ${
-          row.estado === "ACTIVO" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-        }`}>
-          {row.estado}
-        </span>
-      ),
-      type: "text",
-      filterable: true 
-    }
+    { header: "Estado", accessor: "estado", type: "text", filterable: true },
   ];
 
-  // onDelete personalizado para DynamicTable
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [tipoAEliminar, setTipoAEliminar] = useState<TipoEquipo | null>(null);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+
   const handleDeleteWithModal = (id: number, row: TipoEquipo) => {
     setTipoAEliminar(row);
     setShowDeleteModal(true);
@@ -69,7 +73,7 @@ const ListarTiposEquipos: React.FC = () => {
       });
       setShowDeleteModal(false);
       (window as any).__resolveDelete({ message: "Tipo de equipo inactivado correctamente" });
-      handleSearch({}); // Refresh list
+      fetchTipos();
     } catch (err: any) {
       (window as any).__rejectDelete({ message: err.message || "Error al inactivar" });
     }
@@ -84,16 +88,18 @@ const ListarTiposEquipos: React.FC = () => {
       ) : (
         <DynamicTable
           columns={columns}
-          data={tipos}
+          data={filteredTipos}
           withFilters={true}
           onSearch={handleSearch}
           withActions={true}
           deleteUrl="/tipoEquipos/inactivar"
           basePath="/tipoEquipos"
           onDelete={handleDeleteWithModal}
+          initialFilters={filters}
+          sendOnlyId={true}
         />
       )}
-      {/* Modal de inactivación */}
+
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-sm w-full">

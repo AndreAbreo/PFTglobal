@@ -19,20 +19,24 @@ interface Funcionalidad {
 
 const ListarFuncionalidades: React.FC = () => {
   const [funcionalidades, setFuncionalidades] = useState<Funcionalidad[]>([]);
+  const [filteredFuncionalidades, setFilteredFuncionalidades] = useState<Funcionalidad[]>([]);
+  const [perfilesUnicos, setPerfilesUnicos] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Callback para búsqueda (filtros) desde DynamicTable
-  const handleSearch = async (filters: Record<string, string>) => {
+  const [filters, setFilters] = useState({ nombreFuncionalidad: "", estado: "ACTIVO", perfiles: "" });
+
+  const fetchFuncionalidades = async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value) params.append(key, value);
-      });
-      const queryString = params.toString() ? `?${params.toString()}` : "";
-      const data = await fetcher<Funcionalidad[]>(`/funcionalidades/listar${queryString}`, { method: "GET" });
+      const data = await fetcher<Funcionalidad[]>("/funcionalidades/listar", { method: "GET" });
       setFuncionalidades(data);
+      setFilteredFuncionalidades(data);
+
+      const perfilesSet = new Set<string>();
+      data.forEach(item => item.perfiles.forEach(p => perfilesSet.add(p.nombrePerfil)));
+      setPerfilesUnicos(Array.from(perfilesSet));
+
     } catch (err: any) {
       setError(err.message);
     }
@@ -40,9 +44,27 @@ const ListarFuncionalidades: React.FC = () => {
   };
 
   useEffect(() => {
-    // Cargar datos sin filtros al montar el componente
-    handleSearch({});
+    fetchFuncionalidades();
   }, []);
+
+  const applyFilters = (data: Funcionalidad[], filters: { nombreFuncionalidad: string; estado: string; perfiles: string }) => {
+    return data.filter((item) => {
+      const matchNombre = item.nombreFuncionalidad.toLowerCase().includes(filters.nombreFuncionalidad.toLowerCase());
+      const matchEstado = filters.estado ? item.estado === filters.estado : true;
+      const matchPerfiles = filters.perfiles ? item.perfiles.some(p => p.nombrePerfil === filters.perfiles) : true;
+      return matchNombre && matchEstado && matchPerfiles;
+    });
+  };
+
+  const handleSearch = () => {
+    setFilteredFuncionalidades(applyFilters(funcionalidades, filters));
+  };
+
+  const handleClearFilters = () => {
+    const clearedFilters = { nombreFuncionalidad: "", estado: "", perfiles: "" };
+    setFilters(clearedFilters);
+    setFilteredFuncionalidades(applyFilters(funcionalidades, clearedFilters));
+  };
 
   const columns: Column<Funcionalidad>[] = [
     { header: "Nombre", accessor: "nombreFuncionalidad", type: "text", filterable: true },
@@ -52,7 +74,7 @@ const ListarFuncionalidades: React.FC = () => {
       header: "Perfiles",
       accessor: (row) => row.perfiles.map(p => p.nombrePerfil).join(", "),
       type: "text",
-      filterable: true
+      filterable: false
     }
   ];
 
@@ -62,19 +84,68 @@ const ListarFuncionalidades: React.FC = () => {
       {loading ? (
         <p>Cargando...</p>
       ) : (
-        <DynamicTable
-          columns={columns}
-          data={funcionalidades}
-          withFilters={true}
-          onSearch={handleSearch}
-          withActions={true}
-          deleteUrl="/funcionalidades/eliminar"
-          basePath="/funcionalidades"
-          sendOnlyId={false}
-        />
+        <>
+          <div className="mb-4">
+            <h2 className="text-xl font-bold mb-2">Filtros</h2>
+            <div className="flex flex-wrap gap-4 items-end">
+              <div className="flex flex-col">
+                <label htmlFor="nombreFuncionalidad" className="text-sm font-medium mb-1">Nombre:</label>
+                <input
+                  type="text"
+                  id="nombreFuncionalidad"
+                  value={filters.nombreFuncionalidad}
+                  onChange={(e) => setFilters({ ...filters, nombreFuncionalidad: e.target.value })}
+                  className="w-56 rounded border border-gray-300 p-2 bg-white text-black"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="estado" className="text-sm font-medium mb-1">Estado:</label>
+                <select
+                  id="estado"
+                  value={filters.estado}
+                  onChange={(e) => setFilters({ ...filters, estado: e.target.value })}
+                  className="w-36 rounded border border-gray-300 p-2 bg-white text-black"
+                >
+                  <option value="">Todos</option>
+                  <option value="ACTIVO">Activos</option>
+                  <option value="INACTIVO">Eliminados</option>
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="perfilFilter" className="text-sm font-medium mb-1">Perfiles:</label>
+                <select
+                  id="perfilFilter"
+                  value={filters.perfiles}
+                  onChange={(e) => setFilters({ ...filters, perfiles: e.target.value })}
+                  className="w-52 rounded border border-gray-300 p-2 bg-white text-black"
+                >
+                  <option value="">Todos</option>
+                  {perfilesUnicos.map((perfil) => (
+                    <option key={perfil} value={perfil}>{perfil}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-2 mt-1">
+                <button onClick={handleSearch} className="px-4 py-2 bg-blue-600 text-white rounded">Buscar</button>
+                <button onClick={handleClearFilters} className="px-4 py-2 bg-gray-300 text-black rounded">Borrar Filtros</button>
+              </div>
+            </div>
+          </div>
+          <DynamicTable
+            columns={columns}
+            data={filteredFuncionalidades}
+            withFilters={false}
+            onSearch={handleSearch}
+            withActions={true}
+            deleteUrl="/funcionalidades/eliminar"
+            basePath="/funcionalidades"
+            sendOnlyId={false}
+            initialFilters={filters}
+          />
+        </>
       )}
     </>
   );
 };
 
-export default ListarFuncionalidades; 
+export default ListarFuncionalidades;
