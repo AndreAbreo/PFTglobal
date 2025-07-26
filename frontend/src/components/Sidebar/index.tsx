@@ -75,6 +75,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             (func) => !funcionalidadesOcultasMenu.includes(func.id)
           );
         }
+
+        // Ocultar funcionalidades de funcionalidad para Aux Administrativo
+        if (userRol === "Aux Administrativo") {
+          filteredFuncionalidades = filteredFuncionalidades.filter(
+            (func) => ![53, 55].includes(func.id)
+          );
+        }
+
+         // Ocultar funcionalidades de funcionalidad para Aux Administrativo
+         if (userRol === "Administrador") {
+          filteredFuncionalidades = filteredFuncionalidades.filter(
+            (func) => ![69, 66, 39, 37, 34, 31, 29, 26, 23, 20].includes(func.id)
+          );
+        }
   
         // Agrupar funcionalidades por la primera parte de la ruta
         const groups: { [key: string]: MenuGroup } = {};

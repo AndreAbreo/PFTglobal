@@ -214,26 +214,24 @@ public class JwtTokenFilter implements ContainerRequestFilter {
             return false;
         }
 
-        // Verificar permisos en la base de datos
+        // Normalizar rutas con parámetro numérico al final
+        String normalizado = path.replaceAll("/\\d+$", "/{id}");
+
         List<FuncionalidadDto> funcionalidades = funcionalidadService.obtenerTodas();
 
-        // Verificar si es una modificación de usuario
+        // Permiso especial para /usuarios/modificar
         if (path.equals("/usuarios/modificar")) {
-            // Solo permitir que administradores o super administradores modifiquen a otros administradores
-            if (perfil.equals("Administrador") || perfil.equals("SuperAdmin")) {
-                return true;
-            } else {
-                LOGGER.log(Level.WARNING, "Usuario con perfil {0} intentando modificar - Acceso denegado", perfil);
-                return false;
-            }
+            return perfil.equals("Administrador") ||
+                    perfil.equals("SuperAdmin") ||
+                    perfil.equals("Aux Administrativo");
         }
+
 
         boolean hasPermission = funcionalidades.stream()
                 .anyMatch(funcionalidad -> {
-                    boolean pathMatches = path.startsWith(funcionalidad.getRuta());
+                    boolean pathMatches = normalizado.startsWith(funcionalidad.getRuta());
                     boolean profileMatches = funcionalidad.getPerfiles().stream()
                             .anyMatch(perfilDto -> perfilDto.getNombrePerfil().equals(perfil));
-                    
                     return pathMatches && profileMatches;
                 });
 
@@ -243,4 +241,5 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 
         return hasPermission;
     }
+
 }
