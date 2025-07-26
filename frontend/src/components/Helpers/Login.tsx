@@ -61,7 +61,7 @@ const LoginForm = () => {
       setSuccessMessage(`✅ Inicio de sesión exitoso mediante ${origen}. Redirigiendo...`);
 
       setTimeout(() => {
-        router.push("/usuarios");
+        router.push("/equipos");
       }, 5000);
     } else {
       console.error("Unexpected error during login");
@@ -74,7 +74,7 @@ const LoginForm = () => {
       setError(result.error);
     } else if (result) {
       console.log("Logged in with Google successfully");
-      router.push("/usuarios");
+      router.push("/equipos");
     } else {
       console.error("Unexpected error during Google login");
     }

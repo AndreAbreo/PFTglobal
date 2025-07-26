@@ -49,45 +49,55 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         const funcionalidades = await fetcher<Funcionalidad[]>("/funcionalidades/listar", {
           method: "GET",
         });
-
-        // Obtener la sesión usando getSession
+  
         const currentSession = await getSession();
         setSession(currentSession);
-
+  
         if (!currentSession || !currentSession.user || !currentSession.user.rol) {
           setError("No se encontró la sesión del usuario");
           setLoading(false);
           return;
         }
-
+  
         const userRol = currentSession.user.rol;
-
+  
+        // Funcionalidades a ocultar del menú (solo para ciertos roles)
+        const funcionalidadesOcultasMenu = [7, 9, 10, 11, 23, 29, 34, 39, 69, 71, 64,];
+  
         // Filtrar funcionalidades por el rol del usuario
-        const filteredFuncionalidades = funcionalidades.filter((func) =>
+        let filteredFuncionalidades = funcionalidades.filter((func) =>
           func.perfiles.some((perfiles) => perfiles.nombrePerfil === userRol)
         );
-
+  
+        // Si el rol tiene visibilidad restringida, ocultar ciertas funcionalidades del menú
+        if (["Tecnico", "Tecnologo", "Ingeniero Biomedico"].includes(userRol)) {
+          filteredFuncionalidades = filteredFuncionalidades.filter(
+            (func) => !funcionalidadesOcultasMenu.includes(func.id)
+          );
+        }
+  
         // Agrupar funcionalidades por la primera parte de la ruta
         const groups: { [key: string]: MenuGroup } = {};
-
+  
         filteredFuncionalidades.forEach((func) => {
           // Ignorar rutas que no queremos mostrar en el menú
-          if (func.ruta.includes("/seleccionar") || 
-              func.ruta.includes("/modificar-propio-usuario") ||
-              func.ruta.includes("/renovar-token") ||
-              func.ruta.includes("/obtenerUserEmail")) {
+          if (
+            func.ruta.includes("/seleccionar") ||
+            func.ruta.includes("/modificar-propio-usuario") ||
+            func.ruta.includes("/renovar-token") ||
+            func.ruta.includes("/obtenerUserEmail")
+          ) {
             return;
           }
-
+  
           const [_, group, action] = func.ruta.split("/");
-          
+  
           if (!groups[group]) {
             groups[group] = {
               name: group.charAt(0).toUpperCase() + group.slice(1),
               menuItems: [],
             };
-
-            // Agregar el ítem principal que lleva a la ruta base
+  
             groups[group].menuItems.push({
               icon: (
                 <svg
@@ -108,8 +118,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               route: `/${group}`,
             });
           }
-
-          // Solo agregar la opción de crear si existe
+  
           if (func.ruta.endsWith("/crear")) {
             groups[group].menuItems.push({
               icon: (
@@ -136,7 +145,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             });
           }
         });
-
+  
         setMenuGroups(Object.values(groups));
       } catch (error) {
         console.error("Error fetching funcionalidades:", error);
@@ -145,10 +154,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
-
+  
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside

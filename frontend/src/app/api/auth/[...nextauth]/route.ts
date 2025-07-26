@@ -206,8 +206,10 @@ const handler = NextAuth({
 
   session: {
     strategy: "jwt",
-    maxAge: 8 * 60 * 60,
+    maxAge: 1 * 60 * 60, // Token válido por 1 horas
+    updateAge: 10 * 60    // Renueva token cada 10 minutos
   },
+  
 });
 
 export { handler as GET, handler as POST };
