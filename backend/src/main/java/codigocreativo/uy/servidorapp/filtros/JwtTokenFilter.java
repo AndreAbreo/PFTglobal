@@ -39,6 +39,12 @@ public class JwtTokenFilter implements ContainerRequestFilter {
         "/usuarios/login",
         "/usuarios/seleccionar",
         "/usuarios/google-login",
+        "/usuarios/crear",
+        "/api/openapi.json",
+        "/api/swagger-ui",
+        "/openapi.json",
+        "/swagger-ui",
+        "/swagger-ui/index.html",
         "/usuarios/listar",
         "/usuarios/modificar-propio-usuario",
         "/perfiles/listar",
@@ -52,12 +58,7 @@ public class JwtTokenFilter implements ContainerRequestFilter {
         "/proveedores/listar",
         "/paises/listar",
         "/funcionalidades/listar",
-        "/tipoIntervenciones/listar",
-        "/api/openapi.json",
-        "/api/swagger-ui",
-        "/openapi.json",
-        "/swagger-ui",
-        "/swagger-ui/index.html"
+        "/tipoIntervenciones/listar"
     );
 
     @EJB
