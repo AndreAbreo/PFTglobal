@@ -79,14 +79,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         // Ocultar funcionalidades de funcionalidad para Aux Administrativo
         if (userRol === "Aux Administrativo") {
           filteredFuncionalidades = filteredFuncionalidades.filter(
-            (func) => ![53, 55].includes(func.id)
+            (func) => ![50, 51, 52, 53, 54].includes(func.id)
           );
         }
 
          // Ocultar funcionalidades de funcionalidad para Aux Administrativo
          if (userRol === "Administrador") {
           filteredFuncionalidades = filteredFuncionalidades.filter(
-            (func) => ![69, 66, 39, 37, 34, 31, 29, 26, 23, 20].includes(func.id)
+            (func) => ![69, 39, 34, 29, 23].includes(func.id)
           );
         }
   

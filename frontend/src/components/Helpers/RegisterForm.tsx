@@ -29,7 +29,12 @@ interface ValidationErrors {
   phones?: string;
 }
 
-const RegisterForm: React.FC = () => {
+interface RegisterFormProps {
+  requiresAuth?: boolean;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => {
+
   const [cedula, setCedula] = useState("");
   const [cedulaFormatted, setCedulaFormatted] = useState("");
   const [cedulaError, setCedulaError] = useState<string | null>(null);
@@ -75,24 +80,33 @@ const RegisterForm: React.FC = () => {
   // Validación de contraseña
   const validatePassword = (password: string): { isValid: boolean; errors: string[] } => {
     const errors: string[] = [];
-    
+  
     if (password.length < 8) {
-      errors.push("La contraseña debe tener al menos 8 caracteres");
+      errors.push("Debe tener al menos 8 caracteres");
     }
-    
-    if (!/[a-zA-Z]/.test(password)) {
-      errors.push("La contraseña debe contener al menos una letra");
+  
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Debe tener al menos una letra mayúscula");
     }
-    
+  
+    if (!/[a-z]/.test(password)) {
+      errors.push("Debe tener al menos una letra minúscula");
+    }
+  
     if (!/\d/.test(password)) {
-      errors.push("La contraseña debe contener al menos un número");
+      errors.push("Debe tener al menos un número");
     }
-    
+  
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      errors.push("Debe tener al menos un carácter especial (como ! @ # $ etc)");
+    }
+  
     return {
       isValid: errors.length === 0,
       errors
     };
   };
+  
 
   // Validación de edad
   const validateAge = (birthDate: string): boolean => {
@@ -269,7 +283,7 @@ const RegisterForm: React.FC = () => {
       
       await fetcher("/usuarios/crear", {
         method: "POST",
-        requiresAuth: false,
+        requiresAuth, // ← ahora usa la prop que pasás
         body: {
           cedula: cedula.replace(/\D/g, ''), // Enviar solo números
           email,
