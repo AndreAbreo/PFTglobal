@@ -741,6 +741,14 @@ END;
 /
 COMMIT;
 
+DELETE FROM FUNCIONALIDADES_PERFILES
+WHERE ID_PERFIL = 1
+  AND ID_FUNCIONALIDAD IN (
+                           20, 21, 22, 24, 25, 26, 27, 28,
+                           30, 31, 32, 33, 35, 36, 37, 38,
+                           40, 41, 42, 66, 67, 68, 70
+    );
+
 
 -- COMMIT PARA CONFIRMAR TODOS LOS DATOS
 -- =====================================================
