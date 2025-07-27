@@ -52,13 +52,15 @@ class TipoIntervencioneBeanTest {
         @SuppressWarnings("unchecked")
         TypedQuery<TiposIntervencione> query = mock(TypedQuery.class);
 
-        when(em.createQuery("SELECT t FROM TiposIntervencione t WHERE t.estado = 'ACTIVO'", TiposIntervencione.class)).thenReturn(query);
+        when(em.createQuery("SELECT t FROM TiposIntervencione t", TiposIntervencione.class)).thenReturn(query);
+
         when(query.getResultList()).thenReturn(tiposIntervenciones);
         when(tiposIntervencioneMapper.toDto(tiposIntervenciones)).thenReturn(tiposIntervencionesDto);
 
         List<TiposIntervencioneDto> result = tipoIntervencioneBean.obtenerTiposIntervenciones();
 
-        verify(em, times(1)).createQuery("SELECT t FROM TiposIntervencione t WHERE t.estado = 'ACTIVO'", TiposIntervencione.class);
+        verify(em, times(1)).createQuery("SELECT t FROM TiposIntervencione t", TiposIntervencione.class);
+
         verify(query, times(1)).getResultList();
         verify(tiposIntervencioneMapper, times(1)).toDto(tiposIntervenciones);
         assertEquals(tiposIntervencionesDto, result);

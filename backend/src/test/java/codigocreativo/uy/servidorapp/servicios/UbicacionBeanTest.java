@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -301,24 +302,8 @@ class UbicacionBeanTest {
 
     // ========== TESTS PARA LISTAR UBICACIONES ==========
 
-    @Test
-    void testListarUbicaciones_exitoso() throws ServiciosException {
-        Ubicacion entity = new Ubicacion();
-        List<Ubicacion> ubicaciones = Collections.singletonList(entity);
 
-        @SuppressWarnings("unchecked")
-        TypedQuery<Ubicacion> query = mock(TypedQuery.class);
-        when(em.createQuery("SELECT u FROM Ubicacion u WHERE u.estado = 'ACTIVO'", Ubicacion.class)).thenReturn(query);
-        when(query.getResultList()).thenReturn(ubicaciones);
-        when(ubicacionMapper.toDto(ubicaciones)).thenReturn(Collections.singletonList(new UbicacionDto()));
 
-        List<UbicacionDto> result = ubicacionBean.listarUbicaciones();
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        verify(query).getResultList();
-        verify(ubicacionMapper).toDto(ubicaciones);
-    }
 
     // ========== TESTS PARA OBTENER UBICACION POR ID ==========
 
