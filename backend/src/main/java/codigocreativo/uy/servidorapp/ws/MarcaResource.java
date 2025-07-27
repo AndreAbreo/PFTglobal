@@ -75,15 +75,15 @@ public class MarcaResource {
     @Path("/inactivar")
     @Operation(summary = "Inactivar una marca", description = "Inactiva una marca en la base de datos", tags = { "Marcas" })
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Marca inactivada correctamente",
-            content = @Content(schema = @Schema(example = "{\"message\": \"Marca inactivada correctamente\"}"))),
+        @ApiResponse(responseCode = "200", description = "Marca desactivada correctamente",
+            content = @Content(schema = @Schema(example = "{\"message\": \"Marca desactivada correctamente\"}"))),
         @ApiResponse(responseCode = "400", description = "Error al inactivar la marca",
             content = @Content(schema = @Schema(example = "{\"error\": \"Error al inactivar la marca\"}")))
     })
     public Response eliminarMarca(@Parameter(description = "ID de la marca a inactivar", required = true) @QueryParam("id") Long id) {
         try {
             this.er.eliminarMarca(id);
-            return Response.ok(Map.of(MESSAGE, "Marca inactivada correctamente")).build();
+            return Response.ok(Map.of(MESSAGE, "Marca desactivada correctamente")).build();
         } catch (Exception e) {
             return Response.status(400)
                 .entity(Map.of(ERROR, e.getMessage()))

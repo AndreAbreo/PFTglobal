@@ -54,7 +54,7 @@ public class TipoIntervencionesResource {
     @Path("/inactivar")
     @Operation(summary = "Inactivar un tipo de intervención", description = "Inactiva un tipo de intervención en la base de datos", tags = { "Tipos de Intervenciones" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Tipo de intervención inactivado correctamente"),
+            @ApiResponse(responseCode = "200", description = "Tipo de intervención desactivado correctamente"),
             @ApiResponse(responseCode = "404", description = "Tipo de intervención no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
     public Response eliminar(@Parameter(description = "ID del tipo de intervención a inactivar", required = true) @QueryParam("id") Long id) {

@@ -89,7 +89,7 @@ public class PerfilResource {
     @Path("/inactivar")
     @Operation(summary = "Inactivar un perfil", description = "Inactiva un perfil existente", tags = { "Perfiles" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Perfil inactivado correctamente"),
+            @ApiResponse(responseCode = "200", description = "Perfil desactivado correctamente"),
             @ApiResponse(responseCode = "400", description = "Solicitud inválida", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "404", description = "Perfil no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
@@ -107,7 +107,7 @@ public class PerfilResource {
             if (perfil != null) {
                 perfilRemote.eliminarPerfil(perfil);
                 return Response.ok()
-                        .entity(String.format(MSG_JSON_FORMAT, "Perfil inactivado correctamente"))
+                        .entity(String.format(MSG_JSON_FORMAT, "Perfil desactivado correctamente"))
                         .build();
             } else {
                 return Response.status(Response.Status.NOT_FOUND)

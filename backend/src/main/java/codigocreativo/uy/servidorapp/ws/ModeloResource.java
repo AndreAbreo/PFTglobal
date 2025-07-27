@@ -75,15 +75,15 @@ public class ModeloResource {
     @Path("/inactivar")
     @Operation(summary = "Inactivar un modelo", description = "Inactiva un modelo en la base de datos", tags = { "Modelos" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Modelo inactivado correctamente", 
-                content = @Content(schema = @Schema(example = "{\"message\": \"Modelo inactivado correctamente\"}"))),
+            @ApiResponse(responseCode = "200", description = "Modelo desactivado correctamente",
+                content = @Content(schema = @Schema(example = "{\"message\": \"Modelo desactivado correctamente\"}"))),
             @ApiResponse(responseCode = "400", description = "Error al inactivar el modelo", 
                 content = @Content(schema = @Schema(example = "{\"error\": \"Error al inactivar el modelo\"}")))
     })
     public Response eliminarModelo(@Parameter(description = "ID del modelo a inactivar", required = true) @QueryParam("id") Long id) {
         try {
             this.er.eliminarModelos(id);
-            return Response.ok(java.util.Map.of(MESSAGE, "Modelo inactivado correctamente")).build();
+            return Response.ok(java.util.Map.of(MESSAGE, "Modelo desactivado correctamente")).build();
         } catch (Exception e) {
             return Response.status(400)
                 .entity(java.util.Map.of(ERROR, e.getMessage()))

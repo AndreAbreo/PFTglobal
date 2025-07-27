@@ -169,7 +169,7 @@ public class UsuarioResource {
         }
 
         this.er.eliminarUsuario(usuarioAInactivar);
-        return Response.status(200).entity("{\"message\":\"Usuario inactivado correctamente\"}").build();
+        return Response.status(200).entity("{\"message\":\"Usuario desactivado correctamente\"}").build();
     }
 
     @GET

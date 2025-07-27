@@ -76,15 +76,15 @@ public class TipoEquipoResource {
     @Path("/inactivar")
     @Operation(summary = "Inactivar un tipo de equipo", description = "Inactiva un tipo de equipo en la base de datos", tags = { "Tipos de Equipos" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Tipo de equipo inactivado correctamente", 
-                content = @Content(schema = @Schema(example = "{\"message\": \"Tipo de equipo inactivado correctamente\"}"))),
+            @ApiResponse(responseCode = "200", description = "Tipo de equipo desactivado correctamente",
+                content = @Content(schema = @Schema(example = "{\"message\": \"Tipo de equipo desactivado correctamente\"}"))),
             @ApiResponse(responseCode = "400", description = "Error al inactivar el tipo de equipo", 
                 content = @Content(schema = @Schema(example = "{\"error\": \"Error al inactivar el tipo de equipo\"}")))
     })
     public Response eliminar(@Parameter(description = "ID del tipo de equipo a inactivar", required = true) @QueryParam("id") Long id) {
         try {
             this.er.eliminarTiposEquipo(id);
-            return Response.ok(Map.of(MESSAGE, "Tipo de equipo inactivado correctamente")).build();
+            return Response.ok(Map.of(MESSAGE, "Tipo de equipo desactivado correctamente")).build();
         } catch (Exception e) {
             return Response.status(400)
                 .entity(Map.of(ERROR, e.getMessage()))

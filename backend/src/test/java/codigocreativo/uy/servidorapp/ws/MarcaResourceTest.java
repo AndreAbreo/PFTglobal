@@ -124,7 +124,7 @@ class MarcaResourceTest {
         
         @SuppressWarnings("unchecked")
         Map<String, String> responseBody = (Map<String, String>) response.getEntity();
-        assertEquals("Marca inactivada correctamente", responseBody.get("message"));
+        assertEquals("Marca desactivada correctamente", responseBody.get("message"));
         
         verify(er, times(1)).eliminarMarca(id);
     }

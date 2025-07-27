@@ -72,7 +72,7 @@ const ListarTiposEquipos: React.FC = () => {
         method: "DELETE",
       });
       setShowDeleteModal(false);
-      (window as any).__resolveDelete({ message: "Tipo de equipo inactivado correctamente" });
+      (window as any).__resolveDelete({ message: "Tipo de equipo desactivado correctamente" });
       fetchTipos();
     } catch (err: any) {
       (window as any).__rejectDelete({ message: err.message || "Error al inactivar" });

@@ -111,7 +111,7 @@ class ModeloResourceTest {
         
         @SuppressWarnings("unchecked")
         Map<String, String> responseBody = (Map<String, String>) response.getEntity();
-        assertEquals("Modelo inactivado correctamente", responseBody.get("message"));
+        assertEquals("Modelo desactivado correctamente", responseBody.get("message"));
         
         verify(er, times(1)).eliminarModelos(id);
     }

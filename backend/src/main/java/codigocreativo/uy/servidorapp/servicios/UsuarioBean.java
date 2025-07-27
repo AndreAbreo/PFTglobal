@@ -352,7 +352,7 @@ public class UsuarioBean implements UsuarioRemote {
 
 
     /**
-     * Valida que un usuario pueda ser inactivado por otro usuario
+     * Valida que un usuario pueda ser desactivado por otro usuario
      */
     public void validarInactivacionUsuario(String emailSolicitante, String cedulaUsuarioAInactivar) throws ServiciosException {
         // Obtener el usuario que solicita la inactivación

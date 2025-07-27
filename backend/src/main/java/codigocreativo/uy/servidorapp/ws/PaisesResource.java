@@ -98,13 +98,13 @@ public class PaisesResource {
     @Path("/inactivar")
     @Operation(summary = "Inactivar un país", description = "Inactiva un país en la base de datos", tags = { "Paises" })
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "País inactivado correctamente", content = @Content(schema = @Schema(example = "{\"message\": \"País inactivado correctamente\"}"))),
+        @ApiResponse(responseCode = "200", description = "País desactivado correctamente", content = @Content(schema = @Schema(example = "{\"message\": \"País desactivado correctamente\"}"))),
         @ApiResponse(responseCode = "404", description = "País no encontrado", content = @Content(schema = @Schema(example = "{\"error\": \"País no encontrado\"}")))
     })
     public Response inactivarPais(@QueryParam("id") Long id) {
         try {
             this.er.inactivarPais(id);
-            return Response.ok(java.util.Map.of("message", "País inactivado correctamente")).build();
+            return Response.ok(java.util.Map.of("message", "País desactivado correctamente")).build();
         } catch (Exception e) {
             return Response.status(404).entity(java.util.Map.of(ERROR, "País no encontrado: " + e.getMessage())).build();
         }
