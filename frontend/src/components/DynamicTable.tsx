@@ -429,7 +429,7 @@ const DynamicTable: React.FC<TableProps> = ({
 
       {/* Modal para mostrar mensajes */}
       {modalMessage && (
-        <div className="fixed z-10 inset-0 overflow-y-auto">
+        <div className="fixed z-20 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen">
             <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg shadow-lg max-w-sm mx-auto">
               <h2 className="text-lg font-medium text-neutral-700 dark:text-neutral-300">Mensaje</h2>
