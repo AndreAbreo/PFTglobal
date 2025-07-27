@@ -789,7 +789,7 @@ function DynamicTable<T extends { id: number }>({
                 onClick={() => setShowConfirmDeleteModal(false)}
                 className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
               >
-                Cancelar
+                Volver
               </button>
               <button
                 onClick={async () => {

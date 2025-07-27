@@ -576,7 +576,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
                     </div>
                   </div>
                   <div className="flex justify-end gap-4">
-                    <button onClick={() => setShowConfirm(false)} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-meta-4 dark:hover:bg-meta-3">Cancelar</button>
+                    <button onClick={() => setShowConfirm(false)} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-meta-4 dark:hover:bg-meta-3">Volver</button>
                     <button onClick={handleConfirm} className="px-4 py-2 rounded bg-primary text-white hover:bg-opacity-90">Confirmar</button>
                   </div>
                 </div>

@@ -233,7 +233,7 @@ const DeleteEquipo = () => {
                 onClick={() => setShowConfirmModal(false)}
                 className='bg-violet-800 text-white p-2 rounded'
               >
-                Cancelar
+                Volver
               </button>
             </div>
           </div>

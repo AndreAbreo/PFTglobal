@@ -361,7 +361,7 @@ const CrearEquipo: React.FC = () => {
             <h3 className="text-lg font-bold mb-4 text-yellow-600">Advertencia de garantía</h3>
             <p className="mb-6">La fecha de garantía ingresada ya está vencida. ¿Desea continuar?</p>
             <div className="flex justify-end gap-4">
-              <button onClick={() => setShowGarantiaWarning(false)} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-meta-4 dark:hover:bg-meta-3">Cancelar</button>
+              <button onClick={() => setShowGarantiaWarning(false)} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-meta-4 dark:hover:bg-meta-3">Volver</button>
               <button onClick={() => { setShowGarantiaWarning(false); setShowConfirm(true); }} className="px-4 py-2 rounded bg-primary text-white hover:bg-opacity-90">Continuar</button>
             </div>
           </div>
@@ -374,7 +374,7 @@ const CrearEquipo: React.FC = () => {
             <h3 className="text-lg font-bold mb-4">¿Desea crear este equipo?</h3>
             <p className="mb-6">Confirme que los datos ingresados son correctos para registrar el equipo.</p>
             <div className="flex justify-end gap-4">
-              <button onClick={() => setShowConfirm(false)} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-meta-4 dark:hover:bg-meta-3">Cancelar</button>
+              <button onClick={() => setShowConfirm(false)} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-meta-4 dark:hover:bg-meta-3">Volver</button>
               <button onClick={handleConfirm} className="px-4 py-2 rounded bg-primary text-white hover:bg-opacity-90">Confirmar</button>
             </div>
           </div>
