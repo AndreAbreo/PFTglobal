@@ -96,7 +96,7 @@ const ListarEquipos: React.FC = () => {
         type: "image", 
         filterable: false,
         imageConfig: {
-          width: 60,
+          width: 100,
           height: 60,
           className: "object-cover",
           objectFit: "cover"

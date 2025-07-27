@@ -4,6 +4,9 @@ import { useParams } from "next/navigation";
 import fetcher from "@/components/Helpers/Fetcher";
 import DetailView, { Column } from "@/components/Helpers/DetailView";
 
+const PLACEHOLDER_IMG = "https://raw.githubusercontent.com/AndreAbreo/PFTglobal/AndreTest6/frontend/public/images/logo/LogoCodigo.jpg";
+
+
 interface Equipo {
   id: number;
   idInterno: string;
@@ -85,15 +88,19 @@ const VerEquipo: React.FC = () => {
       accessor: (equipo) => (
         equipo.imagen ? (
           <img
-            src={equipo.imagen}
-            alt={equipo.nombre}
-            className="w-32 h-32 object-contain rounded-lg shadow-lg"
-            onError={(e) => {
-              if (e.currentTarget.src !== "https://via.placeholder.com/150") {
-                e.currentTarget.src = "https://via.placeholder.com/150";
-              }
-            }}
-          />
+          src={equipo.imagen || PLACEHOLDER_IMG}
+          alt={equipo.nombre}
+          width={300}
+          height={300}
+          className="object-cover rounded-lg shadow-lg"
+          onError={(e) => {
+            const defaultImg = "https://raw.githubusercontent.com/AndreAbreo/PFTglobal/AndreTest6/frontend/public/images/logo/LogoCodigo.jpg";
+            if (e.currentTarget.src !== defaultImg) {
+              e.currentTarget.src = defaultImg;
+            }
+          }}
+        />
+        
         ) : (
           <span className="text-gray-400 italic">Sin imagen</span>
         )

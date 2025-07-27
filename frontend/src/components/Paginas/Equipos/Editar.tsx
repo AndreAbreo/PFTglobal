@@ -4,7 +4,8 @@ import { useParams } from "next/navigation";
 import fetcher from "@/components/Helpers/Fetcher";
 
 const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY as string;
-const PLACEHOLDER_IMG = "https://via.placeholder.com/300x200?text=Sin+imagen";
+const PLACEHOLDER_IMG = "https://raw.githubusercontent.com/AndreAbreo/PFTglobal/AndreTest6/frontend/public/images/logo/LogoCodigo.jpg";
+
 
 const EditarEquipo: React.FC = () => {
   const params = useParams();
@@ -150,8 +151,7 @@ const EditarEquipo: React.FC = () => {
         setImagen(data.data.url);
         setMessage("Imagen subida correctamente");
       } else {
-        setImagen(PLACEHOLDER_IMG);
-        setMessage("No se pudo subir la imagen, se usará una imagen por defecto.");
+        throw new Error("Fallo la API de ImgBB");
       }
     } catch (err: any) {
       setImagen(PLACEHOLDER_IMG);
@@ -160,6 +160,7 @@ const EditarEquipo: React.FC = () => {
     }
     setLoading(false);
   };
+  
 
   // Validación de garantía
   const checkGarantiaVencida = () => {

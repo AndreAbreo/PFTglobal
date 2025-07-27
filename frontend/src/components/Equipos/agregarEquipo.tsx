@@ -9,6 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn, useSession } from 'next-auth/react';
 
+const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY as string;
+
 const EquiposCreate = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -54,7 +56,7 @@ const EquiposCreate = () => {
       formData.append('image', file);
 
       try {
-        const res = await fetch('https://api.imgbb.com/1/upload?key=7c25531eca2149d7618fe5241473b513', {
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
           method: 'POST',
           body: formData,
         });
