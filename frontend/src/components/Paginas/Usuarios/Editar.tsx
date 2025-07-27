@@ -4,9 +4,18 @@ import EditDynamic, { Field } from "@/components/Helpers/EditDynamic";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Usuario } from "@/types/Usuario"; // Ajusta la ruta según corresponda
+import { validateAndFormatCI } from "@/components/Helpers/CedulaHelper";
 
 const fields: Field<Usuario>[] = [
-  { label: "Cédula", accessor: "cedula", type: "text", validate: (value) => value ? undefined : "La cédula es obligatoria" },
+  {
+    label: "Cédula",
+    accessor: "cedula",
+    type: "text",
+    validate: (value) => {
+      const { isValid, error } = validateAndFormatCI(String(value || ""));
+      return isValid ? undefined : error || "La cédula es obligatoria";
+    },
+  },
   { label: "Email", accessor: "email", type: "email", validate: (value) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(value) ? undefined : "El email no es válido";
