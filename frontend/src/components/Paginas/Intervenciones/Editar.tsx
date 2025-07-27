@@ -284,7 +284,7 @@ const EditarIntervencion: React.FC = () => {
               onClick={() => window.history.back()}
               className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
             >
-              Cancelar
+              Volver
             </button>
             <button
               type="submit"
@@ -317,7 +317,7 @@ const EditarIntervencion: React.FC = () => {
                 onClick={() => setShowConfirm(false)}
                 className="px-4 py-2 rounded border border-stroke text-black hover:shadow-1 dark:border-strokedark dark:text-white"
               >
-                Cancelar
+                Volver
               </button>
               <button
                 onClick={handleConfirm}

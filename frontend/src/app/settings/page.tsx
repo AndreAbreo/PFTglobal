@@ -671,7 +671,7 @@ const Settings = () => {
                         setSuccess(null);
                       }}
                     >
-                      Cancelar
+                      Volver
                     </button>
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90 disabled:opacity-50"
@@ -738,7 +738,7 @@ const Settings = () => {
                 className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                 onClick={() => setShowConfirmModal(false)}
               >
-                Cancelar
+                Volver
               </button>
               <button
                 className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90 disabled:opacity-50"

@@ -419,7 +419,7 @@ const DynamicTable: React.FC<TableProps> = ({
                   onClick={() => setShowModal(false)}
                   disabled={loadingDelete}
                 >
-                  Cancelar
+                  Volver
                 </button>
               </div>
             </div>

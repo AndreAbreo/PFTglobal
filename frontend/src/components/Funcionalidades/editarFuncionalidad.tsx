@@ -127,7 +127,7 @@ const EditFuncionalidad = () => {
               onClick={() => router.push('/funcionalidades')}
               className='px-4 py-2 ml-2 text-white bg-neutral-500 rounded hover:bg-neutral-700'
           >
-            Cancelar
+            Volver
           </button>
         </form>
       </div>

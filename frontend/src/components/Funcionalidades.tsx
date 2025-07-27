@@ -83,7 +83,7 @@ const FuncionalidadesList: React.FC<FuncionalidadesListProps> = (params) => {
                                 onClick={() => setShowConfirmModal(false)}
                                 className='bg-violet-800 text-white p-2 rounded'
                             >
-                                Cancelar
+                                Volver
                             </button>
                         </div>
                     </div>

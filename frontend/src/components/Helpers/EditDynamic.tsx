@@ -364,7 +364,7 @@ function EditDynamic<T extends { id: number }>({
             onClick={() => router.push(backLink)}
             className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
           >
-            Cancelar
+            Volver
           </button>
         </div>
       </form>
@@ -380,7 +380,7 @@ function EditDynamic<T extends { id: number }>({
                 onClick={() => setShowConfirmModal(false)}
                 className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
               >
-                Cancelar
+                Volver
               </button>
               <button
                 onClick={handleConfirmSubmit}

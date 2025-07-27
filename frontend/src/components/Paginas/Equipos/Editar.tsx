@@ -420,7 +420,7 @@ const EditarEquipo: React.FC = () => {
             onClick={() => window.history.back()}
             className="px-6 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
           >
-            Cancelar
+            Volver
           </button>
           <button
             type="submit"
@@ -451,7 +451,7 @@ const EditarEquipo: React.FC = () => {
                 onClick={() => setShowConfirm(false)}
                 className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
               >
-                Cancelar
+                Volver
               </button>
               <button
                 onClick={handleConfirm}
@@ -476,7 +476,7 @@ const EditarEquipo: React.FC = () => {
                 onClick={() => setShowGarantiaWarning(false)}
                 className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
               >
-                Cancelar
+                Volver
               </button>
               <button
                 onClick={() => {

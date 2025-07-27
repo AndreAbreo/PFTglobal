@@ -270,7 +270,7 @@ const ListarEquipos: React.FC = () => {
                 }}
                 className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
               >
-                Cancelar
+                Volver
               </button>
               <button
                 onClick={confirmarEliminacion}
