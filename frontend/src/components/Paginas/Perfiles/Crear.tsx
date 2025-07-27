@@ -9,6 +9,7 @@ const CrearPerfil = () => (
       { label: "Nombre del Perfil", accessor: "nombrePerfil", type: "text", required: true },
     ]}
     successMessage="Perfil creado exitosamente"
+    backLink="/perfiles"
   />
 );
 

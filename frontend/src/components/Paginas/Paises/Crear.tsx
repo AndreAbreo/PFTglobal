@@ -12,6 +12,7 @@ const CrearPais: React.FC = () => {
     <CreateDynamic
       fields={fields}
       createUrl="/paises/crear"
+      backLink="/paises"
     />
   );
 };

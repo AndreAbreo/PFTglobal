@@ -40,6 +40,7 @@ const CrearProveedor: React.FC = () => {
       createUrl="/proveedores/crear"
       fields={fields}
       successMessage="Proveedor creado exitosamente"
+      backLink="/proveedores"
     />
   );
 };

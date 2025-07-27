@@ -61,6 +61,7 @@ const VerProveedor: React.FC = () => {
               <DetailView
                 data={proveedor}
                 columns={columns}
+                backLink="/proveedores"
               />
             </div>
           </div>
