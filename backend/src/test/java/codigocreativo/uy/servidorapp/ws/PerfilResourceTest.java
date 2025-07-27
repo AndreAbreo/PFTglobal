@@ -113,7 +113,7 @@ class PerfilResourceTest {
         Response response = perfilResource.eliminarPerfil(id);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("{\"message\":\"Perfil inactivado correctamente\"}", response.getEntity());
+        assertEquals("{\"message\":\"Perfil desactivado correctamente\"}", response.getEntity());
         verify(perfilRemote, times(1)).obtenerPerfil(id);
         verify(perfilRemote, times(1)).eliminarPerfil(any(PerfilDto.class));
     }

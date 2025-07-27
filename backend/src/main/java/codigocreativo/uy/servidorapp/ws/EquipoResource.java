@@ -89,7 +89,7 @@ public class EquipoResource {
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Inactivar un equipo", description = "Inactiva un equipo en la base de datos", tags = { "Equipos" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Equipo inactivado correctamente"),
+            @ApiResponse(responseCode = "200", description = "Equipo desactivado correctamente"),
             @ApiResponse(responseCode = "400", description = "Solicitud inválida - Campos obligatorios faltantes", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "404", description = "Equipo no encontrado", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))

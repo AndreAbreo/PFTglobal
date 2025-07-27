@@ -90,7 +90,7 @@ class ProveedoresResourceTest {
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Map<String, String> entity = (Map<String, String>) response.getEntity();
-        assertEquals("Proveedor inactivado correctamente", entity.get("message"));
+        assertEquals("Proveedor desactivado correctamente", entity.get("message"));
         verify(er, times(1)).eliminarProveedor(1L);
     }
 

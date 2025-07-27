@@ -244,7 +244,7 @@ public class UsuarioResource {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Usuario inactivado correctamente",
+                    description = "Usuario desactivado correctamente",
                     content = @Content(schema = @Schema(implementation = String.class))
             ),
             @ApiResponse(
@@ -313,7 +313,7 @@ public class UsuarioResource {
             }
 
             er.inactivarUsuario(emailSolicitante, usuarioAInactivar.getCedula());
-            return Response.status(200).entity("{\"message\":\"Usuario inactivado correctamente\"}").build();
+            return Response.status(200).entity("{\"message\":\"Usuario desactivado correctamente\"}").build();
         } catch (ServiciosException e) {
             if (e.getMessage().contains("No autorizado") || e.getMessage().contains("no tiene permisos")) {
                 return Response.status(Response.Status.FORBIDDEN)

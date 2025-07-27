@@ -383,7 +383,7 @@ class UsuarioResourceTest {
         Response response = usuarioResource.inactivarUsuario(idUsuario, token);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("{\"message\":\"Usuario inactivado correctamente\"}", response.getEntity());
+        assertEquals("{\"message\":\"Usuario desactivado correctamente\"}", response.getEntity());
         verify(usuarioRemote, times(1)).inactivarUsuario(anyString(), anyString());
     }
 

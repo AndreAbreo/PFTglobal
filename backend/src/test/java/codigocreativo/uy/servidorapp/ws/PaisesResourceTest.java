@@ -169,7 +169,7 @@ class PaisesResourceTest {
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Map<String, String> entity = (Map<String, String>) response.getEntity();
-        assertEquals("País inactivado correctamente", entity.get("message"));
+        assertEquals("País desactivado correctamente", entity.get("message"));
         verify(er, times(1)).inactivarPais(1L);
     }
 

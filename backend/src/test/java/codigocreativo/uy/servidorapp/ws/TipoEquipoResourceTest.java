@@ -125,7 +125,7 @@ class TipoEquipoResourceTest {
         
         @SuppressWarnings("unchecked")
         Map<String, String> responseBody = (Map<String, String>) response.getEntity();
-        assertEquals("Tipo de equipo inactivado correctamente", responseBody.get("message"));
+        assertEquals("Tipo de equipo desactivado correctamente", responseBody.get("message"));
         
         verify(er, times(1)).eliminarTiposEquipo(id);
     }

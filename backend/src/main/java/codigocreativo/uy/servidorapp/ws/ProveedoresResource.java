@@ -66,13 +66,13 @@ public class ProveedoresResource {
     @Path("/inactivar")
     @Operation(summary = "Inactivar un proveedor", description = "Inactiva un proveedor en la base de datos", tags = { "Proveedores" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Proveedor inactivado correctamente", content = @Content(schema = @Schema(example = "{\"message\": \"Proveedor inactivado correctamente\"}"))),
+            @ApiResponse(responseCode = "200", description = "Proveedor desactivado correctamente", content = @Content(schema = @Schema(example = "{\"message\": \"Proveedor desactivado correctamente\"}"))),
             @ApiResponse(responseCode = "404", description = "Proveedor no encontrado", content = @Content(schema = @Schema(example = "{\"error\": \"Proveedor no encontrado\"}")))
     })
     public Response eliminarProveedor(@Parameter(description = "ID del proveedor a inactivar", required = true) @QueryParam("id") Long id) {
         try {
             this.er.eliminarProveedor(id);
-            return Response.ok(java.util.Map.of(MESSAGE, "Proveedor inactivado correctamente")).build();
+            return Response.ok(java.util.Map.of(MESSAGE, "Proveedor desactivado correctamente")).build();
         } catch (Exception e) {
             return Response.status(404).entity(java.util.Map.of(ERROR, e.getMessage())).build();
         }

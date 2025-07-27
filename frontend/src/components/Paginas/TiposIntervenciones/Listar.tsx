@@ -49,7 +49,7 @@ const ListarTiposIntervenciones: React.FC = () => {
     try {
       await fetcher(`/tipoIntervenciones/inactivar?id=${id}`, { method: "DELETE" });
       await handleSearch();
-      alert("Tipo de intervención inactivado correctamente");
+      alert("Tipo de intervención desactivado correctamente");
     } catch (err: any) {
       alert("Error al inactivar: " + err.message);
     }
