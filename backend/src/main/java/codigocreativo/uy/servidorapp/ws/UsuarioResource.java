@@ -365,10 +365,8 @@ public class UsuarioResource {
             if (nombreUsuario != null && !nombreUsuario.isEmpty()) filtros.put("nombreUsuario", nombreUsuario);
             if (email != null && !email.isEmpty()) filtros.put(EMAIL, email);
 
-            // Filtro por estado: default "ACTIVO"
-            if (estado == null || estado.isEmpty()) {
-                filtros.put("estado", "ACTIVO");
-            } else if (!estado.equalsIgnoreCase("default")) {
+            // Filtro por estado
+            if (estado != null && !estado.isEmpty() && !estado.equalsIgnoreCase("default")) {
                 filtros.put("estado", estado);
             }
 
