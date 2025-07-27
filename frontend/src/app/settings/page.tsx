@@ -4,6 +4,8 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useState, useEffect } from "react";
 import fetcher from "@/components/Helpers/Fetcher";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { validateAndFormatCI } from "@/components/Helpers/CedulaHelper";
 
 interface UsuariosTelefonos {
   id: number;
@@ -76,6 +78,7 @@ const Settings = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [cedulaError, setCedulaError] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [pendingChanges, setPendingChanges] = useState<any>(null);
 
@@ -155,6 +158,16 @@ const Settings = () => {
     return true;
   };
 
+  const validarCedula = (ci: string): boolean => {
+    const { isValid, error } = validateAndFormatCI(ci);
+    if (!isValid) {
+      setCedulaError(error || "Cédula inválida");
+      return false;
+    }
+    setCedulaError(null);
+    return true;
+  };
+
   // Funciones para manejar teléfonos
   const agregarTelefono = () => {
     if (!nuevoTelefono.trim()) return;
@@ -206,11 +219,18 @@ const Settings = () => {
       validarConfirmacionContrasenia(formData.contrasenia, value);
     } else if (name === "email") {
       validarEmail(value);
+    } else if (name === "cedula") {
+      validarCedula(value);
     }
   };
 
   // Validar formulario completo
   const validarFormulario = (): boolean => {
+    // Validar cédula
+    if (!validarCedula(formData.cedula)) {
+      return false;
+    }
+
     // Validar contraseña
     if (!validarContrasenia(formData.contrasenia)) {
       return false;
@@ -241,7 +261,7 @@ const Settings = () => {
     // Crear objeto de usuario completo con los datos modificados
     const usuarioCompleto: Usuario = {
       id: usuario!.id,
-      cedula: formData.cedula,
+      cedula: formData.cedula.replace(/\D/g, ""),
       email: formData.email,
       contrasenia: formData.contrasenia || null,
       fechaNacimiento: formData.fechaNacimiento,
@@ -406,7 +426,11 @@ const Settings = () => {
                         Cédula
                       </label>
                       <input
-                        className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className={`w-full rounded border px-4.5 py-3 text-black focus-visible:outline-none dark:text-white ${
+                          cedulaError
+                            ? "border-red-500 bg-red-50 dark:bg-red-900/20"
+                            : "border-stroke bg-gray focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
+                        }`}
                         type="text"
                         name="cedula"
                         id="cedula"
@@ -414,6 +438,9 @@ const Settings = () => {
                         onChange={handleInputChange}
                         required
                       />
+                      {cedulaError && (
+                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{cedulaError}</p>
+                      )}
                     </div>
 
                     <div className="w-full sm:w-1/2">
@@ -645,38 +672,17 @@ const Settings = () => {
                     )}
                   </div>
 
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="button"
-                      onClick={() => {
-                        setFormData({
-                          cedula: usuario?.cedula || "",
-                          email: usuario?.email || "",
-                          contrasenia: "",
-                          confirmarContrasenia: "",
-                          fechaNacimiento: usuario?.fechaNacimiento ? usuario.fechaNacimiento.split('T')[0] : "",
-                          nombre: usuario?.nombre || "",
-                          apellido: usuario?.apellido || "",
-                          nombreUsuario: usuario?.nombreUsuario || "",
-                        });
-                        setTelefonos(usuario?.usuariosTelefonos || []);
-                        setNuevoTelefono("");
-                        setEditandoTelefono(null);
-                        setTelefonoEditando("");
-                        setPasswordError(null);
-                        setConfirmPasswordError(null);
-                        setEmailError(null);
-                        setError(null);
-                        setSuccess(null);
-                      }}
-                    >
-                      Volver
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90 disabled:opacity-50"
-                      type="submit"
-                      disabled={saving}
+                    <div className="flex justify-end gap-4.5">
+                      <Link
+                        href="/"
+                        className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      >
+                        Volver
+                      </Link>
+                      <button
+                        className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90 disabled:opacity-50"
+                        type="submit"
+                        disabled={saving}
                     >
                       {saving ? "Guardando..." : "Guardar"}
                     </button>
