@@ -78,35 +78,35 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
   };
 
   // Validación de contraseña
-  const validatePassword = (password: string): { isValid: boolean; errors: string[] } => {
-    const errors: string[] = [];
-  
-    if (password.length < 8) {
-      errors.push("Debe tener al menos 8 caracteres");
-    }
-  
-    if (!/[A-Z]/.test(password)) {
-      errors.push("Debe tener al menos una letra mayúscula");
-    }
-  
-    if (!/[a-z]/.test(password)) {
-      errors.push("Debe tener al menos una letra minúscula");
-    }
-  
-    if (!/\d/.test(password)) {
-      errors.push("Debe tener al menos un número");
-    }
-  
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      errors.push("Debe tener al menos un carácter especial (como ! @ # $ etc)");
-    }
-  
-    return {
-      isValid: errors.length === 0,
-      errors
-    };
+  // Validación de contraseña
+ const validatePassword = (password: string): { isValid: boolean; errors: string[] } => {
+  const errors: string[] = [];
+
+  if (password.length < 8) {
+    errors.push("Debe tener al menos 8 caracteres");
+  }
+
+  if (!/[A-Z]/.test(password)) {
+    errors.push("Debe tener al menos una letra mayúscula");
+  }
+
+  if (!/[a-z]/.test(password)) {
+    errors.push("Debe tener al menos una letra minúscula");
+  }
+
+  if (!/\d/.test(password)) {
+    errors.push("Debe tener al menos un número");
+  }
+
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    errors.push("Debe tener al menos un carácter especial (como ! @ # $ etc)");
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
   };
-  
+};
 
   // Validación de edad
   const validateAge = (birthDate: string): boolean => {
@@ -548,8 +548,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
               </div>
               <div className="mt-6 text-center">
                 <p>
-                  ¿Ya tienes una cuenta?{" "}
-                  <Link href="/auth/signin" className="text-primary">Inicia sesión</Link>
+                  {" "}
+                  <Link href="/auth/signin" className="text-primary">--SALIR--</Link>
                 </p>
               </div>
             </form>

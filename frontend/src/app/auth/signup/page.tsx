@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const SignUp: React.FC = () => {
-  return <RegisterForm />;
+  return <RegisterForm requiresAuth={false} />
 };
 
 export default SignUp;

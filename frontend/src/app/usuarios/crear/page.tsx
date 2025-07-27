@@ -11,7 +11,7 @@ const CrearUsuarioPage = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Crear Usuario" />
-            <RegisterForm requiresAuth={true} />
+            <RegisterForm requiresAuth={false} />
         </DefaultLayout>
     );
 };
