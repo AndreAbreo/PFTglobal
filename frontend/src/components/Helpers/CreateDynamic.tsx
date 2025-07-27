@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import fetcher from "@/components/Helpers/Fetcher";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
@@ -58,9 +59,21 @@ type Props = {
   successMessage?: string;
   errorMessage?: string;
   onSuccess?: (data: any) => void;
+  /**
+   * (Opcional) Ruta a la que se redirigirá cuando se haga clic en el botón
+   * "Volver al listado".
+   */
+  backLink?: string;
 };
 
-const CreateDynamic: React.FC<Props> = ({ fields, createUrl, successMessage, errorMessage, onSuccess }) => {
+const CreateDynamic: React.FC<Props> = ({
+  fields,
+  createUrl,
+  successMessage,
+  errorMessage,
+  onSuccess,
+  backLink,
+}) => {
   const [form, setForm] = useState<Record<string, any>>(() => {
     const initial: Record<string, any> = {};
     fields.forEach(f => {
@@ -265,6 +278,16 @@ const CreateDynamic: React.FC<Props> = ({ fields, createUrl, successMessage, err
             className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 disabled:opacity-60"
           />
         </div>
+        {backLink && (
+          <div className="mt-6 flex gap-4">
+            <Link
+              href={backLink}
+              className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Volver al listado
+            </Link>
+          </div>
+        )}
       </form>
       {/* Modal de confirmación */}
       {showConfirm && (

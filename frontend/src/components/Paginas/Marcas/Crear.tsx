@@ -16,6 +16,7 @@ const CrearMarca: React.FC = () => {
     <CreateDynamic
       fields={fields}
       createUrl="/marca/crear"
+      backLink="/marca"
     />
   );
 };

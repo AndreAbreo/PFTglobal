@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import fetcher from "@/components/Helpers/Fetcher";
 
 const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY as string;
@@ -350,8 +351,19 @@ const CrearEquipo: React.FC = () => {
         </div>
         {error && <div className="mt-4 text-red-500">{error}</div>}
         {message && <div className="mt-4 text-green-600">{message}</div>}
-        <div className="mt-6 flex justify-end gap-4">
-          <input type="submit" value={loading ? "Creando..." : "Crear equipo"} disabled={loading} className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer disabled:opacity-60" />
+        <div className="mt-6 flex gap-4 justify-end">
+          <input
+            type="submit"
+            value={loading ? "Creando..." : "Crear equipo"}
+            disabled={loading}
+            className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer disabled:opacity-60"
+          />
+          <Link
+            href="/equipos"
+            className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Volver al listado
+          </Link>
         </div>
       </form>
       {/* Modal de advertencia de garantía vencida */}

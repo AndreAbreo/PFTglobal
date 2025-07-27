@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import fetcher from "@/components/Helpers/Fetcher";
 
 interface PerfilDto {
@@ -154,12 +155,20 @@ const EditarFuncionalidad: React.FC = () => {
         </div>
         {error && <div className="mb-4 text-red-500">{error}</div>}
         {message && <div className="mb-4 text-green-600">{message}</div>}
-        <input
-          type="submit"
-          value={saving ? "Guardando..." : "Guardar cambios"}
-          disabled={saving}
-          className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 disabled:opacity-60"
-        />
+        <div className="flex gap-4 mt-4">
+          <input
+            type="submit"
+            value={saving ? "Guardando..." : "Guardar cambios"}
+            disabled={saving}
+            className="cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 disabled:opacity-60"
+          />
+          <Link
+            href="/funcionalidades"
+            className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Volver al listado
+          </Link>
+        </div>
       </form>
     </div>
   );

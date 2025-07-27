@@ -32,6 +32,7 @@ const CrearModelo: React.FC = () => {
     <CreateDynamic
       fields={fields}
       createUrl="/modelo/crear"
+      backLink="/modelo"
     />
   );
 };
