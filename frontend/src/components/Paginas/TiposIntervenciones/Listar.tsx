@@ -14,6 +14,9 @@ const ListarTiposIntervenciones: React.FC = () => {
   const [filters, setFilters] = useState({ nombre: "", estado: "ACTIVO" });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [tipoAEliminar, setTipoAEliminar] = useState<TipoIntervencion | null>(null);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -42,17 +45,23 @@ const ListarTiposIntervenciones: React.FC = () => {
     applyFilters(tiposIntervenciones, clearedFilters);
   };
 
-  const handleInactivar = async (id: number) => {
-    if (!confirm("¿Está seguro que desea inactivar este tipo de intervención?")) {
-      return;
-    }
+  const handleInactivar = (tipo: TipoIntervencion) => {
+    setTipoAEliminar(tipo);
+    setShowDeleteModal(true);
+  };
+
+  const confirmarInactivacion = async () => {
+    if (!tipoAEliminar) return;
+    setLoadingDelete(true);
     try {
-      await fetcher(`/tipoIntervenciones/inactivar?id=${id}`, { method: "DELETE" });
+      await fetcher(`/tipoIntervenciones/inactivar?id=${tipoAEliminar.id}`, { method: "DELETE" });
+      setShowDeleteModal(false);
+      setTipoAEliminar(null);
       await handleSearch();
-      alert("Tipo de intervención desactivado correctamente");
     } catch (err: any) {
       alert("Error al inactivar: " + err.message);
     }
+    setLoadingDelete(false);
   };
 
   useEffect(() => {
@@ -146,7 +155,7 @@ const ListarTiposIntervenciones: React.FC = () => {
                       <div className="flex items-center space-x-3.5">
                         {tipo.estado === "ACTIVO" && (
                           <button
-                            onClick={() => handleInactivar(tipo.id)}
+                            onClick={() => handleInactivar(tipo)}
                             className="inline-flex items-center justify-center rounded-md bg-red-600 px-3 py-1 text-center text-sm font-medium text-white hover:bg-opacity-90"
                             title="Inactivar tipo de intervención"
                           >
@@ -165,6 +174,43 @@ const ListarTiposIntervenciones: React.FC = () => {
           </div>
         )}
       </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-sm w-full">
+            <h3 className="text-lg font-bold mb-4 text-red-600">Inactivar tipo de intervención</h3>
+            <div className="mb-2">
+              <label htmlFor="nombreTipo" className="block font-medium mb-1">Nombre</label>
+              <input
+                id="nombreTipo"
+                type="text"
+                value={tipoAEliminar?.nombreTipo || ""}
+                readOnly
+                className="w-full rounded border border-gray-300 p-2 bg-gray-100"
+              />
+            </div>
+            <p className="mb-4">¿Está seguro de que desea inactivar este tipo de intervención?</p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setTipoAEliminar(null);
+                }}
+                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+              >
+                Volver
+              </button>
+              <button
+                onClick={confirmarInactivacion}
+                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+                disabled={loadingDelete}
+              >
+                {loadingDelete ? "Inactivando..." : "Confirmar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
