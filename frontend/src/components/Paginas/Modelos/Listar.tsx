@@ -49,8 +49,15 @@ const ListarModelos: React.FC = () => {
 
     // Filtrar por nombre
     if (filters.nombre) {
-      filteredData = filteredData.filter((modelo: Modelo) => 
+      filteredData = filteredData.filter((modelo: Modelo) =>
         modelo.nombre.toLowerCase().includes(filters.nombre.toLowerCase())
+      );
+    }
+
+    // Filtrar por marca
+    if (filters.marca) {
+      filteredData = filteredData.filter((modelo: Modelo) =>
+        modelo.idMarca?.nombre.toLowerCase().includes(filters.marca.toLowerCase())
       );
     }
 
@@ -63,7 +70,13 @@ const ListarModelos: React.FC = () => {
 
   const columns: Column<Modelo>[] = [
     { header: "Nombre", accessor: "nombre", type: "text", filterable: true },
-    { header: "Marca", accessor: (row) => row.idMarca?.nombre || "-", type: "text", filterable: false },
+    {
+      header: "Marca",
+      accessor: (row) => row.idMarca?.nombre || "-",
+      type: "text",
+      filterable: true,
+      filterKey: "marca",
+    },
     { header: "Estado", accessor: "estado", type: "text", filterable: true },
   ];
 

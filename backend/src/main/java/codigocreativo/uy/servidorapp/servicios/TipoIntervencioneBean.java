@@ -23,7 +23,7 @@ public class TipoIntervencioneBean implements TipoIntervencioneRemote {
 
     @Override
     public List<TiposIntervencioneDto> obtenerTiposIntervenciones() {
-        List<TiposIntervencione> tiposIntervenciones = em.createQuery("SELECT t FROM TiposIntervencione t WHERE t.estado = 'ACTIVO'", TiposIntervencione.class).getResultList();
+        List<TiposIntervencione> tiposIntervenciones = em.createQuery("SELECT t FROM TiposIntervencione t", TiposIntervencione.class).getResultList();
         return tiposIntervencioneMapper.toDto(tiposIntervenciones);
     }
 

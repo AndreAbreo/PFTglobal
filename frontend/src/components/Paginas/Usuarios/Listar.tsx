@@ -105,7 +105,7 @@ const ListarUsuarios: React.FC = () => {
         data={usuarios}
         withFilters={true}
         filterUrl="/usuarios/filtrar"
-        initialFilters={{ estado: "ACTIVO" }}
+        initialFilters={{ estado: "" }}
         onDataUpdate={setUsuarios}
         withActions={true}
         deleteUrl="/usuarios/inactivar"
