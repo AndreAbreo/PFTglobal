@@ -701,14 +701,14 @@ function DynamicTable<T extends { id: number }>({
             >
               {/* Celdas de datos */}
               {columns.map((col, colIndex) => (
-                  <td key={`cell-${row.id}-${col.header}-${colIndex}`} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
+                  <td key={`cell-${row.id}-${col.header}-${colIndex}`} className="px-6 py-4 whitespace-normal break-words text-sm text-gray-900 dark:text-gray-200">
                   {renderCellContent(col, row)}
                   </td>
               ))}
               
               {/* Columna de acciones */}
               {withActions && (
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
+                 <td className="px-6 py-4 whitespace-normal break-words text-sm text-gray-900 dark:text-gray-200">
                   <div className="flex items-center space-x-2">
                     {/* Botón Ver */}
                     <a
