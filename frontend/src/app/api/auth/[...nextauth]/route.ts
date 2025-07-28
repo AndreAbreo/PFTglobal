@@ -128,8 +128,10 @@ const handler = NextAuth({
           } as NextAuthUser;
         } catch (error) {
           console.error("Google authentication error:", error);
-          throw new Error("Google authentication failed");
+          // Evita mostrar el "issue" visual redirigiendo controladamente
+          return Promise.reject(new Error("Falló el login con Google, intente nuevamente."));
         }
+        
       },
     }),
   ],
