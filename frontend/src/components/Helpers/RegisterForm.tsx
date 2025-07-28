@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import fetcher from "@/components/Helpers/Fetcher";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
@@ -34,6 +35,18 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => {
+
+  const router = useRouter();
+
+  const handleBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      // Navigate to the previous page if there is history
+      window.history.back();
+      return;
+    }
+    // Fallback when there is no navigation history
+    router.push("/auth/signin");
+  };
 
   const [cedula, setCedula] = useState("");
   const [cedulaFormatted, setCedulaFormatted] = useState("");
@@ -549,7 +562,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
               <div className="mt-6 text-center">
                 <p>
                   {" "}
-                  <Link href="/auth/signin" className="text-primary">--SALIR--</Link>
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="text-primary"
+                  >
+                    Volver
+                  </button>
                 </p>
               </div>
             </form>
