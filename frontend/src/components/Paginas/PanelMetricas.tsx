@@ -14,7 +14,7 @@ export default function PanelMetricas() {
       <section className="border p-4 rounded bg-white shadow">
         <h2 className="text-xl font-semibold mb-2">Swagger UI</h2>
         <iframe
-          src="/swagger-ui/index.html"
+          src="http://localhost:8080/ServidorApp-1.0-SNAPSHOT/swagger-ui/#/"
           className="w-full h-[600px] border"
           title="Swagger"
         ></iframe>
@@ -30,13 +30,23 @@ export default function PanelMetricas() {
       </section>
 
       <section className="border p-4 rounded bg-white shadow">
-        <h2 className="text-xl font-semibold mb-2">Reporte Power BI</h2>
+        <h2 className="text-xl font-semibold mb-2">Dashboard Heimdall</h2>
         <iframe
-          src="https://app.powerbi.com/view?r=XXXX"
+          src="http://192.168.1.24:8080/"
           className="w-full h-[600px] border"
-          title="PowerBI"
+          title="Heimdall"
         ></iframe>
       </section>
+
+      <section className="border p-4 rounded bg-white shadow">
+        <h2 className="text-xl font-semibold mb-2">Vista Equipamiento</h2>
+        <iframe
+          src="/metricas/vista_equipamiento.html"
+          className="w-full h-[600px] border"
+          title="Vista Equipamiento"
+        ></iframe>
+      </section>
+
     </div>
   );
 }

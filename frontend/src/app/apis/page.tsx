@@ -1,4 +1,4 @@
-"use client";
+
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import PanelMetricas from "@/components/Paginas/PanelMetricas";
