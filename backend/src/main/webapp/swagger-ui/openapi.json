@@ -6,7 +6,7 @@
     "description": "API para la gestión del mantenimiento de equipos biomedicos en hospitales.\n\nPara autenticación, usa el endpoint: POST /api/usuarios/login para obtener tu JWT.\n\nContact Support:\n Name: Código Creativo\n Email: contacto@codigocreativo.uy"
   },
   "paths": {
-    "/api/equipos/seleccionar/api/equipos/seleccionar": {
+    "/api/equipos/seleccionar": {
       "get": {
         "summary": "Obtiene la información de un equipo específico por su ID",
         "responses": {
@@ -16,7 +16,7 @@
         }
       }
     },
-    "/api/equipos/crear/api/equipos/crear": {
+    "/api/equipos/crear": {
       "post": {
         "summary": "Crea un equipo en la base de datos",
         "responses": {
@@ -26,7 +26,7 @@
         }
       }
     },
-    "/api/equipos/inactivar/api/equipos/inactivar": {
+    "/api/equipos/inactivar": {
       "put": {
         "summary": "Inactiva un equipo en la base de datos",
         "responses": {
@@ -36,7 +36,7 @@
         }
       }
     },
-    "/api/equipos/filtrar/api/equipos/filtrar": {
+    "/api/equipos/filtrar": {
       "get": {
         "summary": "Filtra los equipos según los criterios proporcionados",
         "responses": {
@@ -46,7 +46,7 @@
         }
       }
     },
-    "/api/equipos/modificar/api/equipos/modificar": {
+    "/api/equipos/modificar": {
       "put": {
         "summary": "Modifica la información de un equipo existente en la base de datos",
         "responses": {
@@ -56,7 +56,7 @@
         }
       }
     },
-    "/api/equipos/VerEquipoInactivo/api/equipos/VerEquipoInactivo": {
+    "/api/equipos/VerEquipoInactivo": {
       "get": {
         "summary": "Obtiene la información de un equipo dado de baja por su ID",
         "responses": {
@@ -66,7 +66,7 @@
         }
       }
     },
-    "/api/equipos/listarBajas/api/equipos/listarBajas": {
+    "/api/equipos/listarBajas": {
       "get": {
         "summary": "Obtiene una lista de todos los equipos dados de baja",
         "responses": {
@@ -76,7 +76,7 @@
         }
       }
     },
-    "/api/equipos/listar/api/equipos/listar": {
+    "/api/equipos/listar": {
       "get": {
         "summary": "Obtiene una lista de todos los equipos",
         "responses": {
@@ -86,7 +86,7 @@
         }
       }
     },
-    "/api/funcionalidades/seleccionar/{id}/api/funcionalidades/seleccionar/:id": {
+    "/api/funcionalidades/seleccionar/{id}": {
       "get": {
         "summary": "Obtiene la información de una funcionalidad específica por su ID",
         "responses": {
@@ -96,7 +96,7 @@
         }
       }
     },
-    "/api/funcionalidades/crear/api/funcionalidades/crear": {
+    "/api/funcionalidades/crear": {
       "post": {
         "summary": "Crea una nueva funcionalidad en la base de datos",
         "responses": {
@@ -106,7 +106,7 @@
         }
       }
     },
-    "/api/funcionalidades/eliminar/api/funcionalidades/eliminar": {
+    "/api/funcionalidades/eliminar": {
       "put": {
         "summary": "Elimina una funcionalidad existente por su ID",
         "responses": {
@@ -116,7 +116,7 @@
         }
       }
     },
-    "/api/funcionalidades/listar/api/funcionalidades/listar": {
+    "/api/funcionalidades/listar": {
       "get": {
         "summary": "Obtiene una lista de todas las funcionalidades",
         "responses": {
@@ -126,7 +126,7 @@
         }
       }
     },
-    "/api/funcionalidades/modificar/api/funcionalidades/modificar": {
+    "/api/funcionalidades/modificar": {
       "put": {
         "summary": "Modifica una funcionalidad existente en la base de datos",
         "responses": {
@@ -136,7 +136,7 @@
         }
       }
     },
-    "/api/intervenciones/buscar/{id}/api/intervenciones/buscar/:id": {
+    "/api/intervenciones/buscar/{id}": {
       "get": {
         "summary": "Obtiene la información de una intervención específica por su ID",
         "responses": {
@@ -146,7 +146,7 @@
         }
       }
     },
-    "/api/intervenciones/crear/api/intervenciones/crear": {
+    "/api/intervenciones/crear": {
       "post": {
         "summary": "Crea una nueva intervención en la base de datos",
         "responses": {
@@ -156,7 +156,7 @@
         }
       }
     },
-    "/api/intervenciones/listar/api/intervenciones/listar": {
+    "/api/intervenciones/listar": {
       "get": {
         "summary": "Obtiene una lista de todas las intervenciones",
         "responses": {
@@ -166,7 +166,7 @@
         }
       }
     },
-    "/api/intervenciones/modificar/api/intervenciones/modificar": {
+    "/api/intervenciones/modificar": {
       "put": {
         "summary": "Modifica una intervención existente en la base de datos",
         "responses": {
@@ -176,7 +176,7 @@
         }
       }
     },
-    "/api/intervenciones/reportePorTipo/api/intervenciones/reportePorTipo": {
+    "/api/intervenciones/reportePorTipo": {
       "get": {
         "summary": "Obtiene un reporte de la cantidad de intervenciones por tipo en un rango de fechas especificado",
         "responses": {
@@ -186,7 +186,7 @@
         }
       }
     },
-    "/api/intervenciones/reportePorFechas/api/intervenciones/reportePorFechas": {
+    "/api/intervenciones/reportePorFechas": {
       "get": {
         "summary": "Obtiene una lista de intervenciones en un rango de fechas especificado",
         "responses": {
@@ -196,7 +196,7 @@
         }
       }
     },
-    "/api/marca/seleccionar/api/marca/seleccionar": {
+    "/api/marca/seleccionar": {
       "get": {
         "summary": "Obtiene la información de una marca específica por su ID",
         "responses": {
@@ -206,7 +206,7 @@
         }
       }
     },
-    "/api/marca/crear/api/marca/crear": {
+    "/api/marca/crear": {
       "post": {
         "summary": "Crea una nueva marca en la base de datos",
         "responses": {
@@ -216,7 +216,7 @@
         }
       }
     },
-    "/api/marca/inactivar/api/marca/inactivar": {
+    "/api/marca/inactivar": {
       "put": {
         "summary": "Inactiva una marca en la base de datos",
         "responses": {
@@ -226,7 +226,7 @@
         }
       }
     },
-    "/api/marca/filtrar/api/marca/filtrar": {
+    "/api/marca/filtrar": {
       "get": {
         "summary": "Obtiene una lista de marcas filtradas por estado",
         "responses": {
@@ -236,7 +236,7 @@
         }
       }
     },
-    "/api/marca/listar/api/marca/listar": {
+    "/api/marca/listar": {
       "get": {
         "summary": "Obtiene una lista de todas las marcas de modelos",
         "responses": {
@@ -246,7 +246,7 @@
         }
       }
     },
-    "/api/marca/modificar/api/marca/modificar": {
+    "/api/marca/modificar": {
       "put": {
         "summary": "Modifica la información de una marca existente en la base de datos",
         "responses": {
@@ -256,7 +256,7 @@
         }
       }
     },
-    "/api/modelo/seleccionar/api/modelo/seleccionar": {
+    "/api/modelo/seleccionar": {
       "get": {
         "summary": "Obtiene la información de un modelo específico por su ID",
         "responses": {
@@ -266,7 +266,7 @@
         }
       }
     },
-    "/api/modelo/crear/api/modelo/crear": {
+    "/api/modelo/crear": {
       "post": {
         "summary": "Crea un nuevo modelo de equipo en la base de datos",
         "responses": {
@@ -276,7 +276,7 @@
         }
       }
     },
-    "/api/modelo/inactivar/api/modelo/inactivar": {
+    "/api/modelo/inactivar": {
       "put": {
         "summary": "Inactiva un modelo en la base de datos",
         "responses": {
@@ -286,7 +286,7 @@
         }
       }
     },
-    "/api/modelo/listar/api/modelo/listar": {
+    "/api/modelo/listar": {
       "get": {
         "summary": "Obtiene una lista de todos los modelos de equipos",
         "responses": {
@@ -296,7 +296,7 @@
         }
       }
     },
-    "/api/modelo/modificar/api/modelo/modificar": {
+    "/api/modelo/modificar": {
       "put": {
         "summary": "Modifica la información de un modelo existente en la base de datos",
         "responses": {
@@ -306,7 +306,7 @@
         }
       }
     },
-    "/api/openapi.json/api/openapi.json": {
+    "/api/openapi.json": {
       "get": {
         "summary": "Devuelve el JSON de la especificación OpenAPI de la API para ser consumido por Swagger UI u otras herramientas.",
         "responses": {
@@ -316,7 +316,7 @@
         }
       }
     },
-    "/api/paises/crear/api/paises/crear": {
+    "/api/paises/crear": {
       "post": {
         "summary": "Crea un nuevo país en la base de datos",
         "responses": {
@@ -326,7 +326,7 @@
         }
       }
     },
-    "/api/paises/filtrar/api/paises/filtrar": {
+    "/api/paises/filtrar": {
       "get": {
         "summary": "Obtiene una lista de países filtrados por estado y/o nombre y ordenados alfabéticamente. Si no se proporcionan parámetro",
         "responses": {
@@ -336,7 +336,7 @@
         }
       }
     },
-    "/api/paises/inactivar/api/paises/inactivar": {
+    "/api/paises/inactivar": {
       "put": {
         "summary": "Inactiva un país en la base de datos",
         "responses": {
@@ -346,7 +346,7 @@
         }
       }
     },
-    "/api/paises/listar/api/paises/listar": {
+    "/api/paises/listar": {
       "get": {
         "summary": "Obtiene una lista de todos los países",
         "responses": {
@@ -356,7 +356,7 @@
         }
       }
     },
-    "/api/paises/modificar/api/paises/modificar": {
+    "/api/paises/modificar": {
       "put": {
         "summary": "Modifica la información de un país existente en la base de datos",
         "responses": {
@@ -366,7 +366,7 @@
         }
       }
     },
-    "/api/paises/seleccionar/api/paises/seleccionar": {
+    "/api/paises/seleccionar": {
       "get": {
         "summary": "Obtiene la información de un país específico por su ID",
         "responses": {
@@ -376,7 +376,7 @@
         }
       }
     },
-    "/api/perfiles/crear/api/perfiles/crear": {
+    "/api/perfiles/crear": {
       "post": {
         "summary": "Crea un nuevo perfil de usuario",
         "responses": {
@@ -386,7 +386,7 @@
         }
       }
     },
-    "/api/perfiles/inactivar/api/perfiles/inactivar": {
+    "/api/perfiles/inactivar": {
       "put": {
         "summary": "Inactiva un perfil existente",
         "responses": {
@@ -396,7 +396,7 @@
         }
       }
     },
-    "/api/perfiles/buscarPorEstado/api/perfiles/buscarPorEstado": {
+    "/api/perfiles/buscarPorEstado": {
       "get": {
         "summary": "Obtiene una lista de perfiles que coinciden con el estado especificado",
         "responses": {
@@ -406,7 +406,7 @@
         }
       }
     },
-    "/api/perfiles/buscarPorNombre/api/perfiles/buscarPorNombre": {
+    "/api/perfiles/buscarPorNombre": {
       "get": {
         "summary": "Obtiene una lista de perfiles que coinciden con el nombre especificado",
         "responses": {
@@ -416,7 +416,7 @@
         }
       }
     },
-    "/api/perfiles/modificar/api/perfiles/modificar": {
+    "/api/perfiles/modificar": {
       "put": {
         "summary": "Modifica un perfil existente",
         "responses": {
@@ -426,7 +426,7 @@
         }
       }
     },
-    "/api/perfiles/seleccionar/api/perfiles/seleccionar": {
+    "/api/perfiles/seleccionar": {
       "get": {
         "summary": "Obtiene la información de un perfil específico por su ID",
         "responses": {
@@ -436,7 +436,7 @@
         }
       }
     },
-    "/api/perfiles/listar/api/perfiles/listar": {
+    "/api/perfiles/listar": {
       "get": {
         "summary": "Obtiene una lista de todos los perfiles de usuario",
         "responses": {
@@ -446,7 +446,7 @@
         }
       }
     },
-    "/api/proveedores/seleccionar/api/proveedores/seleccionar": {
+    "/api/proveedores/seleccionar": {
       "get": {
         "summary": "Obtiene la información de un proveedor específico por su ID",
         "responses": {
@@ -456,7 +456,7 @@
         }
       }
     },
-    "/api/proveedores/crear/api/proveedores/crear": {
+    "/api/proveedores/crear": {
       "post": {
         "summary": "Crea un nuevo proveedor de equipos en la base de datos",
         "responses": {
@@ -466,7 +466,7 @@
         }
       }
     },
-    "/api/proveedores/inactivar/api/proveedores/inactivar": {
+    "/api/proveedores/inactivar": {
       "put": {
         "summary": "Inactiva un proveedor en la base de datos",
         "responses": {
@@ -476,7 +476,7 @@
         }
       }
     },
-    "/api/proveedores/filtrar/api/proveedores/filtrar": {
+    "/api/proveedores/filtrar": {
       "get": {
         "summary": "Obtiene una lista de proveedores filtrados por nombre y/o estado y ordenados alfabéticamente. Si no se proporcionan pará",
         "responses": {
@@ -486,7 +486,7 @@
         }
       }
     },
-    "/api/proveedores/listar/api/proveedores/listar": {
+    "/api/proveedores/listar": {
       "get": {
         "summary": "Obtiene una lista de todos los proveedores de equipos ordenados alfabéticamente",
         "responses": {
@@ -496,7 +496,7 @@
         }
       }
     },
-    "/api/proveedores/modificar/api/proveedores/modificar": {
+    "/api/proveedores/modificar": {
       "put": {
         "summary": "Modifica la información de un proveedor existente en la base de datos",
         "responses": {
@@ -506,7 +506,7 @@
         }
       }
     },
-    "/api/tipoEquipos/seleccionar/api/tipoEquipos/seleccionar": {
+    "/api/tipoEquipos/seleccionar": {
       "get": {
         "summary": "Obtiene la información de un tipo de equipo específico por su ID",
         "responses": {
@@ -516,7 +516,7 @@
         }
       }
     },
-    "/api/tipoEquipos/crear/api/tipoEquipos/crear": {
+    "/api/tipoEquipos/crear": {
       "post": {
         "summary": "Crea un nuevo tipo de equipo en la base de datos",
         "responses": {
@@ -526,7 +526,7 @@
         }
       }
     },
-    "/api/tipoEquipos/inactivar/api/tipoEquipos/inactivar": {
+    "/api/tipoEquipos/inactivar": {
       "delete": {
         "summary": "Inactiva un tipo de equipo en la base de datos",
         "responses": {
@@ -536,7 +536,7 @@
         }
       }
     },
-    "/api/tipoEquipos/listar/api/tipoEquipos/listar": {
+    "/api/tipoEquipos/listar": {
       "get": {
         "summary": "Obtiene una lista de todos los tipos de equipos",
         "responses": {
@@ -546,7 +546,7 @@
         }
       }
     },
-    "/api/tipoEquipos/modificar/api/tipoEquipos/modificar": {
+    "/api/tipoEquipos/modificar": {
       "put": {
         "summary": "Modifica la información de un tipo de equipo existente en la base de datos",
         "responses": {
@@ -556,7 +556,7 @@
         }
       }
     },
-    "/api/tipoIntervenciones/seleccionar/api/tipoIntervenciones/seleccionar": {
+    "/api/tipoIntervenciones/seleccionar": {
       "get": {
         "summary": "Obtiene la información de un tipo de intervención específico por su ID",
         "responses": {
@@ -566,7 +566,7 @@
         }
       }
     },
-    "/api/tipoIntervenciones/crear/api/tipoIntervenciones/crear": {
+    "/api/tipoIntervenciones/crear": {
       "post": {
         "summary": "Crea un nuevo tipo de intervención en la base de datos",
         "responses": {
@@ -576,7 +576,7 @@
         }
       }
     },
-    "/api/tipoIntervenciones/inactivar/api/tipoIntervenciones/inactivar": {
+    "/api/tipoIntervenciones/inactivar": {
       "delete": {
         "summary": "Inactiva un tipo de intervención en la base de datos",
         "responses": {
@@ -586,7 +586,7 @@
         }
       }
     },
-    "/api/tipoIntervenciones/listar/api/tipoIntervenciones/listar": {
+    "/api/tipoIntervenciones/listar": {
       "get": {
         "summary": "Obtiene una lista de todos los tipos de intervenciones",
         "responses": {
@@ -596,7 +596,7 @@
         }
       }
     },
-    "/api/tipoIntervenciones/modificar/api/tipoIntervenciones/modificar": {
+    "/api/tipoIntervenciones/modificar": {
       "put": {
         "summary": "Modifica la información de un tipo de intervención existente en la base de datos",
         "responses": {
@@ -606,7 +606,7 @@
         }
       }
     },
-    "/api/ubicaciones/seleccionar/api/ubicaciones/seleccionar": {
+    "/api/ubicaciones/seleccionar": {
       "get": {
         "summary": "Obtiene la información de una ubicación específica por su ID",
         "responses": {
@@ -616,7 +616,7 @@
         }
       }
     },
-    "/api/ubicaciones/listar/api/ubicaciones/listar": {
+    "/api/ubicaciones/listar": {
       "get": {
         "summary": "Obtiene una lista de todas las ubicaciones disponibles",
         "responses": {
@@ -626,7 +626,7 @@
         }
       }
     },
-    "/api/usuarios/seleccionar/api/usuarios/seleccionar": {
+    "/api/usuarios/seleccionar": {
       "get": {
         "summary": "Obtiene la información de un usuario específico por su ID",
         "responses": {
@@ -636,7 +636,7 @@
         }
       }
     },
-    "/api/usuarios/crear/api/usuarios/crear": {
+    "/api/usuarios/crear": {
       "post": {
         "summary": "Crea un nuevo usuario en el sistema",
         "responses": {
@@ -646,7 +646,7 @@
         }
       }
     },
-    "/api/usuarios/filtrar/api/usuarios/filtrar": {
+    "/api/usuarios/filtrar": {
       "get": {
         "summary": "Filtra los usuarios según los criterios proporcionados",
         "responses": {
@@ -656,7 +656,7 @@
         }
       }
     },
-    "/api/usuarios/obtenerUserEmail/api/usuarios/obtenerUserEmail": {
+    "/api/usuarios/obtenerUserEmail": {
       "get": {
         "summary": "Obtiene un usuario por su email",
         "responses": {
@@ -666,7 +666,7 @@
         }
       }
     },
-    "/api/usuarios/google-login/api/usuarios/google-login": {
+    "/api/usuarios/google-login": {
       "post": {
         "summary": "Permite a un usuario iniciar sesión con Google",
         "responses": {
@@ -676,7 +676,7 @@
         }
       }
     },
-    "/api/usuarios/inactivar/api/usuarios/inactivar": {
+    "/api/usuarios/inactivar": {
       "put": {
         "summary": "Permite inactivar un usuario en el sistema. Requiere permisos de Administrador.",
         "responses": {
@@ -686,7 +686,7 @@
         }
       }
     },
-    "/api/usuarios/login/api/usuarios/login": {
+    "/api/usuarios/login": {
       "post": {
         "summary": "Permite a un usuario iniciar sesión en el sistema, debes extraer el jwt para usarlo en swagger",
         "responses": {
@@ -696,7 +696,7 @@
         }
       }
     },
-    "/api/usuarios/modificar-propio-usuario/api/usuarios/modificar-propio-usuario": {
+    "/api/usuarios/modificar-propio-usuario": {
       "put": {
         "summary": "Permite a un usuario modificar sus propios datos",
         "responses": {
@@ -706,7 +706,7 @@
         }
       }
     },
-    "/api/usuarios/modificar/api/usuarios/modificar": {
+    "/api/usuarios/modificar": {
       "put": {
         "summary": "Modifica los datos de un usuario existente. Solo para administradores.",
         "responses": {
@@ -716,7 +716,7 @@
         }
       }
     },
-    "/api/usuarios/listar/api/usuarios/listar": {
+    "/api/usuarios/listar": {
       "get": {
         "summary": "Obtiene una lista de todos los usuarios",
         "responses": {
@@ -726,7 +726,7 @@
         }
       }
     },
-    "/api/usuarios/renovar-token/api/usuarios/renovar-token": {
+    "/api/usuarios/renovar-token": {
       "post": {
         "summary": "Renueva el token JWT antes de su expiración",
         "responses": {
@@ -735,32 +735,21 @@
           }
         }
       }
-    },
-    "/api/{job-id}/api/:job-id": {
-      "get": {
-        "summary": "",
-        "responses": {
-          "200": {
-            "description": "Respuesta exitosa"
-          }
-        }
-      },
-      "post": {
-        "summary": "",
-        "responses": {
-          "200": {
-            "description": "Respuesta exitosa"
-          }
-        }
-      },
-      "delete": {
-        "summary": "",
-        "responses": {
-          "200": {
-            "description": "Respuesta exitosa"
-          }
-        }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT token de autenticación. Obtén tu token usando el endpoint: POST /api/usuarios/login"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }
