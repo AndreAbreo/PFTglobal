@@ -179,8 +179,8 @@ const DynamicTable: React.FC<TableProps> = ({
           Authorization: `Bearer ${token}`,
         },
       });
-      setData(response.data);
-      setFilteredData(response.data);
+      setData(response.data as any);
+      setFilteredData(response.data as any);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -200,7 +200,7 @@ const DynamicTable: React.FC<TableProps> = ({
           .then((response) => {
             setDropdownOptions((prev) => ({
               ...prev,
-              [column.key]: response.data,
+              [column.key]: response.data as any,
             }));
           })
           .catch((error) => console.error('Error fetching dropdown options:', error));
@@ -239,7 +239,7 @@ const DynamicTable: React.FC<TableProps> = ({
       try {
         let response;
         if (deleteEndpoint.includes('/usuarios/inactivar')) {
-          const userSeleccionado = await axios.get(
+          const userSeleccionado = await axios.get<any>(
             `${process.env.NEXT_PUBLIC_API_URL}/usuarios/seleccionar?id=${itemToDelete}`,
             {
               headers: {
@@ -250,7 +250,7 @@ const DynamicTable: React.FC<TableProps> = ({
           let usuario = userSeleccionado.data;
           usuario.estado = 'INACTIVO';
 
-          response = await axios.put(
+          response = await axios.put<any>(
             `${deleteEndpoint}${itemToDelete}`,
             usuario,
             {
