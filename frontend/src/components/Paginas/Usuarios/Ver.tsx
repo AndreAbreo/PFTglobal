@@ -60,7 +60,6 @@ const VerUsuario: React.FC = () => {
         }
     }, [id]);
 
-    // Configuración de columnas para mostrar los datos
     const columns: Column<Usuario>[] = [
         { header: "ID", accessor: "id", type: "number" },
         { header: "Cédula", accessor: "cedula", type: "text" },

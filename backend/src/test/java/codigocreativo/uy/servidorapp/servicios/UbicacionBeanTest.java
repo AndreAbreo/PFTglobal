@@ -48,13 +48,11 @@ class UbicacionBeanTest {
 
         ubicacionBean = new UbicacionBean(ubicacionMapper, equipoMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = UbicacionBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(ubicacionBean, em);
     }
 
-    // ========== TESTS PARA CREAR UBICACION ==========
 
     @Test
     void testCrearUbicacion_conDtoNulo() {
@@ -127,11 +125,9 @@ class UbicacionBeanTest {
         dto.setSector("CENTRO");
         dto.setIdInstitucion(new InstitucionDto().setId(1L));
 
-        // Mock para institución existente
         Institucion institucion = new Institucion();
         when(em.find(Institucion.class, 1L)).thenReturn(institucion);
 
-        // Mock para nombre duplicado
         @SuppressWarnings("unchecked")
         TypedQuery<Long> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(Long.class))).thenReturn(queryMock);
@@ -151,11 +147,9 @@ class UbicacionBeanTest {
         dto.setIdInstitucion(new InstitucionDto().setId(1L));
         Ubicacion entity = new Ubicacion();
 
-        // Mock para institución existente
         Institucion institucion = new Institucion();
         when(em.find(Institucion.class, 1L)).thenReturn(institucion);
 
-        // Mock para nombre único
         @SuppressWarnings("unchecked")
         TypedQuery<Long> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(Long.class))).thenReturn(queryMock);
@@ -171,7 +165,6 @@ class UbicacionBeanTest {
         verify(em, times(1)).flush();
     }
 
-    // ========== TESTS PARA MODIFICAR UBICACION ==========
 
     @Test
     void testModificarUbicacion_conDtoNulo() {
@@ -215,10 +208,8 @@ class UbicacionBeanTest {
         Ubicacion entity = new Ubicacion();
         entity.setId(1L);
 
-        // Mock para ubicación existente
         when(em.find(Ubicacion.class, 1L)).thenReturn(entity);
 
-        // Mock para institución existente
         Institucion institucion = new Institucion();
         when(em.find(Institucion.class, 1L)).thenReturn(institucion);
 
@@ -230,7 +221,6 @@ class UbicacionBeanTest {
         verify(em, times(1)).flush();
     }
 
-    // ========== TESTS PARA BORRAR UBICACION ==========
 
     @Test
     void testBorrarUbicacion_conIdNulo() {
@@ -268,7 +258,6 @@ class UbicacionBeanTest {
         assertEquals("No se encontró la ubicación con ID: 1", exception.getMessage());
     }
 
-    // ========== TESTS PARA MOVER EQUIPO ==========
 
     @Test
     void testMoverEquipoDeUbicacion_conEquipoNulo() {
@@ -300,12 +289,7 @@ class UbicacionBeanTest {
         verify(em).flush();
     }
 
-    // ========== TESTS PARA LISTAR UBICACIONES ==========
 
-
-
-
-    // ========== TESTS PARA OBTENER UBICACION POR ID ==========
 
     @Test
     void testObtenerUbicacionPorId_conIdNulo() {
@@ -349,7 +333,6 @@ class UbicacionBeanTest {
         verify(ubicacionMapper).toDto(entity);
     }
 
-    // ========== TESTS PARA BAJA LOGICA ==========
 
     @Test
     void testBajaLogicaUbicacion_conDtoNulo() {
@@ -373,7 +356,6 @@ class UbicacionBeanTest {
         verify(em).flush();
     }
 
-    // ========== TESTS DE MANEJO DE EXCEPCIONES ==========
 
     @Test
     void testCrearUbicacion_errorBaseDatos() {
@@ -382,18 +364,15 @@ class UbicacionBeanTest {
         dto.setSector("CENTRO");
         dto.setIdInstitucion(new InstitucionDto().setId(1L));
 
-        // Mock para institución existente
         Institucion institucion = new Institucion();
         when(em.find(Institucion.class, 1L)).thenReturn(institucion);
 
-        // Mock para nombre único
         @SuppressWarnings("unchecked")
         TypedQuery<Long> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(Long.class))).thenReturn(queryMock);
         when(queryMock.setParameter("nombre", "nuevaubicacion")).thenReturn(queryMock);
         when(queryMock.getSingleResult()).thenReturn(0L);
 
-        // Error en persist
         when(ubicacionMapper.toEntity(dto)).thenReturn(new Ubicacion());
         doThrow(new RuntimeException("Error de BD")).when(em).persist(any());
 
@@ -408,10 +387,8 @@ class UbicacionBeanTest {
         dto.setId(1L);
         dto.setNombre("UbicacionModificada");
 
-        // Mock para ubicación existente
         when(em.find(Ubicacion.class, 1L)).thenReturn(new Ubicacion());
 
-        // Error en merge
         when(ubicacionMapper.toEntity(dto)).thenReturn(new Ubicacion());
         doThrow(new RuntimeException("Error de BD")).when(em).merge(any());
 

@@ -29,8 +29,7 @@ class PasswordUtilsTest {
         assertNotNull(saltedHash);
         assertTrue(saltedHash.contains(":"));
         assertTrue(saltedHash.length() > 24); // Should be longer than just the salt
-        
-        // Test with empty password
+
         String emptyHash = PasswordUtils.generateSaltedHash("");
         assertNotNull(emptyHash);
         assertTrue(emptyHash.contains(":"));
@@ -60,7 +59,7 @@ class PasswordUtilsTest {
 
     @Test
     void verifyPasswordWithInvalidFormat() {
-        // Test with malformed stored hash (no colon separator)
+
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
             PasswordUtils.verifyPassword("password", "invalidhashformat");
         });
@@ -68,7 +67,7 @@ class PasswordUtilsTest {
 
     @Test
     void verifyPasswordWithEmptyStoredHash() {
-        // Test with empty stored hash
+
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
             PasswordUtils.verifyPassword("password", "");
         });
@@ -76,7 +75,7 @@ class PasswordUtilsTest {
 
     @Test
     void verifyPasswordWithOnlySalt() {
-        // Test with hash that only has salt part
+
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
             PasswordUtils.verifyPassword("password", "saltonly:");
         });

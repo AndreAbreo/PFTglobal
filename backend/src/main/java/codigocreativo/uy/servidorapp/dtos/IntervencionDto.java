@@ -7,9 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * DTO for {@link Intervencion}
- */
+
 public class IntervencionDto implements Serializable {
     private Long id;
     private String motivo;

@@ -34,8 +34,7 @@ public class BajaEquipo implements Serializable {
     
     @Column(name = "COMENTARIOS", length = 1000)
     private String comentarios;
-    
-    // Constructores
+
     public BajaEquipo() {}
     
     public BajaEquipo(Long id, Usuario idUsuario, Equipo idEquipo, String razon, LocalDate fecha, String estado, String comentarios) {
@@ -47,8 +46,7 @@ public class BajaEquipo implements Serializable {
         this.estado = estado;
         this.comentarios = comentarios;
     }
-    
-    // Getters y Setters
+
     public Long getId() {
         return id;
     }

@@ -24,7 +24,7 @@ public class LdapTestResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkUser(@PathParam("usuario") String usuario) {
         try {
-            // Se busca por userPrincipalName (correo completo)
+
             boolean existe = ldapService.usuarioExistePorPrincipal(usuario);
             return Response.status(existe ? 200 : 404)
                     .entity("{\"usuarioExiste\": " + existe + "}")

@@ -6,9 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * DTO for {@link BajaUbicacion}
- */
+
 public class BajaUbicacionDto implements Serializable {
     private Long id;
     private UsuarioDto idUsuario;

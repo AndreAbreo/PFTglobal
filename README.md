@@ -1,15 +1,13 @@
-# Sistema de gestion de mantenimiento
+
 
 En este documento estara presentado los pasos necesarios y requisitos para instalar y ejecutar los servicios que haran funcionar el aplicativo pedido. 
 
 No se tendrán en cuenta aspectos de infraestructura ni aquellos que tengan que ver con seguridad, esta guia solo proporciona informacion para poder ejecutar los aplicativos por parte del lector en su entorno de trabajo
 
 
-## Requisitos
-### Hardware
 - Almenos 16GB RAM
 - 4GB Espacio en disco 
-### Software
+
 - Windows mayor o igual a 7
 - Gestor de paquetes NPM
 - Node
@@ -22,7 +20,6 @@ No se tendrán en cuenta aspectos de infraestructura ni aquellos que tengan que 
 
 (La instalación de las herramientas quedan por fuera de esta guia, dado que existe mucha informacion en linea sobre como instalarlas)
 
-## Instalación
 
 - Abrir una terminal de comandos en el sitio donde desea guardar el proyecto
 - Con el comando git clone clonar el repositorio
@@ -40,9 +37,8 @@ No se tendrán en cuenta aspectos de infraestructura ni aquellos que tengan que 
 - Finalizado todo puede cerrar la ventana de comandos
 - Abrir Docker Desktop y ver que efectivamente el container esta iniciado
 - Felicidades ya tienes los servicios instalados
-## Despliegue
 
-### Desplegar backend
+
 Para desplegar el proyecto debe 
 - Abrir la ubicacion http://localhost:9990 con un navegador
 - Ingresar con las credenciales
@@ -55,7 +51,6 @@ Para desplegar el proyecto debe
 - Esperar a finalizar
 - Ya tienes tus endpoints (backend) funcionando
 
-### Desplegar App Web
 - Abrir una ventana de comandos en /frontend/
 - Introducir los comandos en orden a medida que finalice cada uno
 ```cmd
@@ -64,7 +59,6 @@ npm run dev
 ```
 - Sera avisado del link al cual debe ingresar y tendra su AppWeb desplegada.
 
-### Desplegar app mobile
 - Abrir su dispositivo Android (Debe poder aceptar instalación desde origenes desconocidos)
 - Conectarse mediante cable y descargar al movil la aplicacion .apk en deployments
 - Instalar y ejecutar

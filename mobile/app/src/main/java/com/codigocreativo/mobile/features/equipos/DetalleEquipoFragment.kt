@@ -59,7 +59,6 @@ class DetalleEquipoFragment(
         idInput = view.findViewById(R.id.idInput)
         estadoSpinner = view.findViewById(R.id.estadoSpinner)
 
-        // Populate fields with data from the equipo object
         nombreInput.setText(equipo.nombre)
         modeloPickerFragment.isDataLoaded.observe(this) { isLoaded ->
             if (isLoaded) {
@@ -87,7 +86,6 @@ class DetalleEquipoFragment(
         idInput.text = equipo.id.toString()
         estadoSpinner.setSelection(Estado.entries.indexOf(equipo.estado))
 
-        // Populate estadoSpinner with Estado enum values
         val estadoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,
             Estado.entries.toTypedArray()
         )
@@ -95,7 +93,6 @@ class DetalleEquipoFragment(
         estadoSpinner.adapter = estadoAdapter
         estadoSpinner.setSelection(Estado.entries.indexOf(equipo.estado))
 
-        // Configurar el botón de confirmar
         btnConfirmar.setOnClickListener {
             val nuevoNombre = nombreInput.text.toString()
             val nuevoModelo = modeloPickerFragment.getSelectedModelo()

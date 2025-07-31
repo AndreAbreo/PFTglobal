@@ -8,7 +8,7 @@ const PLACEHOLDER_IMG = "https://raw.githubusercontent.com/AndreAbreo/PFTglobal/
 
 
 const CrearEquipo: React.FC = () => {
-  // Campos del formulario
+
   const [nombre, setNombre] = useState("");
   const [idTipo, setIdTipo] = useState("");
   const [marcas, setMarcas] = useState<any[]>([]);
@@ -26,20 +26,17 @@ const CrearEquipo: React.FC = () => {
   const [imagenPreview, setImagenPreview] = useState<string | null>(null);
   const [imagenFile, setImagenFile] = useState<File | null>(null);
 
-  // Opciones de selects
   const [tipos, setTipos] = useState<any[]>([]);
   const [paises, setPaises] = useState<any[]>([]);
   const [proveedores, setProveedores] = useState<any[]>([]);
   const [ubicaciones, setUbicaciones] = useState<any[]>([]);
 
-  // Estados de UI
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showGarantiaWarning, setShowGarantiaWarning] = useState(false);
 
-  // Fetch de opciones al montar
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -61,7 +58,6 @@ const CrearEquipo: React.FC = () => {
     fetchOptions();
   }, []);
 
-  // Fetch modelos cuando cambia la marca
   useEffect(() => {
     const fetchModelos = async () => {
       setIdModelo("");
@@ -70,7 +66,7 @@ const CrearEquipo: React.FC = () => {
         return;
       }
       try {
-        // Buscar todos los modelos y filtrar por marca
+
         const modelosData = await fetcher<any[]>("/modelo/listar", { method: "GET" });
         setModelos(modelosData.filter(m => m.estado === "ACTIVO" && m.idMarca.id === Number(idMarca)));
       } catch (err: any) {
@@ -81,7 +77,6 @@ const CrearEquipo: React.FC = () => {
     fetchModelos();
   }, [idMarca]);
 
-  // Imagen: preview y subida a imgbb
   const handleImagenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -115,9 +110,7 @@ const CrearEquipo: React.FC = () => {
     }
     setLoading(false);
   };
-  
 
-  // Validación de garantía
   const checkGarantiaVencida = () => {
     if (!garantia) return false;
     const hoy = new Date();
@@ -125,14 +118,12 @@ const CrearEquipo: React.FC = () => {
     return garantiaDate < hoy;
   };
 
-  // Validación de campos obligatorios
   const isFormValid = () => {
     return (
       nombre && idTipo && idMarca && idModelo && nroSerie && garantia && idPais && idProveedor && fechaAdquisicion && idInterno && idUbicacion && imagen
     );
   };
 
-  // Envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -173,7 +164,7 @@ const CrearEquipo: React.FC = () => {
         body: equipo,
       });
       setMessage("Equipo creado exitosamente");
-      // Limpiar formulario
+
       setNombre(""); setIdTipo(""); setIdMarca(""); setIdModelo(""); setNroSerie(""); setGarantia(""); setIdPais(""); setIdProveedor(""); setFechaAdquisicion(""); setIdInterno(""); setIdUbicacion(""); setImagen(""); setImagenPreview(null); setImagenFile(null);
     } catch (err: any) {
       setError("Error al crear el equipo: " + err.message);
@@ -337,37 +328,7 @@ const CrearEquipo: React.FC = () => {
             <input
               id="imagen"
               type="file"
-              accept="image/*"
-              onChange={handleImagenChange}
-              className="mb-2"
-            />
-            <button type="button" onClick={handleSubirImagen} className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 mb-2" disabled={!imagenFile || loading}>
-              {loading ? "Subiendo..." : "Subir imagen"}
-            </button>
-            {imagenPreview && (
-              <div className="mb-2"><img src={imagenPreview} alt="Preview" className="h-32 rounded border" /></div>
-            )}
-            <input type="text" value={imagen} readOnly className="w-full rounded border border-gray-300 p-2 bg-gray-100" placeholder="URL de la imagen" />
-          </div>
-        </div>
-        {error && <div className="mt-4 text-red-500">{error}</div>}
-        {message && <div className="mt-4 text-green-600">{message}</div>}
-        <div className="mt-6 flex gap-4 justify-end">
-          <input
-            type="submit"
-            value={loading ? "Creando..." : "Crear equipo"}
-            disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer disabled:opacity-60"
-          />
-          <Link
-            href="/equipos"
-            className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Volver al listado
-          </Link>
-        </div>
-      </form>
-      {/* Modal de advertencia de garantía vencida */}
+              accept="image}
       {showGarantiaWarning && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-sm w-full">
@@ -380,7 +341,7 @@ const CrearEquipo: React.FC = () => {
           </div>
         </div>
       )}
-      {/* Modal de confirmación */}
+      {}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-sm w-full">

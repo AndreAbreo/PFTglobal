@@ -116,7 +116,7 @@ class PaisBeanTest {
         List<PaisDto> result = paisBean.obtenerPaisPorEstadoOpcional(null);
         
         assertNotNull(result);
-        // Verifica que se llama al método obtenerpais() (sin filtro)
+
         verify(em).createQuery("SELECT p FROM Pais p ORDER BY p.nombre ASC", Pais.class);
     }
 
@@ -208,7 +208,7 @@ class PaisBeanTest {
         List<PaisDto> result = paisBean.filtrarPaises(null, null);
         
         assertNotNull(result);
-        // Verifica que se llama al método obtenerpais() (sin filtro)
+
         verify(em).createQuery("SELECT p FROM Pais p ORDER BY p.nombre ASC", Pais.class);
     }
 
@@ -268,8 +268,7 @@ class PaisBeanTest {
         when(query.getSingleResult()).thenReturn(0L);
         
         paisBean.crearPais(dto);
-        
-        // Verifica que el nombre se formateó correctamente
+
         assertEquals("Uruguay", dto.getNombre());
         verify(em).persist(any());
     }
@@ -285,8 +284,7 @@ class PaisBeanTest {
         when(query.getSingleResult()).thenReturn(0L);
         
         paisBean.crearPais(dto);
-        
-        // Verifica que se asigna el estado ACTIVO
+
         assertEquals(codigocreativo.uy.servidorapp.enumerados.Estados.ACTIVO, dto.getEstado());
         verify(em).persist(any());
     }

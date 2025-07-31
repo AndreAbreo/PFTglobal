@@ -56,13 +56,11 @@ public class FuncionalidadBean implements FuncionalidadRemote {
     public FuncionalidadDto actualizar(FuncionalidadDto funcionalidadDto) {
         Funcionalidad funcionalidad = funcionalidadMapper.toEntity(funcionalidadDto, new CycleAvoidingMappingContext());
 
-        // Asegúrate de que la funcionalidad existe antes de intentar actualizarla
         Funcionalidad funcionalidadExistente = em.find(Funcionalidad.class, funcionalidad.getId());
         if (funcionalidadExistente == null) {
             return null; // Devuelve null si no se encuentra la funcionalidad
         }
 
-        // Actualizar la lista de perfiles asociados
         List<FuncionalidadesPerfiles> funcionalidadesPerfilesNuevas = new ArrayList<>();
         for (PerfilDto perfilDto : funcionalidadDto.getPerfiles()) {
             Perfil perfil = em.find(Perfil.class, perfilDto.getId());
@@ -74,31 +72,26 @@ public class FuncionalidadBean implements FuncionalidadRemote {
             funcionalidadesPerfilesNuevas.add(fp);
         }
 
-        // Setea la nueva lista de perfiles en la funcionalidad
         funcionalidad.setFuncionalidadesPerfiles(funcionalidadesPerfilesNuevas);
 
-        // Guardar la funcionalidad actualizada
         em.merge(funcionalidad);
         em.flush();
 
-        // Retornar el DTO actualizado
         return funcionalidadMapper.toDto(funcionalidad, new CycleAvoidingMappingContext());
     }
 
     @Override
     public void eliminar(Long id) throws ServiciosException {
-        // Validar que el ID no sea null
+
         if (id == null) {
             throw new ServiciosException("El ID de la funcionalidad es obligatorio para la eliminación");
         }
 
-        // Buscar la funcionalidad
         Funcionalidad funcionalidad = em.find(Funcionalidad.class, id);
         if (funcionalidad == null) {
             throw new ServiciosException(ERROR_FUNCIONALIDAD_NO_ENCONTRADA + id);
         }
 
-        // Cambiar el estado a INACTIVO en lugar de eliminar físicamente
         funcionalidad.setEstado(Estados.INACTIVO);
         em.merge(funcionalidad);
         em.flush();

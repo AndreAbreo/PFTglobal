@@ -20,7 +20,6 @@ const ListarModelos: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Función para cargar todos los modelos
   const loadModelos = async () => {
     setLoading(true);
     try {
@@ -36,25 +35,21 @@ const ListarModelos: React.FC = () => {
     }
   };
 
-  // Función para manejar búsqueda local
   const handleSearch = (filters: any) => {
     let filteredData = allModelos;
 
-    // Filtrar por estado
     if (filters.estado) {
       filteredData = filteredData.filter((modelo: Modelo) => 
         modelo.estado.toLowerCase().includes(filters.estado.toLowerCase())
       );
     }
 
-    // Filtrar por nombre
     if (filters.nombre) {
       filteredData = filteredData.filter((modelo: Modelo) =>
         modelo.nombre.toLowerCase().includes(filters.nombre.toLowerCase())
       );
     }
 
-    // Filtrar por marca
     if (filters.marca) {
       filteredData = filteredData.filter((modelo: Modelo) =>
         modelo.idMarca?.nombre.toLowerCase().includes(filters.marca.toLowerCase())

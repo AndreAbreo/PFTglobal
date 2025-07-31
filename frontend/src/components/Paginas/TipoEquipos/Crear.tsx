@@ -84,7 +84,7 @@ const CrearTipoEquipo: React.FC = () => {
           </Link>
         </div>
       </form>
-      {/* Modal de confirmación */}
+      {}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-sm w-full">

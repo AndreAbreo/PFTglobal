@@ -12,9 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * DTO for {@link Equipo}
- */
+
 public class EquipoDto implements Serializable {
     private Long id;
     private String idInterno;
@@ -33,7 +31,6 @@ public class EquipoDto implements Serializable {
     private LocalDate fechaAdquisicion;
     private Estados estado;
 
-    // Public no-argument constructor
     public EquipoDto() {
     }
 

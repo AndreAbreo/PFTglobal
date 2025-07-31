@@ -12,7 +12,7 @@ class JwtServiceTest {
     @BeforeEach
     void setUp() {
         jwtService = new JwtService();
-        // Usamos una clave segura para los tests
+
     }
 
     @Test
@@ -31,8 +31,8 @@ class JwtServiceTest {
 
     @Test
     void testGenerateTokenReturnsNullOnException() {
-        // Jwts.builder() lanza una excepción si el subject es nulo.
-        // El método debe capturarla y devolver null.
+
+
         String token = jwtService.generateToken(null, "Admin");
         assertNull(token);
     }

@@ -24,7 +24,6 @@ class SelectorUbicacionFragment : Fragment() {
     private var ubicaciones: List<Ubicacion> = emptyList()
     private var pendingSelection: String? = null
 
-    // LiveData to observe the loading state
     private val _isDataLoaded = MutableLiveData<Boolean>()
     val isDataLoaded: LiveData<Boolean> get() = _isDataLoaded
 
@@ -60,13 +59,11 @@ class SelectorUbicacionFragment : Fragment() {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerUbicacion.adapter = adapter
 
-                    // If there was a pending selection, set it now
                     pendingSelection?.let {
                         setSelectedUbicacion(it)
                         pendingSelection = null
                     }
 
-                    // Update the loading state
                     _isDataLoaded.value = true
                 }.onFailure { exception ->
                     Log.e("SelectorUbicacionFragment", "Error al cargar los países", exception)
@@ -87,7 +84,7 @@ class SelectorUbicacionFragment : Fragment() {
                 spinnerUbicacion.setSelection(index)
             }
         } else {
-            // If ubicaciones is not yet initialized, store the selection for later
+
             pendingSelection = nombreUbicacion
         }
     }

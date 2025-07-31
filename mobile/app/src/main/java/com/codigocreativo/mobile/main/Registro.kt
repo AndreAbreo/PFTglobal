@@ -41,7 +41,6 @@ class Registro : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
 
-        // Inicializar SelectorPerfilFragment
         perfilPickerFragment = SelectorPerfilFragment()
         perfilPickerFragment.isDataLoaded.observe(this, Observer { isLoaded ->
             if (isLoaded) {
@@ -56,7 +55,6 @@ class Registro : AppCompatActivity() {
             insets
         }
 
-        // Obtener referencias a los elementos de la interfaz
         val btnRegister = findViewById<MaterialButton>(R.id.btnRegister)
         val etCedula = findViewById<EditText>(R.id.etCedula)
         val etEmail = findViewById<EditText>(R.id.etEmail)
@@ -73,10 +71,10 @@ class Registro : AppCompatActivity() {
         configureUsernameGeneration(etFirstName, etLastName, etUsername)
 
         btnRegister.setOnClickListener {
-          //  if (perfilSeleccionado == null) {
-            //    showToast("Debe seleccionar un perfil")
-            //    return@setOnClickListener
-      //      }
+
+
+
+
 
             val birthDate = validateAndGetDate(etBirthdate.text.toString())
             if (birthDate == null) {

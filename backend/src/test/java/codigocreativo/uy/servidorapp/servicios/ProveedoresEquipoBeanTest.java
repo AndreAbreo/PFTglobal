@@ -196,7 +196,7 @@ class ProveedoresEquipoBeanTest {
         List<ProveedoresEquipoDto> result = bean.filtrarProveedores(null, null);
         
         assertNotNull(result);
-        // Verifica que se llama al método obtenerProveedores() (sin filtro)
+
         verify(em).createQuery("SELECT p FROM ProveedoresEquipo p ORDER BY p.nombre ASC", ProveedoresEquipo.class);
     }
 

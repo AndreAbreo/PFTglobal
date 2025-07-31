@@ -6,9 +6,7 @@ import codigocreativo.uy.servidorapp.enumerados.Estados;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * DTO for {@link codigocreativo.uy.servidorapp.entidades.ProveedoresEquipo}
- */
+
 public class ProveedoresEquipoDto implements Serializable {
     private Long id;
     private String nombre;

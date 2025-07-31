@@ -42,24 +42,19 @@ public class UsuarioBean implements UsuarioRemote {
 
     @Override
     public void crearUsuario(UsuarioDto u) throws ServiciosException {
-        // Validar que el usuario no sea nulo
+
         if (u == null) {
             throw new ServiciosException("Usuario nulo");
         }
-        
-        // Validar que el usuario sea mayor de edad
+
         validarMayorDeEdad(u.getFechaNacimiento());
-        
-        // Validar que el email sea único
+
         validarEmailUnico(u.getEmail());
-        
-        // Validar formato de cédula usando la librería CIUY
+
         validarFormatoCedula(u.getCedula());
-        
-        // Validar que la cédula sea única
+
         validarCedulaUnica(u.getCedula());
-        
-        // La contraseña ya debe estar validada y hasheada antes de llegar aquí
+
         if (u.getContrasenia() == null || u.getContrasenia().trim().isEmpty()) {
             throw new ServiciosException("La contraseña es obligatoria");
         }
@@ -68,9 +63,7 @@ public class UsuarioBean implements UsuarioRemote {
         em.merge(usuarioMapper.toEntity(u, new CycleAvoidingMappingContext()));
     }
 
-    /**
-     * Valida que el usuario sea mayor de edad
-     */
+    
     private void validarMayorDeEdad(LocalDate fechaNacimiento) throws ServiciosException {
         if (fechaNacimiento == null) {
             throw new ServiciosException("La fecha de nacimiento es obligatoria");
@@ -84,9 +77,7 @@ public class UsuarioBean implements UsuarioRemote {
         }
     }
 
-    /**
-     * Valida que el email sea único en la base de datos
-     */
+    
     private void validarEmailUnico(String email) throws ServiciosException {
         if (email == null || email.trim().isEmpty()) {
             throw new ServiciosException("El email es obligatorio");
@@ -98,26 +89,22 @@ public class UsuarioBean implements UsuarioRemote {
                     .getSingleResult();
             throw new ServiciosException("Ya existe un usuario con el email: " + email);
         } catch (NoResultException e) {
-            // El email no existe, es válido
+
         }
     }
 
-    /**
-     * Valida el formato de la cédula uruguaya usando la librería CIUY
-     */
+    
     private void validarFormatoCedula(String cedula) throws ServiciosException {
         if (cedula == null || cedula.trim().isEmpty()) {
             throw new ServiciosException("La cédula es obligatoria");
         }
         
         String cedulaLimpia = cedula.trim();
-        
-        // Validar que la cédula solo contenga dígitos
+
         if (!cedulaLimpia.matches("\\d+")) {
             throw new ServiciosException("La cédula debe contener solo números: " + cedula);
         }
-        
-        // Validar que la cédula no exceda 8 dígitos
+
         if (cedulaLimpia.length() > 8) {
             throw new ServiciosException("La cédula no puede tener más de 8 dígitos: " + cedula);
         }
@@ -125,22 +112,20 @@ public class UsuarioBean implements UsuarioRemote {
         Validator validator = new Validator();
         
         try {
-            // Usar la librería CIUY para validar la cédula uruguaya
+
             if (!validator.validateCi(cedulaLimpia)) {
                 throw new ServiciosException("La cédula no es válida: " + cedula);
             }
         } catch (StringIndexOutOfBoundsException e) {
-            // Capturar la excepción específica de la librería CIUY
+
             throw new ServiciosException("La cédula tiene un formato inválido: " + cedula);
         } catch (Exception e) {
-            // Capturar cualquier otra excepción de la librería
+
             throw new ServiciosException("Error al validar la cédula: " + cedula);
         }
     }
 
-    /**
-     * Valida que la cédula sea única en la base de datos
-     */
+    
     private void validarCedulaUnica(String cedula) throws ServiciosException {
         try {
             em.createQuery("SELECT u FROM Usuario u WHERE u.cedula = :cedula", Usuario.class)
@@ -148,7 +133,7 @@ public class UsuarioBean implements UsuarioRemote {
                     .getSingleResult();
             throw new ServiciosException("Ya existe un usuario con la cédula: " + cedula);
         } catch (NoResultException e) {
-            // La cédula no existe, es válida
+
         }
     }
 
@@ -207,15 +192,14 @@ public class UsuarioBean implements UsuarioRemote {
     @Override
     public UsuarioDto login(String usuario, String password) {
         try {
-            // Buscar usuario por email
+
             Usuario user = em.createQuery("SELECT u FROM Usuario u WHERE u.email = :usuario", Usuario.class)
                     .setParameter("usuario", usuario)
                     .getSingleResult();
-            
-            // Verificar la contraseña
+
             if (user.getContrasenia() != null && PasswordUtils.verifyPassword(password, user.getContrasenia())) {
                 UsuarioDto userDto = usuarioMapper.toDto(user, new CycleAvoidingMappingContext());
-                // Por seguridad, no devolver la contraseña hasheada
+
                 userDto.setContrasenia(null);
                 return userDto;
             }
@@ -276,7 +260,7 @@ public class UsuarioBean implements UsuarioRemote {
                 queryBuilder.append(" AND u.estado = :estado");
                 estadoValido = true;
             } catch (IllegalArgumentException e) {
-                // Estado inválido, se ignora
+
             }
         }
 
@@ -312,9 +296,7 @@ public class UsuarioBean implements UsuarioRemote {
     }
 
 
-    /**
-     * Valida la contraseña según las reglas de negocio
-     */
+    
     public void validarContrasenia(String contrasenia) throws ServiciosException {
         List<String> errores = new ArrayList<>();
 
@@ -351,43 +333,35 @@ public class UsuarioBean implements UsuarioRemote {
     }
 
 
-    /**
-     * Valida que un usuario pueda ser desactivado por otro usuario
-     */
+    
     public void validarInactivacionUsuario(String emailSolicitante, String cedulaUsuarioAInactivar) throws ServiciosException {
-        // Obtener el usuario que solicita la inactivación
+
         UsuarioDto solicitante = findUserByEmail(emailSolicitante);
         if (solicitante == null) {
             throw new ServiciosException("Usuario solicitante no encontrado");
         }
-        
-        // Verificar que el solicitante sea administrador o aux administrativo
+
         String perfilSolicitante = solicitante.getIdPerfil().getNombrePerfil();
         if (!perfilSolicitante.equals(ADMINISTRADOR) && !perfilSolicitante.equals(SUPER_ADMIN) && !perfilSolicitante.equals("Aux Administrativo")) {
             throw new ServiciosException("Requiere ser Administrador o Aux Administrativo para inactivar usuarios");
         }
-        
-        // Obtener el usuario a inactivar
+
         UsuarioDto usuarioAInactivar = obtenerUsuarioPorCI(cedulaUsuarioAInactivar);
         if (usuarioAInactivar == null) {
             throw new ServiciosException("Usuario a inactivar no encontrado");
         }
-        
-        // Verificar que no se esté intentando inactivar a sí mismo
+
         if (usuarioAInactivar.getEmail().equals(emailSolicitante)) {
             throw new ServiciosException("No puedes inactivar tu propia cuenta");
         }
-        
-        // Verificar que no se esté intentando inactivar a otro administrador
+
         if (usuarioAInactivar.getIdPerfil().getNombrePerfil().equals(ADMINISTRADOR) ||
                 usuarioAInactivar.getIdPerfil().getNombrePerfil().equals(SUPER_ADMIN)) {
             throw new ServiciosException("No puedes inactivar a otro administrador");
         }
     }
     
-    /**
-     * Inactiva un usuario después de validar los permisos
-     */
+    
     public void inactivarUsuario(String emailSolicitante, String cedulaUsuarioAInactivar) throws ServiciosException {
         validarInactivacionUsuario(emailSolicitante, cedulaUsuarioAInactivar);
         
@@ -395,9 +369,7 @@ public class UsuarioBean implements UsuarioRemote {
         eliminarUsuario(usuarioAInactivar);
     }
     
-    /**
-     * Obtiene usuarios sin contraseña para respuestas seguras
-     */
+    
     public List<UsuarioDto> obtenerUsuariosSinContrasenia() {
         List<UsuarioDto> usuarios = obtenerUsuarios();
         for (UsuarioDto usuario : usuarios) {
@@ -406,9 +378,7 @@ public class UsuarioBean implements UsuarioRemote {
         return usuarios;
     }
     
-    /**
-     * Filtra usuarios y devuelve la lista sin contraseñas
-     */
+    
     public List<UsuarioDto> filtrarUsuariosSinContrasenia(Map<String, String> filtros) {
         List<UsuarioDto> usuarios = obtenerUsuariosFiltrado(filtros);
         for (UsuarioDto usuario : usuarios) {
@@ -417,9 +387,7 @@ public class UsuarioBean implements UsuarioRemote {
         return usuarios;
     }
     
-    /**
-     * Valida que un usuario pueda modificar sus propios datos
-     */
+    
     public void validarModificacionPropia(String emailToken, Long idUsuario) throws ServiciosException {
         UsuarioDto usuario = obtenerUsuario(idUsuario);
         if (usuario == null) {
@@ -431,9 +399,7 @@ public class UsuarioBean implements UsuarioRemote {
         }
     }
     
-    /**
-     * Valida que un administrador pueda modificar usuarios
-     */
+    
     public void validarModificacionPorAdministrador(String emailSolicitante, Long idUsuario) throws ServiciosException {
         UsuarioDto solicitante = findUserByEmail(emailSolicitante);
         if (solicitante == null) {

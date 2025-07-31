@@ -15,11 +15,11 @@ public class JacksonConfig implements ContextResolver<ObjectMapper> {
 
     public JacksonConfig() {
         mapper = new ObjectMapper();
-        // Registrar el módulo para manejar Java 8 Date/Time
+
         mapper.registerModule(new JavaTimeModule());
-        // Registrar el módulo para manejar anotaciones JAXB
+
         mapper.registerModule(new JaxbAnnotationModule());
-        // Evitar recursión infinita
+
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 

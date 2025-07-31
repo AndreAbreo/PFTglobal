@@ -8,7 +8,6 @@ type FetcherOptions = {
   headers?: Record<string, string>;
 };
 
-// Helper function to get auth token
 const getAuthToken = async (requiresAuth: boolean): Promise<string | undefined> => {
   if (!requiresAuth) return undefined;
   
@@ -19,7 +18,6 @@ const getAuthToken = async (requiresAuth: boolean): Promise<string | undefined> 
   return session.jwt;
 };
 
-// Helper function to prepare request
 const prepareRequest = (method: HttpMethod, body: Record<string, any> | null, authToken: string | undefined, headers: Record<string, string>) => {
   const defaultHeaders: HeadersInit = {
     "Content-Type": "application/json",
@@ -37,7 +35,6 @@ const prepareRequest = (method: HttpMethod, body: Record<string, any> | null, au
   return { headers: defaultHeaders, body: requestBody };
 };
 
-// Helper function to handle 401 errors
 const handleUnauthorized = () => {
   console.error("\x1b[31m%s\x1b[0m", "No autorizado. Redirigiendo al login...");
   
@@ -63,7 +60,6 @@ const handleUnauthorized = () => {
   }, 2000);
 };
 
-// Helper function to handle HTTP errors
 const handleHttpError = async (response: Response): Promise<never> => {
   const text = await response.clone().text();
   let errorData: any;
@@ -136,16 +132,13 @@ const fetcher = async <T = any>(
       return null as T;
     }
 
-    // Verificar si la respuesta tiene contenido antes de parsear JSON
     const contentType = response.headers.get('content-type');
     const contentLength = response.headers.get('content-length');
-    
-    // Si no hay content-type de JSON o content-length es 0, retornar null
+
     if ((!contentType || !contentType.includes('application/json')) || contentLength === '0') {
       return null as T;
     }
 
-    // Verificar si hay contenido en el cuerpo
     const text = await response.clone().text();
     if (!text || text.trim() === '') {
       return null as T;
@@ -161,7 +154,6 @@ const fetcher = async <T = any>(
   }
 };
 
-// Clase personalizada para errores HTTP
 class HttpError extends Error {
   public response?: any;
   constructor(public statusCode: number, message: string) {

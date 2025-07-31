@@ -1,6 +1,5 @@
-# Arquitectura del Frontend
 
-## 1. Stack Tecnológico
+
 
 **Framework Principal:** Next.js 15.3.5 con React 19.0.0
 
@@ -20,7 +19,6 @@
 - **Criptografía:** Crypto-browserify 3.12.1
 - **Desarrollo:** TypeScript 5, ESLint 9.17.0, Prettier 3.2.5
 
-## 2. Estructura y Componentes
 
 **Organización de Carpetas:** 
 ```
@@ -50,7 +48,6 @@ src/
 - **Render Props:** Implementado en DynamicTable para renderizado flexible de celdas
 - **Composición:** DefaultLayout compone Header, Sidebar y contenido principal
 
-## 3. Gestión del Estado
 
 **Librería Principal:** React Context API con hooks nativos de React y NextAuth Session
 
@@ -60,7 +57,6 @@ src/
 - **Persistencia:** useLocalStorage hook personalizado para datos que requieren persistencia (tema, preferencias)
 - **Estado de Formularios:** Manejo directo con useState sin librerías externas como Formik
 
-## 4. Comunicación con el Backend
 
 **Cliente HTTP:** Fetch API nativa (no se usa Axios)
 
@@ -68,7 +64,7 @@ src/
 
 **Ejemplo de Llamada a la API:**
 ```typescript
-// Ejemplo de fetcher con autenticación automática
+
 const fetcher = async <T = any>(
   url: string,
   options: FetcherOptions = {}
@@ -95,11 +91,9 @@ const fetcher = async <T = any>(
   return response.json();
 };
 
-// Uso típico en componentes
 const data = await fetcher<Usuario[]>("/usuarios", { requiresAuth: true });
 ```
 
-## 5. Seguridad
 
 **Manejo de Tokens JWT:**
 - **Almacenamiento:** Los tokens se almacenan en la sesión de NextAuth (server-side)
@@ -113,7 +107,7 @@ const data = await fetcher<Usuario[]>("/usuarios", { requiresAuth: true });
 
 **Flujo de Login/Logout:**
 ```typescript
-// Login
+
 const handleSubmit = async (e: React.FormEvent) => {
   const result = await signIn("credentials", {
     redirect: false,
@@ -122,18 +116,16 @@ const handleSubmit = async (e: React.FormEvent) => {
   });
   
   if (result?.error) {
-    // Manejo de errores
+
   } else {
     router.replace("/usuarios"); // Redirección después del login
   }
 };
 
-// Logout
 const handleLogout = () => {
   signOut({ callbackUrl: "/auth/signin" });
 };
 
-// Verificación automática de sesión
 React.useEffect(() => {
   if (status === "authenticated" && session?.jwt) {
     router.replace("/usuarios");
@@ -154,7 +146,6 @@ React.useEffect(() => {
 - **Expiración de Token:** Validación de expiración en el callback JWT
 - **Reautenticación:** Signout forzado cuando la sesión está corrupta o vacía
 
-## 6. Patrones de Diseño
 
 **Patrón 1: Provider Pattern**
 - **Propósito:** Proporcionar contexto y estado global a todos los componentes descendientes sin prop drilling, centralizando la gestión de autenticación y configuración de la aplicación.

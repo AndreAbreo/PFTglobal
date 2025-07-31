@@ -42,7 +42,6 @@ class UsuarioBeanTest {
         validator = new Validator();
     }
 
-    // ========== TESTS PARA CREAR USUARIO ==========
 
     @Test
     void testCrearUsuarioNulo() {
@@ -54,26 +53,21 @@ class UsuarioBeanTest {
     @Test
     void testCrearUsuarioExitoso() {
         UsuarioDto dto = crearUsuarioDtoValido();
-        
-        // Mock para todas las validaciones exitosas
+
         @SuppressWarnings("unchecked")
         TypedQuery<Usuario> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(Usuario.class))).thenReturn(queryMock);
         when(queryMock.setParameter(anyString(), any())).thenReturn(queryMock);
         when(queryMock.getSingleResult()).thenThrow(new NoResultException()); // No existe email ni cédula
-        
-        // Mock para el merge final
+
         when(usuarioMapper.toEntity(any(UsuarioDto.class), any(CycleAvoidingMappingContext.class))).thenReturn(new Usuario());
-        
-        // Ejecutar
+
         assertDoesNotThrow(() -> usuarioBean.crearUsuario(dto));
-        
-        // Verificar
+
         assertEquals(Estados.SIN_VALIDAR, dto.getEstado());
         verify(em).merge(any());
     }
 
-    // ========== TESTS DE VALIDACIÓN DE MAYOR DE EDAD ==========
 
     @Test
     void testCrearUsuarioFechaNacimientoNula() {
@@ -95,7 +89,6 @@ class UsuarioBeanTest {
         assertEquals("El usuario debe ser mayor de edad (mínimo 18 años)", exception.getMessage());
     }
 
-    // ========== TESTS DE VALIDACIÓN DE EMAIL ==========
 
     @Test
     void testCrearUsuarioEmailNulo() {
@@ -120,8 +113,7 @@ class UsuarioBeanTest {
     @Test
     void testCrearUsuarioEmailDuplicado() {
         UsuarioDto dto = crearUsuarioDtoValido();
-        
-        // Mock para simular que el email ya existe
+
         @SuppressWarnings("unchecked")
         TypedQuery<Usuario> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(Usuario.class))).thenReturn(queryMock);
@@ -133,14 +125,12 @@ class UsuarioBeanTest {
         assertEquals("Ya existe un usuario con el email: " + dto.getEmail(), exception.getMessage());
     }
 
-    // ========== TESTS DE VALIDACIÓN DE CÉDULA ==========
 
     @Test
     void testCrearUsuarioCedulaNula() {
         UsuarioDto dto = crearUsuarioDtoValido();
         dto.setCedula(null);
-        
-        // Mock para email único
+
         @SuppressWarnings("unchecked")
         TypedQuery<Usuario> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(Usuario.class))).thenReturn(queryMock);
@@ -157,8 +147,7 @@ class UsuarioBeanTest {
     void testCrearUsuarioCedulaInvalida(String cedula, String expectedMessage) {
         UsuarioDto dto = crearUsuarioDtoValido();
         dto.setCedula(cedula);
-        
-        // Mock para email único
+
         @SuppressWarnings("unchecked")
         TypedQuery<Usuario> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(Usuario.class))).thenReturn(queryMock);
@@ -179,42 +168,34 @@ class UsuarioBeanTest {
         );
     }
 
-    // ========== TESTS DE MÚLTIPLES CÉDULAS VÁLIDAS ==========
 
     @Test
     void testCrearUsuarioConDiferentesCedulasValidas() {
-        // Probar con múltiples cédulas válidas generadas aleatoriamente
+
         for (int i = 0; i < 3; i++) { // Reducido de 5 a 3 para optimizar
             UsuarioDto dto = crearUsuarioDtoValido();
             String cedulaValida = validator.randomCi();
             dto.setCedula(cedulaValida);
-            
-            // Crear nuevos mocks para cada iteración
+
             @SuppressWarnings("unchecked")
             TypedQuery<Usuario> queryMock = mock(TypedQuery.class);
             when(em.createQuery(anyString(), eq(Usuario.class))).thenReturn(queryMock);
             when(queryMock.setParameter(anyString(), any())).thenReturn(queryMock);
             when(queryMock.getSingleResult()).thenThrow(new NoResultException());
-            
-            // Mock para el merge final
+
             when(usuarioMapper.toEntity(any(UsuarioDto.class), any(CycleAvoidingMappingContext.class))).thenReturn(new Usuario());
-            
-            // Verificar que la cédula generada es válida
+
             assertTrue(validator.validateCi(cedulaValida), "La cédula generada debería ser válida: " + cedulaValida);
-            
-            // Ejecutar
+
             assertDoesNotThrow(() -> usuarioBean.crearUsuario(dto));
-            
-            // Verificar
+
             assertEquals(Estados.SIN_VALIDAR, dto.getEstado());
             verify(em, times(1)).merge(any());
-            
-            // Reset mocks para la siguiente iteración
+
             reset(em, usuarioMapper);
         }
     }
 
-    // ========== MÉTODO HELPER ==========
 
     private UsuarioDto crearUsuarioDtoValido() {
         UsuarioDto dto = new UsuarioDto();
@@ -229,7 +210,6 @@ class UsuarioBeanTest {
         return dto;
     }
 
-    // ========== TESTS DE OTROS MÉTODOS (MANTENER) ==========
 
     @Test
     void testModificarUsuario() {

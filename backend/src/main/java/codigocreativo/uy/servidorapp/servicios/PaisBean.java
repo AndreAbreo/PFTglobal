@@ -22,21 +22,21 @@ public class PaisBean implements PaisRemote{
 
     @Override
     public void crearPais(PaisDto pais) {
-        // Validar nombre no nulo ni vacío
+
         if (pais.getNombre() == null || pais.getNombre().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del país no puede ser nulo ni vacío");
         }
-        // Forzar mayúscula en la primer letra
+
         String nombre = pais.getNombre().trim();
         pais.setNombre(nombre.substring(0, 1).toUpperCase() + nombre.substring(1));
-        // Validar que no esté repetido (case-insensitive)
+
         Long count = em.createQuery("SELECT COUNT(p) FROM Pais p WHERE UPPER(p.nombre) = :nombre", Long.class)
             .setParameter("nombre", pais.getNombre().toUpperCase())
             .getSingleResult();
         if (count > 0) {
             throw new IllegalArgumentException("Ya existe un país con ese nombre");
         }
-        // Estado por defecto
+
         pais.setEstado(codigocreativo.uy.servidorapp.enumerados.Estados.ACTIVO);
         Pais paisEntity = paisMapper.toEntity(pais);
         em.persist(paisEntity);
@@ -64,10 +64,10 @@ public class PaisBean implements PaisRemote{
 
     public List<PaisDto> obtenerPaisPorEstadoOpcional(codigocreativo.uy.servidorapp.enumerados.Estados estado) {
         if (estado == null) {
-            // Si no se proporciona estado, devolver todos los países
+
             return obtenerpais();
         } else {
-            // Si se proporciona estado, filtrar por ese estado
+
             return obtenerPaisPorEstado(estado);
         }
     }
@@ -97,16 +97,16 @@ public class PaisBean implements PaisRemote{
         boolean tieneNombre = nombre != null && !nombre.trim().isEmpty();
         
         if (tieneEstado && tieneNombre) {
-            // Filtrar por estado y nombre
+
             return obtenerPaisPorEstadoYNombre(estadoEnum, nombre.trim());
         } else if (tieneEstado && !tieneNombre) {
-            // Filtrar solo por estado
+
             return obtenerPaisPorEstadoOpcional(estadoEnum);
         } else if (!tieneEstado && tieneNombre) {
-            // Filtrar solo por nombre
+
             return obtenerPaisPorNombre(nombre.trim());
         } else {
-            // Sin filtros, devolver todos
+
             return obtenerPaisPorEstadoOpcional(null);
         }
     }

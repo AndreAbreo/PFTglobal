@@ -36,7 +36,6 @@ class MarcaResourceTest {
         marcaDto.setNombre("MarcaTest");
     }
 
-    // ========== TESTS PARA CREAR MARCA ==========
 
     @Test
     void testCrearMarca_exitoso() throws ServiciosException {
@@ -81,7 +80,6 @@ class MarcaResourceTest {
         assertEquals("Error inesperado", responseBody.get("error"));
     }
 
-    // ========== TESTS PARA MODIFICAR MARCA ==========
 
     @Test
     void testModificarMarca_exitoso() throws ServiciosException {
@@ -111,7 +109,6 @@ class MarcaResourceTest {
         assertEquals("Error al modificar marca", responseBody.get("error"));
     }
 
-    // ========== TESTS PARA ELIMINAR MARCA ==========
 
     @Test
     void testEliminarMarca_exitoso() throws ServiciosException {
@@ -143,7 +140,6 @@ class MarcaResourceTest {
         assertEquals("Error al eliminar marca", responseBody.get("error"));
     }
 
-    // ========== TESTS PARA LISTAR MARCAS ==========
 
     @Test
     void testListarTodas_exitoso() {
@@ -171,7 +167,6 @@ class MarcaResourceTest {
         verify(er, times(1)).obtenerMarcasLista();
     }
 
-    // ========== TESTS PARA BUSCAR POR ID ==========
 
     @Test
     void testBuscarPorId_exitoso() throws ServiciosException {
@@ -201,11 +196,10 @@ class MarcaResourceTest {
         verify(er, times(1)).obtenerMarca(id);
     }
 
-    // ========== TESTS OBSOLETOS REMOVIDOS ==========
-    // Los siguientes tests fueron removidos porque ya no aplicaban después de la refactorización:
-    // - testModificarMarca_estadoPermitido: La validación ahora está en el bean
-    // - testModificarMarca_nombreNoPermitido: La validación ahora está en el bean
-    // - Validaciones de lógica de negocio que se movieron al bean
+
+
+
+
 }
 
 

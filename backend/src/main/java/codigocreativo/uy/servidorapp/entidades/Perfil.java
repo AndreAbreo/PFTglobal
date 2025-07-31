@@ -26,7 +26,6 @@ public class Perfil implements Serializable {
     @JsonIgnoreProperties("perfil")
     private List<FuncionalidadesPerfiles> funcionalidadesPerfiles;
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

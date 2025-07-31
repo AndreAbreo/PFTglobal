@@ -56,9 +56,9 @@ class IngresarEquipoFragment(private val onConfirm: (Equipo) -> Unit) : BottomSh
             val tipoEquipo = tipoEquipoPickerFragment.getSelectedTipo()
             val proveedor = proveedorPickerFragment.getSelectedProveedor()
             val nroSerie = nroSerieInput.text.toString()
-            //val garantia = garantiaInput.text.toString()
+
             val garantia = "2024-12-12"
-            //val fechaAdquisicion = fechaAdquisicionInput.text.toString()
+
             val fechaAdquisicion = "2022-01-01"
             val ubicacion = ubicacionPickerFragment.getSelectedUbicacion()
             val imagen = "https://via.placeholder.com/150"

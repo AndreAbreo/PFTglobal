@@ -33,8 +33,7 @@ class BajaUbicacionBeanTest {
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
         bean = new BajaUbicacionBean(bajaUbicacionMapper, ubicacionMapper);
-        
-        // Inyectar mocks usando reflexión
+
         Field emField = BajaUbicacionBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(bean, em);

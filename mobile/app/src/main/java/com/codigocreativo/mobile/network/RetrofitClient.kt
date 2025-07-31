@@ -6,9 +6,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    // Función para obtener una instancia de Retrofit con el token de autenticación
     fun getClient(token: String): Retrofit {
-        // Crear un cliente HTTP que agrega el encabezado Authorization
+
         val client = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val original = chain.request()

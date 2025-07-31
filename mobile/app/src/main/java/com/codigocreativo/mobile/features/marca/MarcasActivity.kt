@@ -46,7 +46,6 @@ class MarcasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_marcas)
 
-        // Configurar RecyclerView
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = MarcaAdapter(filteredList, this) {marca ->
@@ -54,10 +53,9 @@ class MarcasActivity : AppCompatActivity() {
         }
         recyclerView.adapter = adapter
 
-        // Obtener el token JWT almacenado
         val token = SessionManager.getToken(this)
         if (token != null) {
-            // Cargar las marcas desde el API
+
             loadMarcas(token)
         } else {
             Snackbar.make(
@@ -67,10 +65,8 @@ class MarcasActivity : AppCompatActivity() {
             ).show()
         }
 
-        // Configurar filtros
         setupFilters()
 
-        // Action listener de Ingresar Marca
         findViewById<Button>(R.id.btn_ingresar).setOnClickListener {
             val bottomSheetFragment = IngresarMarcaFragment { marca ->
                 if (token != null) {
@@ -110,7 +106,7 @@ class MarcasActivity : AppCompatActivity() {
             }
             bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
         }
-        // Action listener de Volver al Menú
+
         findViewById<Button>(R.id.btn_volver_menu).setOnClickListener {
             val intent = Intent(this, DashboardActivity::class.java)
             startActivity(intent)
@@ -129,7 +125,6 @@ class MarcasActivity : AppCompatActivity() {
                 val position = viewHolder.adapterPosition
                 val marca = adapter.marcaList[position]
 
-                // Show confirmation dialog
                 androidx.appcompat.app.AlertDialog.Builder(this@MarcasActivity).apply {
                     setTitle("Confirmar baja")
                     setMessage("¿Estás seguro que deseas dar de baja al proveedor ${marca.nombre}?")
@@ -248,13 +243,11 @@ class MarcasActivity : AppCompatActivity() {
         val filterName: EditText = findViewById(R.id.filter_name)
         val filterStatus: Spinner = findViewById(R.id.filter_status)
 
-        // Configuración del spinner de estado
         val statusAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, Estado.values())
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         filterStatus.adapter = statusAdapter
 
-        // Listener para aplicar filtros
         val applyFilters = {
             val token = getSharedPreferences("app_prefs", MODE_PRIVATE).getString("jwt_token", null)
             val nombre = filterName.text.toString().takeIf { it.isNotEmpty() }
@@ -287,19 +280,16 @@ class MarcasActivity : AppCompatActivity() {
         }
     }
 
-    // Método de filtro para marcas
     private fun filterMarcas() {
         val nameFilter =
             findViewById<EditText>(R.id.filter_name).text.toString().lowercase(Locale.getDefault())
         val statusFilter = findViewById<Spinner>(R.id.filter_status).selectedItem as Estado
 
-        // Filtrar la lista de marcas
         filteredList = marcasList.filter { marcas ->
             marcas.nombre.lowercase(Locale.getDefault()).contains(nameFilter) &&
                     (statusFilter == Estado.ACTIVO || statusFilter == Estado.INACTIVO || marcas.estado == statusFilter)
         }.toMutableList()
 
-        // Actualizar el RecyclerView con la lista filtrada
         adapter.updateList(filteredList)
     }
 }

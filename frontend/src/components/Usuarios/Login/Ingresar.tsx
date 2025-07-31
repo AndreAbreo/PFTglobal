@@ -18,12 +18,12 @@ const Ingresar = ({ callbackUrl, error }: Props) => {
   
 
   useEffect(() => {
-    // Lee el parámetro de error de la URL y establece el mensaje de error
+
     const errorParam = searchParams.get('error');
     if (errorParam) {
       setErrorMessage(errorParam);
     }
-    //cuando la callback sea el mismo login no debe aaprecer error
+
     if (searchParams.get('callbackUrl') == "http://localhost:3000/usuarios/create") {
       setErrorMessage(null);
     } else if (searchParams.get('callbackUrl')) {
@@ -53,7 +53,7 @@ const Ingresar = ({ callbackUrl, error }: Props) => {
       window.location.href = callbackUrl ?? "/";
     }
   };
-  //si hay sesion redirige a la pagina principal
+
   if (session) {
     redirect("/escritorio");
   }

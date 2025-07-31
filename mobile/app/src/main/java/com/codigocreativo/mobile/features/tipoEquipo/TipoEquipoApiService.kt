@@ -11,7 +11,6 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-// Retrofit interface para la API
 interface TipoEquipoApiService {
     @GET("tipoEquipos/listar")
     suspend fun listarTipoEquipos(

@@ -9,28 +9,23 @@ object SessionManager {
     private const val TOKEN_KEY = "jwt_token"
     private const val USER_KEY = "user_data"
 
-    // Guardar el token y el objeto usuario
     fun saveSessionData(context: Context, token: String, user: User) {
         val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
 
-        // Guardar el JWT
         editor.putString(TOKEN_KEY, token)
 
-        // Guardar el objeto usuario como JSON
         val userJson = Gson().toJson(user)
         editor.putString(USER_KEY, userJson)
 
         editor.apply()
     }
 
-    // Obtener el token
     fun getToken(context: Context): String? {
         val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return sharedPref.getString(TOKEN_KEY, null)
     }
 
-    // Obtener el objeto usuario
     fun getUser(context: Context): User? {
         val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val userJson = sharedPref.getString(USER_KEY, null)
@@ -41,7 +36,6 @@ object SessionManager {
         }
     }
 
-    // Borrar los datos de sesión
     fun clearSession(context: Context) {
         val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPref.edit()

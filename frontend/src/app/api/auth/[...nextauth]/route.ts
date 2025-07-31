@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { jwtDecode } from "jwt-decode";
 
-// Interfaces extendidas
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
@@ -128,7 +127,7 @@ const handler = NextAuth({
           } as NextAuthUser;
         } catch (error) {
           console.error("Google authentication error:", error);
-          // Evita mostrar el "issue" visual redirigiendo controladamente
+
           return Promise.reject(new Error("Falló el login con Google, intente nuevamente."));
         }
         

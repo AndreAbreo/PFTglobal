@@ -24,20 +24,18 @@ public class ProveedoresEquipoBean implements ProveedoresEquipoRemote {
 
     @Override
     public void crearProveedor(ProveedoresEquipoDto proveedoresEquipo) {
-        // Validar nombre no nulo ni vacío
+
         if (proveedoresEquipo.getNombre() == null || proveedoresEquipo.getNombre().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del proveedor no puede ser nulo ni vacío");
         }
-        
-        // Validar que no esté repetido (case-insensitive)
+
         Long count = em.createQuery("SELECT COUNT(p) FROM ProveedoresEquipo p WHERE UPPER(p.nombre) = :nombre", Long.class)
             .setParameter("nombre", proveedoresEquipo.getNombre().trim().toUpperCase())
             .getSingleResult();
         if (count > 0) {
             throw new IllegalArgumentException("Ya existe un proveedor con ese nombre");
         }
-        
-        // Estado por defecto
+
         proveedoresEquipo.setEstado(Estados.ACTIVO);
         ProveedoresEquipo proveedoresEquipoEntity = proveedoresEquipoMapper.toEntity(proveedoresEquipo);
         em.persist(proveedoresEquipoEntity);
@@ -46,7 +44,7 @@ public class ProveedoresEquipoBean implements ProveedoresEquipoRemote {
 
     @Override
     public void modificarProveedor(ProveedoresEquipoDto proveedoresEquipo) {
-        // Validar que no exista otro proveedor con el mismo nombre (excluyendo el actual)
+
         Long count = em.createQuery("SELECT COUNT(p) FROM ProveedoresEquipo p WHERE UPPER(p.nombre) = :nombre AND p.id != :id", Long.class)
             .setParameter("nombre", proveedoresEquipo.getNombre().trim().toUpperCase())
             .setParameter("id", proveedoresEquipo.getId())
@@ -114,16 +112,16 @@ public class ProveedoresEquipoBean implements ProveedoresEquipoRemote {
         boolean tieneNombre = nombre != null && !nombre.trim().isEmpty();
         
         if (tieneEstado && tieneNombre) {
-            // Filtrar por estado y nombre
+
             return buscarProveedoresPorEstadoYNombre(estadoEnum, nombre.trim());
         } else if (tieneEstado && !tieneNombre) {
-            // Filtrar solo por estado
+
             return buscarProveedoresPorEstado(estadoEnum);
         } else if (!tieneEstado && tieneNombre) {
-            // Filtrar solo por nombre
+
             return buscarProveedoresPorNombre(nombre.trim());
         } else {
-            // Sin filtros, devolver todos
+
             return obtenerProveedores();
         }
     }

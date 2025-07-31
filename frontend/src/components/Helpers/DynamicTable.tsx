@@ -3,135 +3,70 @@ import React, { useEffect, useState } from "react";
 import fetcher from "@/components/Helpers/Fetcher";
 import * as XLSX from "xlsx";
 
-/**
- * Configuración de una columna en la tabla dinámica
- */
+
 export interface Column<T> {
-  /** Título que se mostrará en el encabezado de la columna */
+  
   header: string;
-  /**
-   * Acceso a los datos de la columna.
-   * Puede ser:
-   * - Una propiedad del objeto (keyof T)
-   * - Una función que reciba el objeto y devuelva el contenido (permitiendo formatos personalizados)
-   */
+  
   accessor: keyof T | ((row: T) => React.ReactNode);
-  /**
-   * Tipo de dato para formateo automático.
-   * Opciones: "text", "date", "image", "number", "phone", "dropdown", "email"
-   */
+  
   type?: "text" | "date" | "image" | "number" | "phone" | "dropdown" | "email";
-  /**
-   * Indica si este campo es filtrable.
-   * Solo funciona con accesores de tipo string (clave del objeto).
-   * Los filtros se aplican localmente en los datos cargados.
-   */
+  
   filterable?: boolean;
-  /**
-   * Opciones para dropdown (solo cuando type es "dropdown")
-   */
+  
   options?: Array<{ value: string; label: string }>;
-  /**
-   * Clave específica para el filtro en la URL.
-   * Si se proporciona, se usa en lugar del accessor para generar los parámetros de filtro.
-   */
+  
   filterKey?: string;
-  /**
-   * Configuración de imagen (solo cuando type es "image")
-   */
+  
   imageConfig?: {
-    /** Ancho de la imagen en píxeles */
+    
     width?: number;
-    /** Alto de la imagen en píxeles */
+    
     height?: number;
-    /** Clases CSS adicionales para la imagen */
+    
     className?: string;
-    /** Si true, la imagen mantiene su proporción */
+    
     objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
   };
 }
 
-/**
- * Props del componente DynamicTable
- */
+
 interface DynamicTableProps<T extends { id: number }> {
-  /** Configuración de las columnas de la tabla */
+  
   readonly columns: ReadonlyArray<Column<T>>;
-  /** Datos a mostrar en la tabla */
+  
   readonly data: ReadonlyArray<T>;
-  /** Si true, muestra la interfaz de filtros encima de la tabla */
+  
   readonly withFilters?: boolean;
-  /**
-   * Callback opcional que se ejecuta al hacer búsqueda con filtros.
-   * Útil para hacer llamadas a la API con filtros específicos.
-   */
+  
   readonly onSearch?: (filters: Record<string, string>) => void;
-  /**
-   * URL del endpoint para filtrado automático.
-   * Si se proporciona, DynamicTable manejará automáticamente las llamadas a la API.
-   * Ejemplo: "/paises/filtrar" - se llamará con query params como "/paises/filtrar?estado=ACTIVO"
-   */
+  
   readonly filterUrl?: string;
-  /** Filtros iniciales precargados */
+  
   readonly initialFilters?: Record<string, string>;
-  /** Si true, agrega columna de acciones (Ver, Editar, Eliminar) */
+  
   readonly withActions?: boolean;
-  /**
-   * URL para la operación de eliminación.
-   * Se llamará con método PUT enviando el objeto completo.
-   */
+  
   readonly deleteUrl?: string;
-  /**
-   * Base path para generar enlaces de "Ver" y "Editar".
-   * Ejemplo: "/usuarios" genera "/usuarios/ver/123" y "/usuarios/editar/123"
-   */
+  
   readonly basePath?: string;
-  /**
-   * Callback personalizado para eliminación.
-   * Si se define, se usa en lugar de la lógica por defecto.
-   * Debe retornar una promesa con objeto que contenga al menos "message".
-   */
+  
   readonly onDelete?: (id: number, row: T) => Promise<{ message: string }>;
-  /**
-   * Endpoint para obtener objeto completo antes de eliminar.
-   * Se usa cuando necesitas datos específicos para la eliminación.
-   */
+  
   readonly selectUrl?: string;
-  /**
-   * Si true, envía solo el ID en lugar del objeto completo al eliminar.
-   * Útil cuando el backend espera solo el ID en la URL o en el body.
-   */
+  
   readonly sendOnlyId?: boolean;
-  /**
-   * Callback para actualizar los datos cuando se aplican filtros.
-   * Se llama con los nuevos datos obtenidos del endpoint de filtrado.
-   */
+  
   readonly onDataUpdate?: (data: T[]) => void;
-  /**
-   * Mensaje de confirmación para eliminación.
-   * Si se proporciona, se mostrará un modal de confirmación antes de eliminar.
-   */
+  
   readonly confirmDeleteMessage?: string;
-  /** Callback personalizado para recargar datos desde el backend. Si se proporciona, se usa en el botón de refrescar en lugar de la lógica interna. */
+  
   readonly onReload?: () => Promise<void>;
-  /** Si true, incluye la opción "Sin validar" en el filtro de estado */
+  
   readonly includeSinValidar?: boolean;
 }
 
-/**
- * Componente de tabla dinámica con funcionalidades avanzadas
- * 
- * Características:
- * - Filtrado local y remoto de datos
- * - Exportación a Excel
- * - Acciones automáticas (Ver, Editar, Eliminar)
- * - Formateo automático por tipo de dato
- * - Modales de confirmación y error
- * - Soporte para filtros personalizados
- * - Filtrado automático con endpoints (filterUrl)
- * 
- * @template T - Tipo de objeto que representa cada fila (debe tener propiedad 'id')
- */
+
 function DynamicTable<T extends { id: number }>({
   columns,
   data,
@@ -150,30 +85,28 @@ function DynamicTable<T extends { id: number }>({
   onReload,
   includeSinValidar = false,
 }: DynamicTableProps<T>) {
-  // ===== ESTADOS INTERNOS =====
-  // Estados para UI (errores, modales, etc)
-  /** Error durante eliminación */
+
+
+  
   const [deletionError, setDeletionError] = useState<string>("");
   const [showDeletionErrorModal, setShowDeletionErrorModal] = useState(false);
-  /** Modal de confirmación de eliminación */
+  
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
   const [rowIdToDelete, setRowIdToDelete] = useState<number | null>(null);
-  /** Modal de éxito */
+  
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
   
-  // Estados para filtros (sin sincronización automática)
-  /** Filtros aplicados actualmente */
   const [filters, setFilters] = useState<Record<string, string>>(initialFilters);
 
-  // ===== EFECTOS =====
   
-  /** Carga inicial de datos si se proporciona filterUrl */
+  
   useEffect(() => {
     if (filterUrl) {
       const loadInitialData = async () => {
         try {
-          // Aplicar filtros iniciales si existen
+
           let url = filterUrl;
           if (Object.keys(initialFilters).length > 0) {
             const params = new URLSearchParams();
@@ -196,21 +129,16 @@ function DynamicTable<T extends { id: number }>({
     }
   }, [filterUrl]); // Solo se ejecuta cuando cambia filterUrl
 
-  // ===== MANEJADORES DE FILTROS =====
   
-  /**
-   * Actualiza el valor de un filtro específico
-   */
+  
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  /**
-   * Ejecuta la búsqueda con filtros actuales
-   */
+  
   const handleSearch = async () => {
     if (filterUrl) {
-      // Manejo automático con filterUrl
+
       try {
         const params = new URLSearchParams();
         Object.entries(filters).forEach(([key, value]) => {
@@ -225,20 +153,18 @@ function DynamicTable<T extends { id: number }>({
         console.error("Error al filtrar:", error);
       }
     } else if (onSearch) {
-      // Comportamiento original con callback
+
       onSearch(filters);
     }
   };
 
-  /**
-   * Recarga los datos actuales
-   */
+  
   const reloadData = async () => {
-    // Pequeño delay para evitar problemas de timing
+
     await new Promise(resolve => setTimeout(resolve, 100));
     
     if (filterUrl) {
-      // Manejo automático con filterUrl
+
       try {
         const params = new URLSearchParams();
         Object.entries(filters).forEach(([key, value]) => {
@@ -251,10 +177,10 @@ function DynamicTable<T extends { id: number }>({
         }
       } catch (error: any) {
         console.error("Error al recargar datos:", error);
-        // No mostrar error al usuario, solo log
+
       }
     } else if (onSearch) {
-      // Comportamiento original con callback
+
       try {
         onSearch(filters);
       } catch (error: any) {
@@ -263,9 +189,7 @@ function DynamicTable<T extends { id: number }>({
     }
   };
 
-  /**
-   * Limpia todos los filtros y notifica al componente padre
-   */
+  
   const handleClearFilters = async () => {
     const cleared: Record<string, string> = {};
     columns.forEach((col, idx) => {
@@ -277,7 +201,7 @@ function DynamicTable<T extends { id: number }>({
     setFilters(cleared);
     
     if (filterUrl) {
-      // Manejo automático con filterUrl
+
       try {
         const filteredData = await fetcher<T[]>(filterUrl, { method: "GET" });
         if (onDataUpdate) {
@@ -287,16 +211,13 @@ function DynamicTable<T extends { id: number }>({
         console.error("Error al limpiar filtros:", error);
       }
     } else if (onSearch) {
-      // Comportamiento original con callback
+
       onSearch(cleared);
     }
   };
 
-  // ===== MANEJADORES DE ELIMINACIÓN =====
 
-  /**
-   * Prepara el body y URL para la eliminación
-   */
+  
   const prepareDeleteRequest = async (id: number): Promise<{ url: string; body?: any }> => {
     let body = undefined;
     let url = deleteUrl!;
@@ -310,12 +231,12 @@ function DynamicTable<T extends { id: number }>({
     } else if (selectUrl) {
       body = await fetcher<T>(`${selectUrl}?id=${id}`, { method: "GET" });
     } else {
-      // Buscar el objeto en los datos locales
+
       const row = data.find((item) => item.id === id);
       if (row) {
         body = row;
       } else {
-        // Si no se encuentra en los datos locales, intentar obtenerlo del servidor
+
         try {
           const selectUrl = deleteUrl!.replace('/inactivar', '/seleccionar');
           body = await fetcher<T>(`${selectUrl}?id=${id}`, { method: "GET" });
@@ -329,7 +250,7 @@ function DynamicTable<T extends { id: number }>({
     return { url, body };
   };
 
-  /** Callback para manejar la respuesta de eliminación */
+  
   const handleDeleteResponse = (response: { message?: string; error?: string }) => {
     if (response.message) {
       setSuccessMessage(response.message);
@@ -345,9 +266,7 @@ function DynamicTable<T extends { id: number }>({
     }
   };
 
-  /**
-   * Maneja errores de eliminación
-   */
+  
   const handleDeleteError = (error: any) => {
     const errorMsg =
       error?.response?.error || error?.response?.message || error.message || "Error al eliminar.";
@@ -355,10 +274,7 @@ function DynamicTable<T extends { id: number }>({
     setShowDeletionErrorModal(true);
   };
 
-  /**
-   * Elimina un registro usando la lógica configurada
-   * @param id - ID del registro a eliminar
-   */
+  
   const handleDelete = async (id: number) => {
     const row = data.find((item) => item.id === id);
     if (!row) return;
@@ -384,31 +300,26 @@ function DynamicTable<T extends { id: number }>({
     }
   };
 
-  // ===== FUNCIONES AUXILIARES =====
   
-  /**
-   * Formatea una fecha string a formato local
-   */
+  
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    // Ajustar zona horaria
+
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     return date.toLocaleDateString();
   };
 
-  /**
-   * Exporta los datos de la tabla a Excel
-   */
+  
   const handleExportExcel = () => {
-    // Preparar datos para exportación
+
     const exportData = data.map((row) => {
       const rowData: Record<string, any> = {};
       columns.forEach((col) => {
         let value;
         
         if (typeof col.accessor === "function") {
-          // Extraer valor de función personalizada
+
           const rendered = col.accessor(row);
           if (
             typeof rendered === "string" ||
@@ -417,7 +328,7 @@ function DynamicTable<T extends { id: number }>({
           ) {
             value = rendered;
           } else if (React.isValidElement(rendered)) {
-            // Extraer texto de elementos React
+
             const children = (rendered as React.ReactElement<any, any>).props?.children;
             if (
               typeof children === "string" ||
@@ -432,7 +343,7 @@ function DynamicTable<T extends { id: number }>({
             value = "";
           }
         } else {
-          // Extraer valor directo del objeto
+
           value = row[col.accessor];
         }
         rowData[col.header] = value;
@@ -440,26 +351,20 @@ function DynamicTable<T extends { id: number }>({
       return rowData;
     });
 
-    // Crear y descargar archivo Excel
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
     XLSX.writeFile(workbook, "exportacion_tabla.xlsx");
   };
 
-  // ===== RENDERIZADO DE FILTROS =====
   
-  /**
-   * Renderiza un campo de filtro según su tipo
-   */
+  
   const renderFilterField = (col: Column<T>, idx: number) => {
     if (!col.filterable) return null;
-    
-    // Para accessors que son funciones, usar filterKey o un nombre por defecto
+
     const key = col.filterKey || (typeof col.accessor === "string" ? col.accessor : `filter_${idx}`);
     const currentValue = filters[key] || "";
-    
-    // Filtro de estado con opciones predefinidas
+
     if (key === "estado") {
       return (
         <div key={idx} className="flex flex-col">
@@ -480,7 +385,6 @@ function DynamicTable<T extends { id: number }>({
       );
     }
 
-    // Filtro de dropdown personalizado
     if (col.type === "dropdown" && col.options) {
       return (
         <div key={idx} className="flex flex-col">
@@ -503,7 +407,6 @@ function DynamicTable<T extends { id: number }>({
       );
     }
 
-    // Filtro de fecha
     if (col.type === "date") {
       return (
         <div key={idx} className="flex flex-col">
@@ -520,7 +423,6 @@ function DynamicTable<T extends { id: number }>({
       );
     }
 
-    // Filtro de texto (por defecto)
     return (
       <div key={idx} className="flex flex-col">
         <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
@@ -536,11 +438,8 @@ function DynamicTable<T extends { id: number }>({
     );
   };
 
-  // ===== RENDERIZADO DE CELDAS =====
   
-  /**
-   * Renderiza contenido basado en el tipo de columna
-   */
+  
   const renderByType = (col: Column<T>, value: any): React.ReactNode => {
     switch (col.type) {
       case "date":
@@ -569,9 +468,7 @@ function DynamicTable<T extends { id: number }>({
     }
   };
 
-  /**
-   * Renderiza el estado con formato especial
-   */
+  
   const renderEstado = (value: any): React.ReactNode => {
     let colorClass = "";
     let label: string = String(value);
@@ -594,17 +491,14 @@ function DynamicTable<T extends { id: number }>({
     );
   };
 
-  /**
-   * Renderiza el contenido de una celda según su tipo
-   */
+  
   const renderCellContent = (col: Column<T>, row: T) => {
     if (typeof col.accessor === "function") {
       return col.accessor(row);
     }
     
     const value = row[col.accessor];
-    
-    // Formateo especial para campo estado
+
     if (typeof col.accessor === "string" && col.accessor === "estado") {
       return renderEstado(value);
     }
@@ -612,11 +506,10 @@ function DynamicTable<T extends { id: number }>({
     return renderByType(col, value);
   };
 
-  // ===== RENDERIZADO PRINCIPAL =====
   
   return (
     <div className="overflow-x-auto bg-white dark:bg-boxdark p-4 rounded shadow">
-      {/* Sección de filtros */}
+      {}
       {withFilters && (
         <div className="mb-4 p-4 border border-gray-200 rounded bg-gray-50 dark:bg-boxdark-2 dark:border-boxdark-2">
           <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Filtros</h3>
@@ -640,7 +533,7 @@ function DynamicTable<T extends { id: number }>({
         </div>
       )}
 
-      {/* Botones de exportar y refrescar */}
+      {}
       <div className="flex justify-end mb-2 gap-2">
         <button
           onClick={() => {
@@ -666,7 +559,7 @@ function DynamicTable<T extends { id: number }>({
         </button>
       </div>
 
-      {/* Tabla principal */}
+      {}
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 dark:bg-boxdark-2">
           <tr>
@@ -699,18 +592,18 @@ function DynamicTable<T extends { id: number }>({
                   : "bg-white dark:bg-boxdark"
               }
             >
-              {/* Celdas de datos */}
+              {}
               {columns.map((col, colIndex) => (
                   <td key={`cell-${row.id}-${col.header}-${colIndex}`} className="px-6 py-4 whitespace-normal break-words text-sm text-gray-900 dark:text-gray-200">
                   {renderCellContent(col, row)}
                   </td>
               ))}
               
-              {/* Columna de acciones */}
+              {}
               {withActions && (
                  <td className="px-6 py-4 whitespace-normal break-words text-sm text-gray-900 dark:text-gray-200">
                   <div className="flex items-center space-x-2">
-                    {/* Botón Ver */}
+                    {}
                     <a
                       href={`${basePath}/ver/${row.id}`}
                       className="text-blue-600 hover:underline flex items-center gap-1"
@@ -722,7 +615,7 @@ function DynamicTable<T extends { id: number }>({
                       <span className="sr-only">Ver</span>
                     </a>
                     
-                    {/* Botón Editar */}
+                    {}
                     <a
                       href={`${basePath}/editar/${row.id}`}
                       className="text-green-600 hover:underline flex items-center gap-1"
@@ -733,7 +626,7 @@ function DynamicTable<T extends { id: number }>({
                       <span className="sr-only">Editar</span>
                     </a>
                     
-                    {/* Botón Eliminar */}
+                    {}
                     <button
                       onClick={() => {
                         setRowIdToDelete(row.id);
@@ -754,9 +647,9 @@ function DynamicTable<T extends { id: number }>({
         </tbody>
       </table>
 
-      {/* ===== MODALES ===== */}
+      {}
       
-      {/* Modal de error de eliminación */}
+      {}
       {showDeletionErrorModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg max-w-md w-full text-center">
@@ -772,7 +665,7 @@ function DynamicTable<T extends { id: number }>({
         </div>
       )}
       
-      {/* Modal de confirmación de eliminación */}
+      {}
       {showConfirmDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg max-w-md w-full text-center">
@@ -802,7 +695,7 @@ function DynamicTable<T extends { id: number }>({
         </div>
               )}
         
-        {/* Modal de éxito */}
+        {}
         {showSuccessModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded shadow-lg max-w-md w-full text-center">

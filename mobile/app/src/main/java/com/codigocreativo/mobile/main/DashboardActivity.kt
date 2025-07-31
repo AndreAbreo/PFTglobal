@@ -34,11 +34,9 @@ class DashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        // Inicializa el DrawerLayout y NavigationView
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.navigation_view)
 
-        // Inicializa cada CardView
         marcasCard = findViewById(R.id.marcasCard)
         usuarioCard = findViewById(R.id.usuarioCard)
         proveedorCard = findViewById(R.id.proveedorCard)
@@ -46,10 +44,8 @@ class DashboardActivity : AppCompatActivity() {
         tipoEquiposCard = findViewById(R.id.tipoequiposCard)
         modelosCard = findViewById(R.id.modelosCard)
 
-        // Configura el botón del menú lateral
         setupDrawer()
 
-        // Configura los OnClickListener para cada CardView
         marcasCard.setOnClickListener {
             val intent = Intent(this, MarcasActivity::class.java)
             startActivity(intent)
@@ -82,7 +78,7 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun setupDrawer() {
-        // Sincroniza el botón del drawer con la ActionBar (opcional)
+
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -92,15 +88,14 @@ class DashboardActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // Configura el listener para las opciones del menú
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_view_profile -> {
-                    // Lógica para ver perfil
+
                     openProfileScreen()
                 }
                 R.id.nav_logout -> {
-                    // Lógica para cerrar sesión
+
                     logout()
                 }
             }
@@ -108,7 +103,6 @@ class DashboardActivity : AppCompatActivity() {
             true
         }
 
-        // Configura el botón de menú para abrir el drawer
         val menuButton: ImageView = findViewById(R.id.imageMenu)
         menuButton.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
@@ -116,16 +110,16 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun openProfileScreen() {
-        // Implementa la lógica para abrir la pantalla de perfil
-      //  val intent = Intent(this, ProfileActivity::class.java)
-      //  startActivity(intent)
+
+
+
     }
 
     private fun logout() {
-        // Implementa la lógica para cerrar sesión
+
         val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)
         sharedPreferences.edit().clear().apply()
-        // Ejemplo: ir a la pantalla de login o limpiar datos de sesión
+
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()

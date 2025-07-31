@@ -60,41 +60,35 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         }
   
         const userRol = currentSession.user.rol;
-  
-        // Funcionalidades a ocultar del menú (solo para ciertos roles)
+
         const funcionalidadesOcultasMenu = [7, 9, 10, 11, 23, 29, 34, 39, 69, 71, 64,];
-  
-        // Filtrar funcionalidades por el rol del usuario
+
         let filteredFuncionalidades = funcionalidades.filter((func) =>
           func.perfiles.some((perfiles) => perfiles.nombrePerfil === userRol)
         );
-  
-        // Si el rol tiene visibilidad restringida, ocultar ciertas funcionalidades del menú
+
         if (["Tecnico", "Tecnologo", "Ingeniero Biomedico"].includes(userRol)) {
           filteredFuncionalidades = filteredFuncionalidades.filter(
             (func) => !funcionalidadesOcultasMenu.includes(func.id)
           );
         }
 
-        // Ocultar funcionalidades de funcionalidad para Aux Administrativo
         if (userRol === "Aux Administrativo") {
           filteredFuncionalidades = filteredFuncionalidades.filter(
             (func) => ![50, 51, 52, 53, 54].includes(func.id)
           );
         }
 
-         // Ocultar funcionalidades de funcionalidad para Aux Administrativo
          if (userRol === "Administrador") {
           filteredFuncionalidades = filteredFuncionalidades.filter(
             (func) => ![69, 39, 34, 29, 23].includes(func.id)
           );
         }
-  
-        // Agrupar funcionalidades por la primera parte de la ruta
+
         const groups: { [key: string]: MenuGroup } = {};
   
         filteredFuncionalidades.forEach((func) => {
-          // Ignorar rutas que no queremos mostrar en el menú
+
           if (
             func.ruta.includes("/seleccionar") ||
             func.ruta.includes("/modificar-propio-usuario") ||
@@ -179,7 +173,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* <!-- SIDEBAR HEADER --> */}
+        {}
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
           <Link href="/">
             <Image
@@ -211,17 +205,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </svg>
           </button>
         </div>
-        {/* <!-- SIDEBAR HEADER --> */}
+        {}
 
         <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-          {/* <!-- User Role Info --> */}
+          {}
           {session?.user?.rol && (
             <div className="px-6 py-3 border-b border-gray-700">
               <p className="text-sm text-gray-400">Rol actual:</p>
               <p className="text-white font-medium">{session.user.rol}</p>
             </div>
           )}
-          {/* <!-- Sidebar Menu --> */}
+          {}
           <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
             {(() => {
               if (loading) {
@@ -256,7 +250,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               ));
             })()}
           </nav>
-          {/* <!-- Sidebar Menu --> */}
+          {}
         </div>
       </aside>
     </ClickOutside>
