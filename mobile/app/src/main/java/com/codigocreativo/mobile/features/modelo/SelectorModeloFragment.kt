@@ -24,7 +24,6 @@ class SelectorModeloFragment : Fragment() {
     private var modelos: List<Modelo> = emptyList()
     private var pendingModeloSelection: String? = null
 
-    // LiveData to observe the loading state
     private val _isDataLoaded = MutableLiveData<Boolean>()
     val isDataLoaded: LiveData<Boolean> get() = _isDataLoaded
 
@@ -56,13 +55,11 @@ class SelectorModeloFragment : Fragment() {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerModelo.adapter = adapter
 
-                    // If there was a pending country selection, set it now
                     pendingModeloSelection?.let {
                         setSelectedModelo(it)
                         pendingModeloSelection = null
                     }
 
-                    // Update the loading state
                     _isDataLoaded.value = true
                 }.onFailure { exception ->
                     Log.e("SelectorModeloFragment", "Error al cargar los modelos", exception)
@@ -83,7 +80,7 @@ class SelectorModeloFragment : Fragment() {
                 spinnerModelo.setSelection(index)
             }
         } else {
-            // If modelos is not yet initialized, store the selection for later
+
             pendingModeloSelection = nombreModelo
         }
     }

@@ -34,44 +34,39 @@ public class UbicacionBean implements UbicacionRemote {
 
     @Override
     public void crearUbicacion(UbicacionDto ubi) throws ServiciosException {
-        // Validar que el DTO no sea nulo
+
         if (ubi == null) {
             throw new ServiciosException("La ubicación es obligatoria");
         }
-        
-        // Validar que el nombre no sea nulo ni vacío
+
         if (ubi.getNombre() == null || ubi.getNombre().trim().isEmpty()) {
             throw new ServiciosException("El nombre de la ubicación es obligatorio");
         }
-        
-        // Validar que el sector no sea nulo ni vacío
+
         if (ubi.getSector() == null || ubi.getSector().trim().isEmpty()) {
             throw new ServiciosException("El sector de la ubicación es obligatorio");
         }
-        
-        // Validar que la institución no sea nula
+
         if (ubi.getIdInstitucion() == null || ubi.getIdInstitucion().getId() == null) {
             throw new ServiciosException("La institución de la ubicación es obligatoria");
         }
         
         try {
-            // Verificar que la institución existe
+
             Institucion institucion = em.find(Institucion.class, ubi.getIdInstitucion().getId());
             if (institucion == null) {
                 throw new ServiciosException("La institución especificada no existe");
             }
-            
-            // Validar que no exista una ubicación con el mismo nombre (case-insensitive)
+
             validarNombreUnico(ubi.getNombre().trim());
-            
-            // Estado por defecto
+
             ubi.setEstado(Estados.ACTIVO);
             
             Ubicacion ubicacion = ubicacionMapper.toEntity(ubi);
             em.persist(ubicacion);
             em.flush();
         } catch (ServiciosException e) {
-            // Re-lanzar ServiciosException específicas
+
             throw e;
         } catch (Exception e) {
             throw new ServiciosException("Error al crear la ubicación");
@@ -80,29 +75,26 @@ public class UbicacionBean implements UbicacionRemote {
 
     @Override
     public void modificarUbicacion(UbicacionDto ubi) throws ServiciosException {
-        // Validar que el DTO no sea nulo
+
         if (ubi == null) {
             throw new ServiciosException("La ubicación es obligatoria");
         }
-        
-        // Validar que el ID no sea nulo
+
         if (ubi.getId() == null) {
             throw new ServiciosException("El ID de la ubicación es obligatorio para modificar");
         }
-        
-        // Verificar que la ubicación existe
+
         Ubicacion actual = em.find(Ubicacion.class, ubi.getId());
         if (actual == null) {
             throw new ServiciosException("No se encontró la ubicación con ID: " + ubi.getId());
         }
-        
-        // Validar que el nombre no sea nulo ni vacío
+
         if (ubi.getNombre() == null || ubi.getNombre().trim().isEmpty()) {
             throw new ServiciosException("El nombre de la ubicación no puede ser nulo ni vacío");
         }
         
         try {
-            // Validar que no exista otra ubicación con el mismo nombre (excluyendo la actual)
+
             validarNombreUnicoParaModificacion(ubi.getNombre().trim(), ubi.getId());
             
             em.merge(ubicacionMapper.toEntity(ubi));
@@ -129,7 +121,7 @@ public class UbicacionBean implements UbicacionRemote {
             
             em.flush();
         } catch (ServiciosException e) {
-            // Re-lanzar ServiciosException específicas
+
             throw e;
         } catch (Exception e) {
             throw new ServiciosException("Error al borrar la ubicación");
@@ -177,15 +169,14 @@ public class UbicacionBean implements UbicacionRemote {
             Ubicacion ubicacion = em.createQuery("SELECT u FROM Ubicacion u WHERE u.id = :id", Ubicacion.class)
                     .setParameter("id", id)
                     .getSingleResult();
-            
-            // Handle mocked null return (test scenario)
+
             if (ubicacion == null) {
                 throw new ServiciosException("No se encontró la ubicación con ID: " + id);
             }
             
             return ubicacionMapper.toDto(ubicacion);
         } catch (ServiciosException e) {
-            // Re-throw specific ServiciosException
+
             throw e;
         } catch (NoResultException e) {
             throw new ServiciosException("No se encontró la ubicación con ID: " + id);
@@ -210,9 +201,7 @@ public class UbicacionBean implements UbicacionRemote {
         }
     }
     
-    /**
-     * Valida que el nombre de la ubicación sea único en la base de datos
-     */
+    
     private void validarNombreUnico(String nombre) throws ServiciosException {
         try {
             jakarta.persistence.TypedQuery<Long> query = em.createQuery("SELECT COUNT(u) FROM Ubicacion u WHERE UPPER(u.nombre) = :nombre", Long.class);
@@ -224,17 +213,15 @@ public class UbicacionBean implements UbicacionRemote {
                 }
             }
         } catch (ServiciosException e) {
-            // Re-lanzar ServiciosException específicas
+
             throw e;
         } catch (Exception e) {
-            // Handle null query or other exceptions
+
             throw new ServiciosException("Error al validar el nombre de la ubicación");
         }
     }
     
-    /**
-     * Valida que el nombre de la ubicación sea único para modificaciones (excluyendo la ubicación actual)
-     */
+    
     private void validarNombreUnicoParaModificacion(String nombre, Long idActual) throws ServiciosException {
         try {
             jakarta.persistence.TypedQuery<Long> query = em.createQuery("SELECT COUNT(u) FROM Ubicacion u WHERE UPPER(u.nombre) = :nombre AND u.id != :id", Long.class);
@@ -247,10 +234,10 @@ public class UbicacionBean implements UbicacionRemote {
                 }
             }
         } catch (ServiciosException e) {
-            // Re-lanzar ServiciosException específicas
+
             throw e;
         } catch (Exception e) {
-            // Handle null query or other exceptions  
+
             throw new ServiciosException("Error al validar el nombre de la ubicación");
         }
     }

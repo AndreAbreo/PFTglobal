@@ -6,7 +6,6 @@ import java.lang.Exception
 
 class DataRepository {
 
-    // Función suspend genérica para obtener datos de cualquier tipo T
     suspend fun <T> obtenerDatos(
         token: String,
         apiCall: suspend () -> Response<T>

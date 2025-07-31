@@ -144,8 +144,8 @@ tools:context=".main.MainActivity">
             android:orientation="horizontal"
             android:gravity="center">
 
-            <!-- activity_main.xml -->
-            <!-- Google Sign-In Button -->
+            
+            
             <com.google.android.gms.common.SignInButton
                 app:cornerRadius="32dp"
                 android:id="@+id/googleSignInButton"

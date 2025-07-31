@@ -5,39 +5,7 @@ import fetcher from "@/components/Helpers/Fetcher";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
-/**
- * CreateDynamic - Componente de formulario dinámico para crear objetos vía API
- *
- * Props:
- *  - fields: Array de campos, cada uno con:
- *      label: string
- *      accessor: string
- *      type: "text" | "number" | "dropdown" | "checkbox" | "date"
- *      required?: boolean
- *      options?: { label: string; value: any }[] // para dropdowns estáticos
- *      optionsEndpoint?: string // para dropdowns dinámicos
- *      optionLabelKey?: string // para dropdowns dinámicos
- *      optionValueKey?: string // para dropdowns dinámicos
- *      validate?: (value: any) => string | undefined
- *      placeholder?: string
- *  - createUrl: string (endpoint para el POST)
- *  - successMessage?: string
- *  - errorMessage?: string
- *  - onSuccess?: (data: any) => void
- *
- * Ejemplo de uso para crear un Perfil:
- * <CreateDynamic
- *   createUrl="/perfiles/crear"
- *   fields={[
- *     { label: "Nombre del Perfil", accessor: "nombrePerfil", type: "text", required: true },
- *   ]}
- *   successMessage="Perfil creado exitosamente"
- * />
- *
- * Ejemplo de dropdown dinámico:
- * { label: "Perfil", accessor: "idPerfil", type: "dropdown", required: true,
- *   optionsEndpoint: "/perfiles/listar", optionLabelKey: "nombrePerfil", optionValueKey: "id" }
- */
+
 
 export type CreateDynamicField = {
   label: string;
@@ -59,10 +27,7 @@ type Props = {
   successMessage?: string;
   errorMessage?: string;
   onSuccess?: (data: any) => void;
-  /**
-   * (Opcional) Ruta a la que se redirigirá cuando se haga clic en el botón
-   * "Volver al listado".
-   */
+  
   backLink?: string;
 };
 
@@ -92,7 +57,6 @@ const CreateDynamic: React.FC<Props> = ({
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  // Fetch dropdown options dinámicos
   useEffect(() => {
     fields.forEach(async (f) => {
       if (f.type === "dropdown" && f.optionsEndpoint && f.optionLabelKey && f.optionValueKey) {
@@ -106,7 +70,7 @@ const CreateDynamic: React.FC<Props> = ({
               value: opt[f.optionValueKey!],
             })),
           }));
-          // También almacenar los objetos completos
+
           setDropdownObjects(prev => ({
             ...prev,
             [f.accessor]: data,
@@ -122,7 +86,6 @@ const CreateDynamic: React.FC<Props> = ({
     });
   }, [fields]);
 
-  // Flatpickr para fechas
   useEffect(() => {
     fields.forEach(f => {
       if (f.type === "date") {
@@ -134,7 +97,7 @@ const CreateDynamic: React.FC<Props> = ({
         });
       }
     });
-    // eslint-disable-next-line
+
   }, []);
 
   const handleChange = (accessor: string, value: any) => {
@@ -167,14 +130,13 @@ const CreateDynamic: React.FC<Props> = ({
     setMessage(null);
     setError(null);
     try {
-      // Preparar los datos para enviar
+
       const dataToSend = { ...form } as any;
-      
-      // Para campos que requieren enviar el objeto completo
+
       fields.forEach(f => {
         if (f.type === "dropdown" && f.sendFullObject && form[f.accessor]) {
           const selectedId = form[f.accessor];
-          // Si el accessor es idMarca, enviar { id: <number> }
+
           if (f.accessor === "idMarca") {
             dataToSend[f.accessor] = { id: Number(selectedId) };
           } else {
@@ -289,7 +251,7 @@ const CreateDynamic: React.FC<Props> = ({
           </div>
         )}
       </form>
-      {/* Modal de confirmación */}
+      {}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-sm w-full">

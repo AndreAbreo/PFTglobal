@@ -45,7 +45,6 @@ class DetalleUsuarioFragment(
             Institucion(2, "Otra Institucion") // Agrega más según necesites
         )
 
-        // Initialize views
         idInput = view.findViewById(R.id.idInput)
         nombreInput = view.findViewById(R.id.nombreInput)
         apellidoInput = view.findViewById(R.id.apellidoInput)
@@ -62,7 +61,6 @@ class DetalleUsuarioFragment(
         estadoSpinner = view.findViewById(R.id.estadoSpinner)
         institucionSpinner = view.findViewById(R.id.institucionSpinner)
 
-        // Populate fields with data from the usuario object
         idInput.text = usuario.id.toString()
         nombreInput.setText(usuario.nombre)
         apellidoInput.setText(usuario.apellido)
@@ -73,21 +71,17 @@ class DetalleUsuarioFragment(
         nombreUsuarioInput.setText(usuario.nombreUsuario)
         perfilPickerFragment.setSelectedPerfil(usuario.idPerfil.toString())
 
-        // Populate estadoSpinner with Estado enum values
         val estadoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, Estado.values())
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         estadoSpinner.adapter = estadoAdapter
         estadoSpinner.setSelection(Estado.values().indexOf(usuario.estado))
 
-        // Populate institucionSpinner with Institucion enum values
         val institucionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, instituciones.map { it.nombre })
         institucionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         institucionSpinner.adapter = institucionAdapter
         val currentInstitucionIndex = instituciones.indexOfFirst { it.id == usuario.idInstitucion.id }
         if (currentInstitucionIndex != -1) institucionSpinner.setSelection(currentInstitucionIndex)
 
-
-        // Configurar el botón de confirmar
         btnConfirmar.setOnClickListener {
             val nuevoNombre = nombreInput.text.toString()
             val nuevoApellido = apellidoInput.text.toString()
@@ -103,11 +97,8 @@ class DetalleUsuarioFragment(
                 nuevoEmail.isNotBlank() && nuevoTelefono.isNotBlank() && nuevoCedula.isNotBlank() &&
                 nuevoNombreUsuario.isNotBlank() && nuevoPerfil != null) {
 
-                // Create a list of Telefono objects with a single entry for simplicity
                 val nuevosTelefonos = listOf(Telefono(id = 0, numero = nuevoTelefono))
 
-
-                // Update the usuario object with new data
                 val updatedUsuario = Usuario(
                     id = usuario.id,
                     nombre = nuevoNombre,
@@ -123,7 +114,6 @@ class DetalleUsuarioFragment(
                     estado = Estado.values()[estadoSpinner.selectedItemPosition]
                 )
 
-                // Call onEdit callback with updated Usuario object
                 onEdit(updatedUsuario)
                 dismiss()
             } else {

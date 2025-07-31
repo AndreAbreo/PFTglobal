@@ -27,7 +27,6 @@ public class BajaUbicacionBean implements BajaUbicacionRemote {
     private final BajaUbicacionMapper bajaUbicacionMapper;
     private final UbicacionMapper ubicacionMapper;
 
-    // Public no-argument constructor
     public BajaUbicacionBean() {
         this.bajaUbicacionMapper = null;
         this.ubicacionMapper = null;

@@ -8,7 +8,6 @@ const EditarIntervencion: React.FC = () => {
   const params = useParams();
   const id = params.id as string;
 
-  // Campos del formulario
   const [motivo, setMotivo] = useState("");
   const [fechaHora, setFechaHora] = useState("");
   const [comentarios, setComentarios] = useState("");
@@ -16,25 +15,21 @@ const EditarIntervencion: React.FC = () => {
   const [idEquipo, setIdEquipo] = useState("");
   const [idUsuario, setIdUsuario] = useState("");
 
-  // Opciones de selects
   const [tiposIntervencion, setTiposIntervencion] = useState<any[]>([]);
   const [equipos, setEquipos] = useState<any[]>([]);
   const [usuarios, setUsuarios] = useState<any[]>([]);
 
-  // Estados de UI
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Cargar datos de la intervención y opciones
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoadingData(true);
 
-        // Cargar opciones en paralelo
         const [tiposData, equiposData, usuariosData, intervencionData] = await Promise.all([
           fetcher<any[]>("/tipoIntervenciones/listar", { method: "GET" }),
           fetcher<any[]>("/equipos/listar", { method: "GET" }),
@@ -46,7 +41,6 @@ const EditarIntervencion: React.FC = () => {
         setEquipos(equiposData.filter(e => e.estado === "ACTIVO"));
         setUsuarios(usuariosData.filter(u => u.estado === "ACTIVO"));
 
-        // Cargar datos de la intervención
         if (intervencionData) {
           setMotivo(intervencionData.motivo || "");
           setComentarios(intervencionData.comentarios || "");
@@ -54,10 +48,9 @@ const EditarIntervencion: React.FC = () => {
           setIdEquipo(intervencionData.idEquipo?.id?.toString() || "");
           setIdUsuario(intervencionData.idUsuario?.id?.toString() || "");
 
-          // Convertir fecha del backend a formato datetime-local
           if (intervencionData.fechaHora) {
             try {
-              // Si la fecha es un número (timestamp), convertirlo
+
               let fechaValue = intervencionData.fechaHora;
               if (typeof fechaValue === 'number') {
                 fechaValue = new Date(fechaValue).toISOString();
@@ -67,7 +60,7 @@ const EditarIntervencion: React.FC = () => {
               if (fechaLocal) {
                 setFechaHora(fechaLocal);
               } else {
-                // Establecer fecha actual como fallback
+
                 const now = new Date();
                 const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
                   .toISOString().slice(0, 16);
@@ -75,7 +68,7 @@ const EditarIntervencion: React.FC = () => {
               }
             } catch (error) {
               console.error('Error parsing date:', error, intervencionData.fechaHora);
-              // Establecer fecha actual como fallback
+
               const now = new Date();
               const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
                 .toISOString().slice(0, 16);
@@ -97,12 +90,10 @@ const EditarIntervencion: React.FC = () => {
     }
   }, [id]);
 
-  // Validación de campos obligatorios
   const isFormValid = () => {
     return motivo && fechaHora && idTipo && idEquipo && idUsuario;
   };
 
-  // Envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -123,7 +114,7 @@ const EditarIntervencion: React.FC = () => {
     setMessage(null);
 
     try {
-      // Convertir la fecha local a ISO string sin zona horaria para el backend
+
       const fechaISO = formatDateTimeForBackend(fechaHora);
 
       const intervencion = {
@@ -297,7 +288,7 @@ const EditarIntervencion: React.FC = () => {
         </div>
       </form>
 
-      {/* Modal de confirmación */}
+      {}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-md w-full mx-4">

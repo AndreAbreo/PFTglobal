@@ -54,10 +54,10 @@ const options: ApexOptions = {
     width: [2, 2],
     curve: "straight",
   },
-  // labels: {
-  //   show: false,
-  //   position: "top",
-  // },
+
+
+
+
   grid: {
     xaxis: {
       lines: {

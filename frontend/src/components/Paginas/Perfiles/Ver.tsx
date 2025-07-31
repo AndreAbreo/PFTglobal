@@ -58,7 +58,6 @@ const VerPerfil: React.FC = () => {
         }
     }, [id]);
 
-    // Configuración de columnas para mostrar los datos
     const columns: Column<Perfil>[] = [
         { header: "ID", accessor: "id", type: "number" },
         { header: "Nombre del Perfil", accessor: "nombrePerfil", type: "text" },

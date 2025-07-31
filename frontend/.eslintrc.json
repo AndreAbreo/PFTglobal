@@ -1,6 +1,6 @@
 {
   "extends": ["next/core-web-vitals"],
   "rules": {
-    // tus reglas personalizadas aquí
+
   }
 }

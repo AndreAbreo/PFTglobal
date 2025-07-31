@@ -17,7 +17,7 @@ public interface FuncionalidadMapper {
 
     @AfterMapping
     default void mapPerfilesFromFuncionalidadesPerfiles(Funcionalidad funcionalidad, @MappingTarget FuncionalidadDto dto, @Context CycleAvoidingMappingContext context) {
-        // Verificar que la lista de perfiles no sea null
+
         if (funcionalidad.getFuncionalidadesPerfiles() != null) {
             List<PerfilDto> perfiles = funcionalidad.getFuncionalidadesPerfiles().stream()
                     .map(funcPerfiles -> {

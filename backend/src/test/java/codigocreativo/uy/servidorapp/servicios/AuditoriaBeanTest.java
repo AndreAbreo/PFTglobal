@@ -37,7 +37,6 @@ class AuditoriaBeanTest {
         MockitoAnnotations.openMocks(this);
         auditoriaBean = new AuditoriaBean(auditoriaMapper);
 
-        // Utiliza reflexión para asignar el EntityManager privado
         Field emField = AuditoriaBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(auditoriaBean, em);

@@ -39,18 +39,15 @@ class DetalleProveedorFragment(
         idInput = view.findViewById(R.id.idInput)
         estadoSpinner = view.findViewById(R.id.estadoSpinner)
 
-        // Populate fields with data from the proveedor object
         idInput.text = proveedor.idProveedor.toString()
         nombreInput.setText(proveedor.nombre)
         paisPickerFragment.setSelectedCountry(proveedor.pais.nombre)
 
-        // Populate estadoSpinner with Estado enum values
         val estadoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, Estado.values())
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         estadoSpinner.adapter = estadoAdapter
         estadoSpinner.setSelection(Estado.entries.indexOf(proveedor.estado))
 
-        // Configurar el botón de confirmar
         btnConfirmar.setOnClickListener {
             val nuevoNombre = nombreInput.text.toString()
             val nuevoPais = paisPickerFragment.getSelectedCountry()

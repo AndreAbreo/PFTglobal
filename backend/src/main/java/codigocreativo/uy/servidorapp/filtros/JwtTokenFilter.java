@@ -70,27 +70,24 @@ public class JwtTokenFilter implements ContainerRequestFilter {
         String method = requestContext.getMethod();
         LOGGER.info("Procesando petición: " + method + " " + path);
 
-        // Verificar si es un endpoint público
         if (isPublicEndpoint(path)) {
             return;
         }
 
-        // Procesar autenticación y autorización
         processAuthenticationAndAuthorization(requestContext, path);
     }
 
     private void processAuthenticationAndAuthorization(ContainerRequestContext requestContext, String path) {
-        // Verificar autenticación
+
         String token = extractAndValidateToken(requestContext);
         if (token == null) {
             return; // La respuesta de error ya fue enviada
         }
 
         try {
-            // Validar token y extraer claims
+
             Claims claims = validateToken(token);
 
-            // Procesar información del usuario
             processUserInfo(requestContext, claims, path);
 
         } catch (Exception e) {
@@ -104,12 +101,11 @@ public class JwtTokenFilter implements ContainerRequestFilter {
     }
 
     private void processUserInfo(ContainerRequestContext requestContext, Claims claims, String path) {
-        // Extraer información del token
+
         String email = claims.get("email", String.class);
         String perfil = claims.get("perfil", String.class);
         LOGGER.log(Level.INFO, "Token válido para usuario: {0} con perfil: {1}", new Object[]{email, perfil});
 
-        // Validar información requerida
         if (!isValidUserInfo(email, perfil)) {
             String errorMsg = "Token inválido: información de usuario incompleta - Email: " + 
                             (email == null ? "null" : email) + 
@@ -121,16 +117,14 @@ public class JwtTokenFilter implements ContainerRequestFilter {
             return;
         }
 
-        // Almacenar información en el contexto
         storeUserInfo(requestContext, email, perfil);
 
-        // Verificar permisos
         validatePermissions(requestContext, email, perfil, path);
     }
 
     private void validatePermissions(ContainerRequestContext requestContext, String email, String perfil, String path) {
         try {
-            // Verificar permisos basados en el rol
+
             if (!hasPermission(perfil, path)) {
                 String errorMsg = getPermissionErrorMessage(path, email, perfil);
                 LOGGER.warning(errorMsg);
@@ -215,12 +209,10 @@ public class JwtTokenFilter implements ContainerRequestFilter {
             return false;
         }
 
-        // Normalizar rutas con parámetro numérico al final
         String normalizado = path.replaceAll("/\\d+$", "/{id}");
 
         List<FuncionalidadDto> funcionalidades = funcionalidadService.obtenerTodas();
 
-        // Permiso especial para /usuarios/modificar
         if (path.equals("/usuarios/modificar")) {
             return perfil.equals("Administrador") ||
                     perfil.equals("SuperAdmin") ||

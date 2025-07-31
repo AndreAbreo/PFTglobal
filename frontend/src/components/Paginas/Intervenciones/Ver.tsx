@@ -158,7 +158,7 @@ const VerIntervencion: React.FC = () => {
 
       <div className="p-6.5">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Información de la Intervención */}
+          {}
           <div className="rounded-sm border border-stroke bg-gray-50 dark:bg-gray-800 p-6">
             <h4 className="text-lg font-semibold mb-4 text-black dark:text-white">
               Información de la Intervención
@@ -181,7 +181,7 @@ const VerIntervencion: React.FC = () => {
                 <p className="text-black dark:text-white bg-white dark:bg-boxdark p-3 rounded border border-stroke dark:border-form-strokedark">
                   {(() => {
                     try {
-                      // Si la fecha es un número (timestamp), convertirlo
+
                       let fechaValue = intervencion.fechaHora;
                       if (typeof fechaValue === 'number') {
                         fechaValue = new Date(fechaValue).toISOString();
@@ -223,7 +223,7 @@ const VerIntervencion: React.FC = () => {
             </div>
           </div>
 
-          {/* Información del Usuario Responsable */}
+          {}
           <div className="rounded-sm border border-stroke bg-gray-50 dark:bg-gray-800 p-6">
             <h4 className="text-lg font-semibold mb-4 text-black dark:text-white">
               Usuario Responsable
@@ -281,7 +281,7 @@ const VerIntervencion: React.FC = () => {
             </div>
           </div>
 
-          {/* Información del Equipo */}
+          {}
           <div className="rounded-sm border border-stroke bg-gray-50 dark:bg-gray-800 p-6 lg:col-span-2">
             <h4 className="text-lg font-semibold mb-4 text-black dark:text-white">
               Información del Equipo
@@ -341,7 +341,7 @@ const VerIntervencion: React.FC = () => {
           </div>
         </div>
 
-        {/* Acciones adicionales */}
+        {}
         <div className="mt-8 flex justify-end gap-4 pt-4 border-t border-stroke dark:border-form-strokedark">
           <button
             onClick={() => window.print()}

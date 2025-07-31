@@ -26,7 +26,6 @@ class SelectorPerfilFragment : Fragment() {
     private var perfiles: List<Perfil> = emptyList()
     private var pendingPerfilSelection: String? = null
 
-    // LiveData to observe the loading state and selected profile
     private val _isDataLoaded = MutableLiveData<Boolean>()
     val isDataLoaded: LiveData<Boolean> get() = _isDataLoaded
 
@@ -62,13 +61,11 @@ class SelectorPerfilFragment : Fragment() {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerPerfil.adapter = adapter
 
-                    // Set pending selection if there was one
                     pendingPerfilSelection?.let {
                         setSelectedPerfil(it)
                         pendingPerfilSelection = null
                     }
 
-                    // Update the loading state
                     _isDataLoaded.value = true
                 }.onFailure { exception ->
                     Log.e("SelectorPerfilFragment", "Error al cargar los perfiles", exception)
@@ -97,7 +94,6 @@ class SelectorPerfilFragment : Fragment() {
         }
     }
 
-    // Listener to update selected profile when user selects an item
     private fun setupSpinnerListener() {
         spinnerPerfil.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {

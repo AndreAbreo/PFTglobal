@@ -43,7 +43,6 @@ class IntervencionBeanTest {
 
         intervencionBean = new IntervencionBean(intervencionMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = IntervencionBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(intervencionBean, em);

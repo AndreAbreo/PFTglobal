@@ -15,8 +15,7 @@ public class BajaEquipoDto implements Serializable {
     private EquipoDto idEquipo;
     private String estado;
     private String comentarios;
-    
-    // Constructores
+
     public BajaEquipoDto() {}
     
     public BajaEquipoDto(Long id, String razon, LocalDate fecha, UsuarioDto idUsuario, EquipoDto idEquipo, String estado, String comentarios) {
@@ -28,8 +27,7 @@ public class BajaEquipoDto implements Serializable {
         this.estado = estado;
         this.comentarios = comentarios;
     }
-    
-    // Getters y Setters
+
     public Long getId() {
         return id;
     }

@@ -60,7 +60,6 @@ const ListarEquipos: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Estados para el modal de baja
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [equipoAEliminar, setEquipoAEliminar] = useState<Equipo | null>(null);
   const [razon, setRazon] = useState("");
@@ -157,7 +156,6 @@ const ListarEquipos: React.FC = () => {
     }
   ];
 
-  // onDelete personalizado para DynamicTable
   const handleDeleteWithModal = (id: number, row: Equipo) => {
     setEquipoAEliminar(row);
     setShowDeleteModal(true);
@@ -213,7 +211,7 @@ const ListarEquipos: React.FC = () => {
           onDelete={handleDeleteWithModal}
         />
       )}
-      {/* Modal de baja de equipo */}
+      {}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-sm w-full">

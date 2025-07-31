@@ -14,14 +14,14 @@
 }
 
 @layer utilities {
-    /* Chrome, Safari and Opera */
+    
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
 
     .no-scrollbar {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; 
+        scrollbar-width: none; 
     }
 
     .chat-height {
@@ -33,7 +33,7 @@
     }
 }
 
-/* third-party libraries CSS */
+
 
 .tableCheckbox:checked ~ div span {
     @apply opacity-100;
@@ -249,7 +249,7 @@ body {
     line-height: 1.5rem;
     font-weight: 400;
     transition: background-color 0.3s ease;
-    background-color: rgb(202, 211, 219); /* fondo claro */
+    background-color: rgb(202, 211, 219); 
     color: rgb(74, 86, 104);
   }
   
@@ -257,17 +257,17 @@ body.dark {
     background-color: #1a222c;
   }
   
-  /* Inputs oscuros */
+  
   body.dark select,
   body.dark input,
   body.dark textarea {
-    background-color: #2a437e; /* más oscuro que el fondo general */
+    background-color: #2a437e; 
     color: #fff;
     border: 1px solid #334155;
   }
   
   
-  /* Scrollbars opcionales */
+  
   body.dark ::-webkit-scrollbar {
     width: 10px;
   }

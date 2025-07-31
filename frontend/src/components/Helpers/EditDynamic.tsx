@@ -4,73 +4,42 @@ import { useParams, useRouter } from "next/navigation";
 import fetcher from "@/components/Helpers/Fetcher";
 import Link from "next/link";
 
-// Interfaz para definir cada campo del formulario
 export interface Field<T> {
-  /** Etiqueta a mostrar para el campo */
+  
   label: string;
-  /** Propiedad del objeto que se editará */
+  
   accessor: keyof T;
-  /** Tipo de control: "text", "date", "number", "dropdown", "email", etc. */
+  
   type: "text" | "date" | "number" | "dropdown" | "email";
-  /** Opciones estáticas para dropdown (si se requieren) */
+  
   options?: { [key: string]: any }[];
-  /**
-   * Si no se proporcionan opciones estáticas, se puede indicar un endpoint para obtenerlas.
-   * Se espera que retorne un arreglo de objetos.
-   */
+  
   optionsEndpoint?: string;
-  /**
-   * Clave del objeto opción a usar para el valor (default: "id").
-   */
+  
   optionValueKey?: string;
-  /**
-   * Clave del objeto opción a usar para la etiqueta (default: "label").
-   */
+  
   optionLabelKey?: string;
-  /**
-   * Función de validación para el campo.
-   * Debe retornar un string con el mensaje de error si el valor no es válido, o undefined si es válido.
-   */
+  
   validate?: (value: any, data?: T) => string | undefined;
-  /**
-   * Si es true, el campo se muestra pero no se permite editar.
-   */
+  
   readOnly?: boolean;
   disabled?: boolean;
-  /**
-   * Si es true, envía el objeto completo en lugar del ID para dropdowns.
-   */
+  
   sendFullObject?: boolean;
 }
 
 interface EditDynamicProps<T extends { id: number }> {
-  /**
-   * Endpoint para obtener los datos del objeto a editar.
-   * Ejemplo: "/usuarios/seleccionar"
-   */
+  
   fetchUrl: string;
-  /**
-   * Endpoint para actualizar el objeto.
-   * Ejemplo: "/usuarios/editar"
-   */
+  
   updateUrl: string;
-  /**
-   * Configuración de campos a editar.
-   */
+  
   fields: Field<T>[];
-  /**
-   * (Opcional) Ruta a la que se redirigirá si se cancela la edición.
-   */
+  
   backLink?: string;
-  /**
-   * (Opcional) Ruta a la que se redirigirá luego de una actualización exitosa.
-   * Si no se define, se redirige al backLink o se queda en la misma página.
-   */
+  
   successRedirect?: string;
-  /**
-   * (Opcional) Si es true, usa el formato de ruta /id en lugar de ?id=id
-   * Por defecto es false (usa ?id=id)
-   */
+  
   useRouteFormat?: boolean;
 }
 
@@ -99,7 +68,6 @@ function EditDynamic<T extends { id: number }>({
   const [formDataToSubmit, setFormDataToSubmit] = useState<T | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Cargar el objeto a editar
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -117,7 +85,6 @@ function EditDynamic<T extends { id: number }>({
     }
   }, [id, fetchUrl, useRouteFormat]);
 
-  // Cargar opciones para los dropdowns
   useEffect(() => {
     const loadDropdownOptions = async () => {
       for (const field of fields) {
@@ -128,7 +95,7 @@ function EditDynamic<T extends { id: number }>({
               ...prev,
               [field.accessor as string]: data,
             }));
-            // También almacenar los objetos completos
+
             setDropdownObjects((prev) => ({
               ...prev,
               [field.accessor as string]: data,
@@ -143,7 +110,6 @@ function EditDynamic<T extends { id: number }>({
     loadDropdownOptions();
   }, [fields]);
 
-  // Función para validar un campo y actualizar los errores locales
   const validateField = (field: Field<T>, value: any): string | undefined => {
     if (field.validate) {
       return field.validate(value, objectData || undefined);
@@ -157,7 +123,6 @@ function EditDynamic<T extends { id: number }>({
     const errorMessage = field ? validateField(field, value) : undefined;
     setFieldErrors((prev) => ({ ...prev, [accessor as string]: errorMessage || "" }));
 
-    // Si es un dropdown con sendFullObject, buscar el objeto completo
     if (field?.type === "dropdown" && field.sendFullObject) {
       const objects = dropdownObjects[accessor as string] || [];
       const selectedObject = objects.find(obj => obj[field.optionValueKey || "id"] == value);
@@ -178,7 +143,6 @@ function EditDynamic<T extends { id: number }>({
     e.preventDefault();
     if (!objectData) return;
 
-    // Validar todos los campos antes de enviar
     let hasError = false;
     const newErrors: Record<string, string> = {};
     fields.forEach((field) => {
@@ -192,7 +156,6 @@ function EditDynamic<T extends { id: number }>({
     setFieldErrors(newErrors);
     if (hasError) return;
 
-    // Mostrar modal de confirmación
     setFormDataToSubmit(objectData);
     setShowConfirmModal(true);
   };
@@ -201,10 +164,9 @@ function EditDynamic<T extends { id: number }>({
     if (!formDataToSubmit) return;
     setSaving(true);
     try {
-      // Preparar los datos para enviar
+
       const dataToSend = { ...formDataToSubmit } as any;
-      
-      // Para campos que requieren enviar el objeto completo
+
       fields.forEach(f => {
         if (f.type === "dropdown" && f.sendFullObject && dataToSend[f.accessor]) {
           const selectedId = dataToSend[f.accessor];
@@ -293,8 +255,7 @@ function EditDynamic<T extends { id: number }>({
         {fields.map((field) => {
           const fieldKey = field.accessor as string;
           let value = objectData[field.accessor];
-          
-          // Manejar valores especiales para diferentes tipos de campos
+
           if (field.type === "date" && value) {
             value = new Date(String(value)).toISOString().slice(0, 10) as T[keyof T];
           } else if (field.type === "dropdown" && field.accessor === "idPerfil" && (objectData as any)?.idPerfil) {
@@ -369,7 +330,7 @@ function EditDynamic<T extends { id: number }>({
         </div>
       </form>
 
-      {/* Modal de confirmación */}
+      {}
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg max-w-md w-full">

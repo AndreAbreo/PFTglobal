@@ -24,7 +24,6 @@ class SelectorProveedorFragment : Fragment() {
     private var proveedores: List<Proveedor> = emptyList()
     private var pendingSelection: String? = null
 
-    // LiveData to observe the loading state
     private val _isDataLoaded = MutableLiveData<Boolean>()
     val isDataLoaded: LiveData<Boolean> get() = _isDataLoaded
 
@@ -56,13 +55,11 @@ class SelectorProveedorFragment : Fragment() {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerProveedor.adapter = adapter
 
-                    // If there was a pending selection, set it now
                     pendingSelection?.let {
                         setSelectedProveedor(it)
                         pendingSelection = null
                     }
 
-                    // Update the loading state
                     _isDataLoaded.value = true
                 }.onFailure { exception ->
                     Log.e("SelectorProveedorFragment", "Error al cargar los proveedores", exception)
@@ -83,7 +80,7 @@ class SelectorProveedorFragment : Fragment() {
                 spinnerProveedor.setSelection(index)
             }
         } else {
-            // If proveedores is not yet initialized, store the selection for later
+
             pendingSelection = nombreProveedor
         }
     }

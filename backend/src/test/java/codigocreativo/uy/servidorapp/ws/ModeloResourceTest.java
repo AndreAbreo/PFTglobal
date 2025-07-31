@@ -36,7 +36,6 @@ class ModeloResourceTest {
         modeloDto.setNombre("ModeloTest");
     }
 
-    // ========== TESTS PARA CREAR MODELO ==========
 
     @Test
     void testCrearModelo_exitoso() throws ServiciosException {
@@ -68,7 +67,6 @@ class ModeloResourceTest {
         verify(er, times(1)).crearModelos(modeloDto);
     }
 
-    // ========== TESTS PARA MODIFICAR MODELO ==========
 
     @Test
     void testModificarModelo_exitoso() throws ServiciosException {
@@ -98,7 +96,6 @@ class ModeloResourceTest {
         assertEquals("Error al modificar modelo", responseBody.get("error"));
     }
 
-    // ========== TESTS PARA ELIMINAR MODELO ==========
 
     @Test
     void testEliminarModelo_exitoso() throws ServiciosException {
@@ -130,7 +127,6 @@ class ModeloResourceTest {
         assertEquals("Error al eliminar modelo", responseBody.get("error"));
     }
 
-    // ========== TESTS PARA LISTAR MODELOS ==========
 
     @Test
     void testListarTodos_exitoso() {
@@ -158,7 +154,6 @@ class ModeloResourceTest {
         verify(er, times(1)).listarModelos();
     }
 
-    // ========== TESTS PARA BUSCAR POR ID ==========
 
     @Test
     void testBuscarPorId_exitoso() throws ServiciosException {

@@ -5,7 +5,7 @@ const Calendar = () => {
     <div className="mx-auto max-w-7xl">
       <Breadcrumb pageName="Calendar" />
 
-      {/* <!-- ====== Calendar Section Start ====== --> */}
+      {}
       <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <table className="w-full">
           <thead>
@@ -41,7 +41,7 @@ const Calendar = () => {
             </tr>
           </thead>
           <tbody>
-            {/* <!-- Line 1 --> */}
+            {}
             <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
@@ -92,8 +92,8 @@ const Calendar = () => {
                 </span>
               </td>
             </tr>
-            {/* <!-- Line 1 --> */}
-            {/* <!-- Line 2 --> */}
+            {}
+            {}
             <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
@@ -131,8 +131,8 @@ const Calendar = () => {
                 </span>
               </td>
             </tr>
-            {/* <!-- Line 2 --> */}
-            {/* <!-- Line 3 --> */}
+            {}
+            {}
             <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
@@ -170,8 +170,8 @@ const Calendar = () => {
                 </span>
               </td>
             </tr>
-            {/* <!-- Line 3 --> */}
-            {/* <!-- Line 4 --> */}
+            {}
+            {}
             <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
@@ -222,8 +222,8 @@ const Calendar = () => {
                 </span>
               </td>
             </tr>
-            {/* <!-- Line 4 --> */}
-            {/* <!-- Line 5 --> */}
+            {}
+            {}
             <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
@@ -261,11 +261,11 @@ const Calendar = () => {
                 </span>
               </td>
             </tr>
-            {/* <!-- Line 5 --> */}
+            {}
           </tbody>
         </table>
       </div>
-      {/* <!-- ====== Calendar Section End ====== --> */}
+      {}
     </div>
   );
 };

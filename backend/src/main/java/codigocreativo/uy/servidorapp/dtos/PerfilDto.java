@@ -19,7 +19,6 @@ public class PerfilDto implements Serializable {
 
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

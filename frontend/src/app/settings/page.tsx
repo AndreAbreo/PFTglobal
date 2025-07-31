@@ -46,8 +46,7 @@ const Settings = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  
-  // Estados del formulario
+
   const [formData, setFormData] = useState({
     cedula: "",
     email: "",
@@ -68,13 +67,11 @@ const Settings = () => {
     nombreUsuario: string;
   });
 
-  // Estados para teléfonos
   const [telefonos, setTelefonos] = useState<(UsuariosTelefonos | Omit<UsuariosTelefonos, 'id'>)[]>([]);
   const [nuevoTelefono, setNuevoTelefono] = useState("");
   const [editandoTelefono, setEditandoTelefono] = useState<number | null>(null);
   const [telefonoEditando, setTelefonoEditando] = useState("");
 
-  // Estados de validación
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -82,7 +79,6 @@ const Settings = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [pendingChanges, setPendingChanges] = useState<any>(null);
 
-  // Cargar datos del usuario
   useEffect(() => {
     const cargarUsuario = async () => {
       try {
@@ -117,7 +113,6 @@ const Settings = () => {
     }
   }, [session]);
 
-  // Validar contraseña
   const validarContrasenia = (password: string): boolean => {
     if (password === "") return true; // Contraseña vacía es válida (no se cambia)
     if (password.length < 8) {
@@ -136,7 +131,6 @@ const Settings = () => {
     return true;
   };
 
-  // Validar confirmación de contraseña
   const validarConfirmacionContrasenia = (password: string, confirmPassword: string): boolean => {
     if (password === "") return true; // Si no hay contraseña nueva, no validar confirmación
     if (password !== confirmPassword) {
@@ -147,7 +141,6 @@ const Settings = () => {
     return true;
   };
 
-  // Validar email
   const validarEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -168,7 +161,6 @@ const Settings = () => {
     return true;
   };
 
-  // Funciones para manejar teléfonos
   const agregarTelefono = () => {
     if (!nuevoTelefono.trim()) return;
     
@@ -204,12 +196,10 @@ const Settings = () => {
     setTelefonoEditando("");
   };
 
-  // Manejar cambios en el formulario
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
-    // Validar campos en tiempo real
+
     if (name === "contrasenia") {
       validarContrasenia(value);
       if (formData.confirmarContrasenia) {
@@ -224,24 +214,20 @@ const Settings = () => {
     }
   };
 
-  // Validar formulario completo
   const validarFormulario = (): boolean => {
-    // Validar cédula
+
     if (!validarCedula(formData.cedula)) {
       return false;
     }
 
-    // Validar contraseña
     if (!validarContrasenia(formData.contrasenia)) {
       return false;
     }
 
-    // Validar confirmación de contraseña
     if (!validarConfirmacionContrasenia(formData.contrasenia, formData.confirmarContrasenia || "")) {
       return false;
     }
 
-    // Validar email
     if (!validarEmail(formData.email)) {
       return false;
     }
@@ -249,16 +235,13 @@ const Settings = () => {
     return true;
   };
 
-  // Mostrar modal de confirmación
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validar formulario completo
+
     if (!validarFormulario()) {
       return;
     }
 
-    // Crear objeto de usuario completo con los datos modificados
     const usuarioCompleto: Usuario = {
       id: usuario!.id,
       cedula: formData.cedula.replace(/\D/g, ""),
@@ -275,15 +258,12 @@ const Settings = () => {
       usuariosTelefonos: telefonos as UsuariosTelefonos[]
     };
 
-    // Remover campos que no se envían
     const datosSinConfirmar = usuarioCompleto;
 
-    // Mostrar modal de confirmación
     setPendingChanges(datosSinConfirmar);
     setShowConfirmModal(true);
   };
 
-  // Confirmar y guardar cambios
   const confirmarCambios = async () => {
     setSaving(true);
     setError(null);
@@ -297,8 +277,7 @@ const Settings = () => {
       });
 
       setSuccess("Datos actualizados correctamente");
-      
-      // Recargar datos del usuario
+
       if (session?.user?.id) {
         const data = await fetcher<Usuario>(`/usuarios/seleccionar?id=${session.user.id}`, { method: "GET" });
         setUsuario(data);
@@ -467,7 +446,7 @@ const Settings = () => {
                       Teléfonos de Contacto
                     </label>
                     
-                    {/* Lista de teléfonos existentes */}
+                    {}
                     <div className="mb-4 space-y-2">
                       {telefonos.map((telefono, index) => (
                         <div key={`telefono-${index}-${telefono.numero}`} className="flex items-center gap-2 p-3 border border-stroke rounded dark:border-strokedark">
@@ -518,7 +497,7 @@ const Settings = () => {
                       ))}
                     </div>
 
-                    {/* Agregar nuevo teléfono */}
+                    {}
                     <div className="flex gap-2">
                       <input
                         type="tel"
@@ -695,7 +674,7 @@ const Settings = () => {
         </div>
       </div>
 
-      {/* Modal de confirmación */}
+      {}
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-md w-full">

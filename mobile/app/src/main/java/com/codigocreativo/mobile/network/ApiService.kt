@@ -13,7 +13,6 @@ interface ApiService {
     @POST("usuarios/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<JwtResponse>
 
-    // Método para registrar un nuevo usuario
     @POST("usuarios/crear")
     suspend fun registrarUsuario(@Body usuario: User): Response<Unit>
 }
@@ -22,7 +21,6 @@ data class LoginRequest(
     @SerializedName("password") val password: String
 )
 
-// Clases para los requests/responses
 data class TokenRequest(val idToken: String)
 data class JwtResponse(val token: String, val userNeedsAdditionalInfo: Boolean, val user : User)
 data class User(

@@ -31,7 +31,6 @@ class OperacionBeanTest {
 
         operacionBean = new OperacionBean(operacionMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = OperacionBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(operacionBean, em);

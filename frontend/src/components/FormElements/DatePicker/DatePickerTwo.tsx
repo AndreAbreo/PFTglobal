@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 const DatePickerTwo = () => {
   useEffect(() => {
-    // Init flatpickr
+
     flatpickr(".form-datepicker", {
       mode: "single",
       static: true,
