@@ -38,7 +38,6 @@ class TipoIntervencioneBeanTest {
         MockitoAnnotations.openMocks(this);
         tipoIntervencioneBean = new TipoIntervencioneBean(tiposIntervencioneMapper);
 
-        // Use reflection to set the private EntityManager field
         Field emField = TipoIntervencioneBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(tipoIntervencioneBean, em);

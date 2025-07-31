@@ -25,8 +25,7 @@ class IntervencionesResourceTest {
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
         resource = new IntervencionesResource();
-        
-        // Inyectar el mock usando reflexión
+
         Field erField = IntervencionesResource.class.getDeclaredField("er");
         erField.setAccessible(true);
         erField.set(resource, intervencionRemote);

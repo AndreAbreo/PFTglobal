@@ -53,7 +53,6 @@ class EquipoBeanTest {
 
         equipoBean = new EquipoBean(equipoMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = EquipoBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(equipoBean, em);
@@ -64,7 +63,6 @@ class EquipoBeanTest {
         EquipoDto equipoDto = crearEquipoDtoValido();
         Equipo equipoEntity = new Equipo();
 
-        // Mockear las consultas de validación de unicidad
         @SuppressWarnings("unchecked")
         jakarta.persistence.TypedQuery<Equipo> queryIdInterno = mock(jakarta.persistence.TypedQuery.class);
         @SuppressWarnings("unchecked")
@@ -202,7 +200,6 @@ class EquipoBeanTest {
         EquipoDto equipoDto = crearEquipoDtoValido();
         equipoDto.setIdInterno("INT-001");
 
-        // Mockear la consulta para simular que ya existe un equipo con esa identificación
         @SuppressWarnings("unchecked")
         jakarta.persistence.TypedQuery<Equipo> query = mock(jakarta.persistence.TypedQuery.class);
         when(em.createQuery("SELECT e FROM Equipo e WHERE e.idInterno = :idInterno", Equipo.class)).thenReturn(query);
@@ -222,14 +219,12 @@ class EquipoBeanTest {
         EquipoDto equipoDto = crearEquipoDtoValido();
         equipoDto.setNroSerie("123456789");
 
-        // Mockear la consulta para identificación interna (debe pasar)
         @SuppressWarnings("unchecked")
         jakarta.persistence.TypedQuery<Equipo> queryIdInterno = mock(jakarta.persistence.TypedQuery.class);
         when(em.createQuery("SELECT e FROM Equipo e WHERE e.idInterno = :idInterno", Equipo.class)).thenReturn(queryIdInterno);
         when(queryIdInterno.setParameter("idInterno", "INT-001")).thenReturn(queryIdInterno);
         when(queryIdInterno.getSingleResult()).thenThrow(new jakarta.persistence.NoResultException());
 
-        // Mockear la consulta para simular que ya existe un equipo con ese número de serie
         @SuppressWarnings("unchecked")
         jakarta.persistence.TypedQuery<Equipo> query = mock(jakarta.persistence.TypedQuery.class);
         when(em.createQuery("SELECT e FROM Equipo e WHERE e.nroSerie = :nroSerie", Equipo.class)).thenReturn(query);
@@ -244,9 +239,7 @@ class EquipoBeanTest {
         verify(em, never()).flush();
     }
 
-    /**
-     * Método auxiliar para crear un EquipoDto válido con todos los campos obligatorios
-     */
+    
     private EquipoDto crearEquipoDtoValido() {
         EquipoDto equipoDto = new EquipoDto();
         equipoDto.setNombre("Equipo Test");
@@ -282,7 +275,6 @@ class EquipoBeanTest {
         bajaEquipoDto.setIdEquipo(new EquipoDto());
         bajaEquipoDto.getIdEquipo().setId(1L);
 
-        // Mockear Query para la actualización del estado
         @SuppressWarnings("unchecked")
         Query mockedQuery = mock(Query.class);
         when(em.createQuery("UPDATE Equipo equipo SET equipo.estado = 'INACTIVO' WHERE equipo.id = :id")).thenReturn(mockedQuery);
@@ -291,13 +283,11 @@ class EquipoBeanTest {
 
         equipoBean.eliminarEquipo(bajaEquipoDto);
 
-        // Verificar que se ejecuta la consulta de actualización
         verify(em).createQuery("UPDATE Equipo equipo SET equipo.estado = 'INACTIVO' WHERE equipo.id = :id");
         verify(mockedQuery).setParameter("id", 1L);
         verify(mockedQuery).executeUpdate();
         verify(em).flush();
-        
-        // Verificar que NO se hace merge de BajaEquipo (ya no debería hacerlo)
+
         verify(em, never()).merge(any(BajaEquipo.class));
     }
 

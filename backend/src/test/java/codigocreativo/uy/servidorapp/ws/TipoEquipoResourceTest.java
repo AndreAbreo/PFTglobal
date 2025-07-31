@@ -37,7 +37,6 @@ class TipoEquipoResourceTest {
         tipoDto.setNombreTipo("TipoTest");
     }
 
-    // ========== TESTS PARA CREAR ==========
 
     @Test
     void testCrear_exitoso() throws ServiciosException {
@@ -82,7 +81,6 @@ class TipoEquipoResourceTest {
         assertEquals("Error inesperado", responseBody.get("error"));
     }
 
-    // ========== TESTS PARA MODIFICAR ==========
 
     @Test
     void testModificar_exitoso() throws ServiciosException {
@@ -112,7 +110,6 @@ class TipoEquipoResourceTest {
         assertEquals("Error al modificar tipo", responseBody.get("error"));
     }
 
-    // ========== TESTS PARA ELIMINAR ==========
 
     @Test
     void testEliminar_exitoso() throws ServiciosException {
@@ -144,7 +141,6 @@ class TipoEquipoResourceTest {
         assertEquals("Error al eliminar tipo", responseBody.get("error"));
     }
 
-    // ========== TESTS PARA LISTAR ==========
 
     @Test
     void testListar_exitoso() {
@@ -172,7 +168,6 @@ class TipoEquipoResourceTest {
         verify(er, times(1)).listarTiposEquipo();
     }
 
-    // ========== TESTS PARA BUSCAR POR ID ==========
 
     @Test
     void testBuscarPorId_exitoso() throws ServiciosException {

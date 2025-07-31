@@ -15,7 +15,6 @@ public interface PerfilMapper {
 
     PerfilDto toDto(Perfil perfil);
 
-    // Métodos para mapear listas
     List<Perfil> toEntityList(List<PerfilDto> perfilDtos);
 
     List<PerfilDto> toDtoList(List<Perfil> perfiles);

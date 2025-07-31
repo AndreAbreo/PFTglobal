@@ -4,7 +4,7 @@ import fetcher from "@/components/Helpers/Fetcher";
 import { formatDateTimeForBackend } from "@/components/Helpers/DateUtils";
 
 const CrearIntervencion: React.FC = () => {
-  // Campos del formulario
+
   const [motivo, setMotivo] = useState("");
   const [fechaHora, setFechaHora] = useState("");
   const [comentarios, setComentarios] = useState("");
@@ -12,34 +12,28 @@ const CrearIntervencion: React.FC = () => {
   const [idEquipo, setIdEquipo] = useState("");
   const [idUsuario, setIdUsuario] = useState("");
 
-  // Opciones de selects
   const [tiposIntervencion, setTiposIntervencion] = useState<any[]>([]);
   const [equipos, setEquipos] = useState<any[]>([]);
   const [usuarios, setUsuarios] = useState<any[]>([]);
 
-  // Estados de UI
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Fetch de opciones al montar
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        // Cargar tipos de intervención
+
         const tiposData = await fetcher<any[]>("/tipoIntervenciones/listar", { method: "GET" });
         setTiposIntervencion(tiposData.filter(t => t.estado === "ACTIVO"));
 
-        // Cargar equipos
         const equiposData = await fetcher<any[]>("/equipos/listar", { method: "GET" });
         setEquipos(equiposData.filter(e => e.estado === "ACTIVO"));
 
-        // Cargar usuarios
         const usuariosData = await fetcher<any[]>("/usuarios/listar", { method: "GET" });
         setUsuarios(usuariosData.filter(u => u.estado === "ACTIVO"));
 
-        // Establecer fecha y hora actual por defecto
         const now = new Date();
         const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
           .toISOString().slice(0, 16);
@@ -53,12 +47,10 @@ const CrearIntervencion: React.FC = () => {
     fetchOptions();
   }, []);
 
-  // Validación de campos obligatorios
   const isFormValid = () => {
     return motivo && fechaHora && idTipo && idEquipo && idUsuario;
   };
 
-  // Envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -79,7 +71,7 @@ const CrearIntervencion: React.FC = () => {
     setMessage(null);
 
     try {
-      // Convertir la fecha local a ISO string sin zona horaria para el backend
+
       const fechaISO = formatDateTimeForBackend(fechaHora);
 
       const intervencion = {
@@ -97,15 +89,13 @@ const CrearIntervencion: React.FC = () => {
       });
 
       setMessage("Intervención creada exitosamente");
-      
-      // Limpiar formulario
+
       setMotivo("");
       setComentarios("");
       setIdTipo("");
       setIdEquipo("");
       setIdUsuario("");
-      
-      // Restablecer fecha y hora actual
+
       const now = new Date();
       const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
         .toISOString().slice(0, 16);
@@ -260,7 +250,7 @@ const CrearIntervencion: React.FC = () => {
         </div>
       </form>
 
-      {/* Modal de confirmación */}
+      {}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-md w-full mx-4">

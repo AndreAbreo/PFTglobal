@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * DTO for {@link codigocreativo.uy.servidorapp.entidades.Auditoria}
- */
+
 public class AuditoriaDto implements Serializable {
     private Long id;
     private LocalDate fechaHora;

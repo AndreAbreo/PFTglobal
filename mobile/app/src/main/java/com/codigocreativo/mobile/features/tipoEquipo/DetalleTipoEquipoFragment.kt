@@ -36,18 +36,14 @@ class DetalleTipoEquipoFragment(
         idInput = view.findViewById(R.id.idInput)
         estadoSpinner = view.findViewById(R.id.estadoSpinner)
 
-        // Populate fields with data from the marca object
         idInput.text = tipoEquipo.id.toString()
         nombreInput.setText(tipoEquipo.nombreTipo)
 
-
-        // Populate estadoSpinner with Estado enum values
         val estadoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, Estado.values())
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         estadoSpinner.adapter = estadoAdapter
         estadoSpinner.setSelection(Estado.entries.indexOf(tipoEquipo.estado))
 
-        // Configurar el botón de confirmar
         btnConfirmar.setOnClickListener {
             val nuevoNombre = nombreInput.text.toString()
 

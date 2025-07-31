@@ -22,7 +22,6 @@ public class FuncionalidadDto implements Serializable {
     public FuncionalidadDto() {
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

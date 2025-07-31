@@ -40,11 +40,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
 
   const handleBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1) {
-      // Navigate to the previous page if there is history
+
       window.history.back();
       return;
     }
-    // Fallback when there is no navigation history
+
     router.push("/auth/signin");
   };
 
@@ -68,7 +68,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
   const [error, setError] = useState<string | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
 
-  // Generar cédulas aleatorias válidas para testing
   const generateTestingCedulas = () => {
     const cedulas = [];
     for (let i = 0; i < 5; i++) {
@@ -83,15 +82,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
 
   const [cedulasEjemplo, setCedulasEjemplo] = useState<Array<{numero: string, formateada: string}>>([]);
 
-  // Validación de email
   const validateEmail = (email: string): boolean => {
-    // Using a more efficient regex that prevents catastrophic backtracking
+
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return emailRegex.test(email);
   };
 
-  // Validación de contraseña
-  // Validación de contraseña
+
  const validatePassword = (password: string): { isValid: boolean; errors: string[] } => {
   const errors: string[] = [];
 
@@ -121,7 +118,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
   };
 };
 
-  // Validación de edad
   const validateAge = (birthDate: string): boolean => {
     const today = new Date();
     const birth = new Date(birthDate);
@@ -135,60 +131,50 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
     return age >= 18;
   };
 
-  // Validación completa del formulario
   const validateForm = (): { isValid: boolean; errors: ValidationErrors } => {
     const errors: ValidationErrors = {};
 
-    // Validar cédula
     if (!cedulaFormatted || cedulaError) {
       errors.cedula = "Debe ingresar una cédula válida";
     }
 
-    // Validar nombre
     if (!nombre.trim()) {
       errors.nombre = "El nombre es obligatorio";
     } else if (nombre.trim().length < 2) {
       errors.nombre = "El nombre debe tener al menos 2 caracteres";
     }
 
-    // Validar apellido
     if (!apellido.trim()) {
       errors.apellido = "El apellido es obligatorio";
     } else if (apellido.trim().length < 2) {
       errors.apellido = "El apellido debe tener al menos 2 caracteres";
     }
 
-    // Validar email
     if (!email.trim()) {
       errors.email = "El email es obligatorio";
     } else if (!validateEmail(email)) {
       errors.email = "Debe ingresar un email válido";
     }
 
-    // Validar contraseña
     const passwordValidation = validatePassword(contrasenia);
     if (!passwordValidation.isValid) {
       errors.contrasenia = passwordValidation.errors.join(", ");
     }
 
-    // Validar confirmación de contraseña
     if (contrasenia !== reContrasenia) {
       errors.reContrasenia = "Las contraseñas no coinciden";
     }
 
-    // Validar fecha de nacimiento
     if (!fechaNacimiento) {
       errors.fechaNacimiento = "La fecha de nacimiento es obligatoria";
     } else if (!validateAge(fechaNacimiento)) {
       errors.fechaNacimiento = "Debe ser mayor de 18 años";
     }
 
-    // Validar perfil
     if (!perfilSeleccionado) {
       errors.perfil = "Debe seleccionar un perfil";
     }
 
-    // Validar teléfonos
     const validPhones = phones.filter(phone => phone.numero.trim() !== "");
     if (validPhones.length === 0) {
       errors.phones = "Debe ingresar al menos un número de teléfono";
@@ -246,7 +232,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
   };
 
   const openTestingModal = () => {
-    // Generar nuevas cédulas aleatorias cada vez que se abre el modal
+
     setCedulasEjemplo(generateTestingCedulas());
     setShowTestingCedulas(true);
   };
@@ -269,8 +255,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validar formulario antes de mostrar confirmación
+
     const validation = validateForm();
     setValidationErrors(validation.errors);
     
@@ -291,7 +276,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
     setValidationErrors({});
     
     try {
-      // Filter out empty phone numbers
+
       const validPhones = phones.filter(phone => phone.numero.trim() !== "");
       
       await fetcher("/usuarios/crear", {
@@ -311,8 +296,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
       });
       
       setMessage("Usuario registrado exitosamente. Su cuenta está en revisión para ser validada por un administrador.");
-      
-      // Limpiar formulario
+
       setCedula("");
       setCedulaFormatted("");
       setCedulaError(null);
@@ -573,7 +557,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
               </div>
             </form>
             
-            {/* Modal de confirmación */}
+            {}
             {showConfirm && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
                 <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-md w-full">
@@ -602,7 +586,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ requiresAuth = false }) => 
               </div>
             )}
 
-            {/* Modal de cédulas de testing */}
+            {}
             {showTestingCedulas && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
                 <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-md w-full">

@@ -112,22 +112,19 @@ public class EquipoResource {
                     .entity("{\"error\": \"Los datos de la baja no pueden ser null\"}")
                     .build();
         }
-        
-        // Obtener el email del usuario desde el token JWT
+
         String emailUsuario = null;
-        
-        // Intentar obtener del contexto primero
+
         if (requestContext != null) {
             try {
                 emailUsuario = (String) requestContext.getProperty("email");
                 System.out.println("Email obtenido del contexto: " + emailUsuario);
             } catch (Exception e) {
                 System.out.println("Error obteniendo email del contexto: " + e.getMessage());
-                // Continuar con el método alternativo
+
             }
         }
-        
-        // Si no se pudo obtener del contexto, intentar extraer del token JWT directamente
+
         if (emailUsuario == null || emailUsuario.trim().isEmpty()) {
             try {
                 String authorizationHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
@@ -162,7 +159,7 @@ public class EquipoResource {
                     .build();
         } catch (ServiciosException e) {
             System.out.println("ServiciosException: " + e.getMessage());
-            // Manejar específicamente el caso de duplicados
+
             if (e.getMessage().contains("ya ha sido dado de baja")) {
                 return Response.status(Response.Status.CONFLICT)
                         .entity("{\"error\": \"" + e.getMessage() + "\"}")

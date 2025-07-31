@@ -12,9 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * DTO for {@link Usuario}
- */
+
 @JsonIgnoreProperties({"usuarios"})
 public class UsuarioDto implements Serializable {
 
@@ -130,7 +128,6 @@ public class UsuarioDto implements Serializable {
         }
     }
 
-    // Getters and Setters (mantener los que ya tienes si son necesarios para otras funcionalidades)
     public Long getId() {
         return id;
     }

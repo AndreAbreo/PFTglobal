@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Title -->
+    
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:gravity="center"
         android:paddingBottom="16dp" />
 
-    <!-- Nombre Field -->
+    
     <EditText
         android:id="@+id/tfNombre"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:paddingBottom="16dp" />
 
 
-    <!-- Confirm Button -->
+    
     <Button
         android:id="@+id/btnConfirmar"
         android:layout_width="wrap_content"

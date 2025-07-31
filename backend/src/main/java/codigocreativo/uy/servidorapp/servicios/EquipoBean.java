@@ -47,12 +47,11 @@ public class EquipoBean implements EquipoRemote {
 
     @Override
     public void crearEquipo(EquipoDto equipo) throws ServiciosException {
-        // Validar que el equipo no sea null
+
         if (equipo == null) {
             throw new ServiciosException(ERROR_EQUIPO_NULL);
         }
 
-        // Validar campos obligatorios
         validarCampoObligatorio(equipo.getNombre(), ERROR_NOMBRE_OBLIGATORIO);
         validarCampoObligatorio(equipo.getIdTipo(), ERROR_TIPO_OBLIGATORIO);
         validarCampoObligatorio(equipo.getIdModelo(), ERROR_MARCA_OBLIGATORIO);
@@ -66,19 +65,15 @@ public class EquipoBean implements EquipoRemote {
         validarCampoObligatorio(equipo.getIdUbicacion(), ERROR_UBICACION_OBLIGATORIO);
         validarCampoObligatorio(equipo.getImagen(), ERROR_IMAGEN_OBLIGATORIO);
 
-        // Validar que la identificación interna sea única
         validarIdentificacionInternaUnica(equipo.getIdInterno());
-        
-        // Validar que el número de serie sea único
+
         validarNumeroSerieUnico(equipo.getNroSerie());
 
         em.persist(equipoMapper.toEntity(equipo, new CycleAvoidingMappingContext()));
         em.flush();
     }
 
-    /**
-     * Valida que un campo no sea null o vacío
-     */
+    
     private void validarCampoObligatorio(Object campo, String mensajeError) throws ServiciosException {
         if (campo == null) {
             throw new ServiciosException(mensajeError);
@@ -89,9 +84,7 @@ public class EquipoBean implements EquipoRemote {
         }
     }
 
-    /**
-     * Valida que la identificación interna sea única en la base de datos
-     */
+    
     private void validarIdentificacionInternaUnica(String idInterno) throws ServiciosException {
         try {
             em.createQuery("SELECT e FROM Equipo e WHERE e.idInterno = :idInterno", Equipo.class)
@@ -99,13 +92,11 @@ public class EquipoBean implements EquipoRemote {
                     .getSingleResult();
             throw new ServiciosException(ERROR_IDENTIFICACION_INTERNA_DUPLICADA + idInterno);
         } catch (jakarta.persistence.NoResultException e) {
-            // La identificación interna no existe, es válida
+
         }
     }
 
-    /**
-     * Valida que el número de serie sea único en la base de datos
-     */
+    
     private void validarNumeroSerieUnico(String nroSerie) throws ServiciosException {
         try {
             em.createQuery("SELECT e FROM Equipo e WHERE e.nroSerie = :nroSerie", Equipo.class)
@@ -113,7 +104,7 @@ public class EquipoBean implements EquipoRemote {
                     .getSingleResult();
             throw new ServiciosException(ERROR_NUMERO_SERIE_DUPLICADO + nroSerie);
         } catch (jakarta.persistence.NoResultException e) {
-            // El número de serie no existe, es válido
+
         }
     }
 
@@ -125,7 +116,7 @@ public class EquipoBean implements EquipoRemote {
 
     @Override
     public void eliminarEquipo(BajaEquipoDto bajaEquipo) {
-        // Solo actualizar el estado del equipo a INACTIVO
+
         em.createQuery("UPDATE Equipo equipo SET equipo.estado = 'INACTIVO' WHERE equipo.id = :id")
                 .setParameter("id", bajaEquipo.getIdEquipo().getId())
                 .executeUpdate();
@@ -136,18 +127,15 @@ public class EquipoBean implements EquipoRemote {
     public List<EquipoDto> obtenerEquiposFiltrado(Map<String, String> filtros) {
         StringBuilder queryStr = new StringBuilder("SELECT e FROM Equipo e JOIN e.idModelo m JOIN m.idMarca ma WHERE 1=1");
 
-        // Añadir condiciones de filtrado
         agregarCondicionesDeFiltrado(queryStr, filtros);
 
         var query = em.createQuery(queryStr.toString(), Equipo.class);
 
-        // Establecer parámetros de la consulta
         establecerParametrosDeConsulta(query, filtros);
 
         return equipoMapper.toDto(query.getResultList(), new CycleAvoidingMappingContext());
     }
 
-    // Método auxiliar para agregar condiciones de filtrado
     private void agregarCondicionesDeFiltrado(StringBuilder queryStr, Map<String, String> filtros) {
         agregarCondicion(queryStr, filtros, "nombre", "LOWER(e.nombre) LIKE LOWER(:nombre)");
         agregarCondicion(queryStr, filtros, "tipo", "LOWER(e.idTipo.nombreTipo) LIKE LOWER(:tipo)");
@@ -162,14 +150,12 @@ public class EquipoBean implements EquipoRemote {
         agregarCondicion(queryStr, filtros, "ubicacion", "LOWER(e.idUbicacion.nombre) LIKE LOWER(:ubicacion)");
     }
 
-    // Método auxiliar para agregar una condición individualmente
     private void agregarCondicion(StringBuilder queryStr, Map<String, String> filtros, String filtroClave, String condicion) {
         if (filtros.containsKey(filtroClave)) {
             queryStr.append(" AND ").append(condicion);
         }
     }
 
-    // Método auxiliar para establecer los parámetros de consulta
     private void establecerParametrosDeConsulta(Query query, Map<String, String> filtros) {
         filtros.forEach((key, value) -> {
             if (!value.isEmpty()) {

@@ -56,7 +56,6 @@ const DynamicTable: React.FC<TableProps> = ({
   const [modalMessage, setModalMessage] = useState('');
   const [loadingDelete, setLoadingDelete] = useState(false);
 
-  // Método renderFilterField para manejar la visualización de los filtros
   const renderFilterField = (column: any) => {
     if (column.isDate) {
       return (
@@ -80,7 +79,7 @@ const DynamicTable: React.FC<TableProps> = ({
           <option value="default">Todos</option>
           {dropdownOptions[column.key]?.map(option => (
             <option key={option.id} value={option[column.dropdownLabelKey || 'id']}>
-              {option[column.dropdownLabelKey || 'nombre']} {/* Usamos dropdownLabelKey si está definido */}
+              {option[column.dropdownLabelKey || 'nombre']} {}
             </option>
           ))}
         </select>
@@ -102,7 +101,7 @@ const DynamicTable: React.FC<TableProps> = ({
   const getNestedValue = (row: any, key: string) => {
     return key.split('.').reduce((acc, part) => {
       if (Array.isArray(acc)) {
-        // Si es un array de objetos, intentamos acceder a la propiedad específica
+
         return acc.map(item => item && item[part]).filter(Boolean).join(', ');
       }
       return acc && acc[part];
@@ -139,18 +138,15 @@ const DynamicTable: React.FC<TableProps> = ({
 
   const renderCellValue = (row: any, column: any) => {
     const value = column.data ? getNestedValue(row, column.data) : row[column.key];
-  
-    // Si el valor es un array de objetos, ya lo hemos manejado en `getNestedValue`
+
     if (Array.isArray(value)) {
       return value.join(', ');
     }
-  
-    // Si es un campo de fecha y no es un array
+
     if (column.isDate && value) {
       return formatDate(value);
     }
-  
-    // Valor por defecto
+
     return value;
   };
   
@@ -397,7 +393,7 @@ const DynamicTable: React.FC<TableProps> = ({
         </table>
       </div>
 
-      {/* Modal para confirmar borrado */}
+      {}
       {showModal && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen">
@@ -427,7 +423,7 @@ const DynamicTable: React.FC<TableProps> = ({
         </div>
       )}
 
-      {/* Modal para mostrar mensajes */}
+      {}
       {modalMessage && (
         <div className="fixed z-20 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen">

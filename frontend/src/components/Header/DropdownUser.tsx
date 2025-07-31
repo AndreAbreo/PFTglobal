@@ -9,7 +9,6 @@ const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { data: session } = useSession();
 
-  // Función para generar el avatar URL usando UI Avatars
   const getAvatarUrl = (email: string) => {
     const encodedEmail = encodeURIComponent(email);
     return `https://ui-avatars.com/api/?name=${encodedEmail}&background=random&color=fff&size=128&bold=true`;
@@ -56,7 +55,7 @@ const DropdownUser = () => {
         </svg>
       </Link>
 
-      {/* <!-- Dropdown Start --> */}
+      {}
       {dropdownOpen && (
         <div
           className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
@@ -114,7 +113,7 @@ const DropdownUser = () => {
           </button>
         </div>
       )}
-      {/* <!-- Dropdown End --> */}
+      {}
     </ClickOutside>
   );
 };

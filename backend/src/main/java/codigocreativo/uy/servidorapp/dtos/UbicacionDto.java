@@ -6,9 +6,7 @@ import codigocreativo.uy.servidorapp.enumerados.Estados;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * DTO for {@link Ubicacion}
- */
+
 public class UbicacionDto implements Serializable {
     private Long id;
     private String nombre;

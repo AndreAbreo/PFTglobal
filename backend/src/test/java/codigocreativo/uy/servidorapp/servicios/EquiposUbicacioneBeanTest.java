@@ -36,7 +36,6 @@ class EquiposUbicacioneBeanTest {
 
         equiposUbicacioneBean = new EquiposUbicacioneBean(equiposUbicacioneMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = EquiposUbicacioneBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(equiposUbicacioneBean, em);

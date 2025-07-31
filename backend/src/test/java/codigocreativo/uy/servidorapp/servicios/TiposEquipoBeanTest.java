@@ -39,13 +39,11 @@ class TiposEquipoBeanTest {
 
         tiposEquipoBean = new TiposEquipoBean(tiposEquipoMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = TiposEquipoBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(tiposEquipoBean, em);
     }
 
-    // ========== TESTS PARA CREAR TIPOS EQUIPO ==========
 
     @Test
     void testCrearTiposEquipo_conDtoNulo() {
@@ -79,7 +77,6 @@ class TiposEquipoBeanTest {
         TiposEquipoDto dto = new TiposEquipoDto();
         dto.setNombreTipo("TipoExistente");
 
-        // Mock para nombre duplicado - debe retornar un resultado
         @SuppressWarnings("unchecked")
         TypedQuery<TiposEquipo> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(TiposEquipo.class))).thenReturn(queryMock);
@@ -97,7 +94,6 @@ class TiposEquipoBeanTest {
         dto.setNombreTipo("NuevoTipo");
         TiposEquipo entity = new TiposEquipo();
 
-        // Mock para nombre único - debe lanzar NoResultException
         @SuppressWarnings("unchecked")
         TypedQuery<TiposEquipo> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(TiposEquipo.class))).thenReturn(queryMock);
@@ -113,7 +109,6 @@ class TiposEquipoBeanTest {
         verify(em, times(1)).flush();
     }
 
-    // ========== TESTS PARA MODIFICAR TIPOS EQUIPO ==========
 
     @Test
     void testModificarTiposEquipo_conDtoNulo() {
@@ -164,7 +159,6 @@ class TiposEquipoBeanTest {
         verify(em, times(1)).flush();
     }
 
-    // ========== TESTS PARA ELIMINAR TIPOS EQUIPO ==========
 
     @Test
     void testEliminarTiposEquipo_conIdNulo() {
@@ -197,7 +191,6 @@ class TiposEquipoBeanTest {
         verify(em).merge(entity);
     }
 
-    // ========== TESTS PARA OBTENER POR ID ==========
 
     @Test
     void testObtenerPorId_conIdNulo() {
@@ -231,7 +224,6 @@ class TiposEquipoBeanTest {
         verify(tiposEquipoMapper).toDto(entity);
     }
 
-    // ========== TESTS PARA LISTAR TIPOS EQUIPO ==========
 
     @Test
     void testListarTiposEquipo_exitoso() {
@@ -251,21 +243,18 @@ class TiposEquipoBeanTest {
         verify(tiposEquipoMapper).toDto(entities);
     }
 
-    // ========== TESTS DE MANEJO DE EXCEPCIONES ==========
 
     @Test
     void testCrearTiposEquipo_errorBaseDatos() {
         TiposEquipoDto dto = new TiposEquipoDto();
         dto.setNombreTipo("NuevoTipo");
 
-        // Mock para nombre único - debe lanzar NoResultException
         @SuppressWarnings("unchecked")
         TypedQuery<TiposEquipo> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(TiposEquipo.class))).thenReturn(queryMock);
         when(queryMock.setParameter("nombre", "NUEVOTIPO")).thenReturn(queryMock);
         when(queryMock.getSingleResult()).thenThrow(new NoResultException("No existe"));
 
-        // Error en persist
         when(tiposEquipoMapper.toEntity(dto)).thenReturn(new TiposEquipo());
         doThrow(new RuntimeException("Error de BD")).when(em).persist(any());
 

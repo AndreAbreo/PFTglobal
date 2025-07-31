@@ -24,7 +24,6 @@ class SelectorPaisFragment : Fragment() {
     private var paises: List<Pais> = emptyList()
     private var pendingCountrySelection: String? = null
 
-    // LiveData to observe the loading state
     private val _isDataLoaded = MutableLiveData<Boolean>()
     val isDataLoaded: LiveData<Boolean> get() = _isDataLoaded
 
@@ -56,13 +55,11 @@ class SelectorPaisFragment : Fragment() {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerPais.adapter = adapter
 
-                    // If there was a pending country selection, set it now
                     pendingCountrySelection?.let {
                         setSelectedCountry(it)
                         pendingCountrySelection = null
                     }
 
-                    // Update the loading state
                     _isDataLoaded.value = true
                 }.onFailure { exception ->
                     Log.e("SelectorPaisFragment", "Error al cargar los países", exception)
@@ -83,7 +80,7 @@ class SelectorPaisFragment : Fragment() {
                 spinnerPais.setSelection(index)
             }
         } else {
-            // If paises is not yet initialized, store the selection for later
+
             pendingCountrySelection = nombrePais
         }
     }

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Title -->
+    
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:gravity="left"
         android:orientation="horizontal">
 
-        <!-- Nombre del modelo -->
+        
         <TextView
             android:id="@+id/nombreTextView"
             android:layout_width="0dp"
@@ -55,7 +55,7 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <!-- EditText for ID -->
+        
         <EditText
             android:id="@+id/nombreInput"
             android:layout_width="0dp"
@@ -236,7 +236,7 @@
             android:clickable="true" />
     </LinearLayout>
 
-    <!-- Confirm Button -->
+    
     <Button
         android:id="@+id/btnConfirmar"
         android:layout_width="wrap_content"

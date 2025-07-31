@@ -4,32 +4,22 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export interface Column<T> {
-  /** Título que se mostrará como etiqueta del campo */
+  
   header: string;
-  /**
-   * Propiedad del objeto o función que devuelva el contenido a mostrar.
-   */
+  
   accessor: keyof T | ((row: T) => React.ReactNode);
-  /**
-   * Tipo para formatear el contenido: "text", "date", "image", "number", "phone", "email", etc.
-   */
+  
   type?: "text" | "date" | "image" | "number" | "phone" | "email";
-  /**
-   * (Opcional) Indica si el campo es filtrable (por si reutilizas la misma configuración en listados).
-   */
+  
   filterable?: boolean;
 }
 
 interface DetailViewProps<T> {
   data: T;
   columns: Column<T>[];
-  /**
-   * (Opcional) Ruta a la que se redirigirá cuando se haga clic en el botón "Volver al listado".
-   */
+  
   backLink?: string;
-  /**
-   * (Opcional) Si es true, muestra el botón de editar
-   */
+  
   showEditButton?: boolean;
 }
 
@@ -37,11 +27,11 @@ const DetailView = <T extends {}>({ data, columns, backLink, showEditButton = fa
   const router = useRouter();
 
   const handleEdit = () => {
-    // Obtener la URL actual
+
     const currentPath = window.location.pathname;
-    // Reemplazar /ver/ por /editar/
+
     const editPath = currentPath.replace('/ver/', '/editar/');
-    // Navegar a la nueva URL
+
     router.push(editPath);
   };
 
@@ -57,7 +47,6 @@ const DetailView = <T extends {}>({ data, columns, backLink, showEditButton = fa
             value = (data as any)[col.accessor] as React.ReactNode;
           }
 
-          // Formatear según el tipo
           if (col.type === "date" && typeof value === "string") {
             value = new Date(value).toLocaleDateString();
           }

@@ -54,7 +54,7 @@ const DropdownMessage = () => {
           </svg>
         </Link>
 
-        {/* <!-- Dropdown Start --> */}
+        {}
         {dropdownOpen && (
           <div
             className={`absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80`}
@@ -202,7 +202,7 @@ const DropdownMessage = () => {
             </ul>
           </div>
         )}
-        {/* <!-- Dropdown End --> */}
+        {}
       </li>
     </ClickOutside>
   );

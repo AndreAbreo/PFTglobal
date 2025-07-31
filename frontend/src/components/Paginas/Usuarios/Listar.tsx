@@ -39,7 +39,6 @@ const ListarUsuarios: React.FC = () => {
   const [perfiles, setPerfiles] = useState<IdPerfil[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // Cargar perfiles al montar el componente
   useEffect(() => {
     const fetchPerfiles = async () => {
       try {

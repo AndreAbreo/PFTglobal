@@ -96,7 +96,6 @@ public class Ubicacion implements Serializable {
         this.idInstitucion = idInstitucion;
     }
 
-    //Metodo para mostrar la ubicacion como objeto pero que se lea como string en un combo box
     @Override
     public String toString() {
         return nombre;

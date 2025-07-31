@@ -41,7 +41,6 @@ class InstitucionBeanTest {
 
         institucionBean = new InstitucionBean(institucionMapper, ubicacionMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = InstitucionBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(institucionBean, em);

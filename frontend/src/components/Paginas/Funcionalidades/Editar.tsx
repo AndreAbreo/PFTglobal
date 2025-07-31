@@ -96,7 +96,7 @@ const EditarFuncionalidad: React.FC = () => {
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark max-w-lg mx-auto mt-8 p-8">
       <h2 className="mb-6 text-2xl font-bold text-black dark:text-white">Editar Funcionalidad</h2>
       <form onSubmit={handleSubmit}>
-        {/* Dropdown visual de funcionalidad seleccionada */}
+        {}
         <div className="mb-4">
           <label className="mb-2.5 block font-medium text-black dark:text-white">Funcionalidad</label>
           <select value={funcionalidad.id} disabled className="w-full rounded-lg border border-stroke bg-gray-100 py-4 pl-6 pr-10 text-black dark:bg-form-input dark:text-white">

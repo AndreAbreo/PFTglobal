@@ -5,13 +5,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * DTO for {@link codigocreativo.uy.servidorapp.entidades.UsuariosTelefono}
- */
+
 public class UsuariosTelefonoDto implements Serializable {
     private Long id;
     private String numero;
-    //@JsonbTransient //Para evitar referencias circulares (esta anonotación evita que se serialice en JSON)
+
     @JsonBackReference
     private UsuarioDto idUsuario;
 

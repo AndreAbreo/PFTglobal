@@ -26,20 +26,17 @@ public class TiposEquipoBean implements TiposEquipoRemote{
 
     @Override
     public void crearTiposEquipo(TiposEquipoDto tiposEquipo) throws ServiciosException {
-        // Validar que el DTO no sea nulo
+
         if (tiposEquipo == null) {
             throw new ServiciosException("El tipo de equipo es obligatorio");
         }
-        
-        // Validar que el nombre no sea nulo ni vacío
+
         if (tiposEquipo.getNombreTipo() == null || tiposEquipo.getNombreTipo().trim().isEmpty()) {
             throw new ServiciosException("El nombre del tipo de equipo es obligatorio");
         }
-        
-        // Validar que no exista un tipo con el mismo nombre (case-insensitive)
+
         validarNombreUnico(tiposEquipo.getNombreTipo().trim());
-        
-        // Estado por defecto
+
         tiposEquipo.setEstado(Estados.ACTIVO);
         
         try {
@@ -53,36 +50,33 @@ public class TiposEquipoBean implements TiposEquipoRemote{
 
     @Override
     public void modificarTiposEquipo(TiposEquipoDto tiposEquipo) throws ServiciosException {
-        // Validar que el DTO no sea nulo
+
         if (tiposEquipo == null) {
             throw new ServiciosException("El tipo de equipo es obligatorio");
         }
-        
-        // Validar que el ID no sea nulo
+
         if (tiposEquipo.getId() == null) {
             throw new ServiciosException("El ID del tipo de equipo es obligatorio para modificar");
         }
-        
-        // Verificar que el tipo existe
+
         TiposEquipo actual = em.find(TiposEquipo.class, tiposEquipo.getId());
         if (actual == null) {
             throw new ServiciosException("No se encontró el tipo de equipo con ID: " + tiposEquipo.getId());
         }
-        
-        // Validar que el nombre no sea nulo ni vacío
+
         if (tiposEquipo.getNombreTipo() == null || tiposEquipo.getNombreTipo().trim().isEmpty()) {
             throw new ServiciosException("El nombre del tipo de equipo no puede ser nulo ni vacío");
         }
         
         try {
-            // Validar que no exista otro tipo con el mismo nombre (excluyendo el actual)
+
             validarNombreUnicoParaModificacion(tiposEquipo.getNombreTipo().trim(), tiposEquipo.getId());
             
             TiposEquipo tiposEquipoEntity = tiposEquipoMapper.toEntity(tiposEquipo);
             em.merge(tiposEquipoEntity);
             em.flush();
         } catch (ServiciosException e) {
-            // Re-lanzar ServiciosException específicas
+
             throw e;
         } catch (Exception e) {
             throw new ServiciosException("Error al modificar el tipo de equipo");
@@ -94,14 +88,12 @@ public class TiposEquipoBean implements TiposEquipoRemote{
         if (id == null) {
             throw new ServiciosException("El ID es obligatorio");
         }
-        
-        // Verificar que el tipo existe antes de intentar eliminarlo
+
         TiposEquipo tiposEquipoEntity = em.find(TiposEquipo.class, id);
         if (tiposEquipoEntity == null) {
             throw new ServiciosException("No se encontró el tipo de equipo con ID: " + id);
         }
-        
-        // Solo cambia a estado INACTIVO
+
         tiposEquipoEntity.setEstado("INACTIVO");
         em.merge(tiposEquipoEntity);
         em.flush();
@@ -127,9 +119,7 @@ public class TiposEquipoBean implements TiposEquipoRemote{
         return tiposEquipoMapper.toDto(tiposEquipos);
     }
     
-    /**
-     * Valida que el nombre del tipo de equipo sea único en la base de datos
-     */
+    
     private void validarNombreUnico(String nombre) throws ServiciosException {
         try {
             jakarta.persistence.TypedQuery<TiposEquipo> query = em.createQuery("SELECT t FROM TiposEquipo t WHERE UPPER(t.nombreTipo) = :nombre", TiposEquipo.class);
@@ -139,19 +129,17 @@ public class TiposEquipoBean implements TiposEquipoRemote{
                 throw new ServiciosException("Ya existe un tipo de equipo con el nombre: " + nombre);
             }
         } catch (NoResultException e) {
-            // El nombre no existe, es válido
+
         } catch (ServiciosException e) {
-            // Re-lanzar ServiciosException específicas
+
             throw e;
         } catch (Exception e) {
-            // Handle null query or other exceptions
+
             throw new ServiciosException("Error al validar el nombre del tipo de equipo");
         }
     }
     
-    /**
-     * Valida que el nombre del tipo de equipo sea único para modificaciones (excluyendo el tipo actual)
-     */
+    
     private void validarNombreUnicoParaModificacion(String nombre, Long idActual) throws ServiciosException {
         try {
             jakarta.persistence.TypedQuery<TiposEquipo> query = em.createQuery("SELECT t FROM TiposEquipo t WHERE UPPER(t.nombreTipo) = :nombre AND t.id != :id", TiposEquipo.class);
@@ -162,12 +150,12 @@ public class TiposEquipoBean implements TiposEquipoRemote{
                 throw new ServiciosException("Ya existe otro tipo de equipo con el nombre: " + nombre);
             }
         } catch (NoResultException e) {
-            // El nombre no existe, es válido
+
         } catch (ServiciosException e) {
-            // Re-lanzar ServiciosException específicas
+
             throw e;
         } catch (Exception e) {
-            // Handle null query or other exceptions
+
             throw new ServiciosException("Error al validar el nombre del tipo de equipo");
         }
     }

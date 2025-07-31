@@ -54,7 +54,6 @@ class SelectorMarcaFragment : Fragment() {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerMarca.adapter = adapter
 
-                    // If there was a pending country selection, set it now
                     pendingMarcaSelection?.let {
                         setSelectedMarca(it)
                         pendingMarcaSelection = null
@@ -78,7 +77,7 @@ class SelectorMarcaFragment : Fragment() {
                 spinnerMarca.setSelection(index)
             }
         } else {
-            // If marcas is not yet initialized, store the selection for later
+
             pendingMarcaSelection = nombreMarca
         }
     }

@@ -40,7 +40,6 @@ class FuncionalidadBeanTest {
 
         funcionalidadBean = new FuncionalidadBean(funcionalidadMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = FuncionalidadBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(funcionalidadBean, em);
@@ -145,15 +144,13 @@ class FuncionalidadBeanTest {
     void testEliminar_WithAssociatedProfiles() {
         Funcionalidad funcionalidad = new Funcionalidad();
         funcionalidad.setId(1L);
-        
-        // Crear una lista con perfiles asociados
+
         FuncionalidadesPerfiles perfilAsociado = new FuncionalidadesPerfiles();
         funcionalidad.setFuncionalidadesPerfiles(Collections.singletonList(perfilAsociado));
 
         when(em.find(Funcionalidad.class, funcionalidad.getId())).thenReturn(funcionalidad);
 
-        // Ahora el método eliminar debería funcionar incluso con perfiles asociados
-        // porque solo cambia el estado a INACTIVO
+
         assertDoesNotThrow(() -> funcionalidadBean.eliminar(funcionalidad.getId()));
         
         verify(em).merge(funcionalidad);

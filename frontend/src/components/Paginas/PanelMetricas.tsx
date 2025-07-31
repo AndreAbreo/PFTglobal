@@ -19,17 +19,7 @@ export default function PanelMetricas() {
           title="Swagger"
         ></iframe>
       </section>
-      {/*
-      <section className="border p-4 rounded bg-white shadow">
-        <h2 className="text-xl font-semibold mb-2">SonarQube</h2>
-        <iframe
-          src="https://raw.githubusercontent.com/AndreAbreo/PFTglobal/refs/heads/AndreTest7/frontend/public/Captura%20de%20pantalla%202025-07-29%20034003.png"
-          //src="http://sonar.tuempresa.local:9000/dashboard?id=proyecto-api"
-          className="w-full h-[600px] border"
-          title="SonarQube"
-        ></iframe>
-      </section>
-      */}
+      {}
       <section className="border p-4 rounded bg-white shadow">
         <h2 className="text-xl font-semibold mb-2">SonarQube</h2>
         
