@@ -9,7 +9,7 @@ import java.util.List;
 
 @Remote
 public interface UbicacionRemote {
-    //Se crea la primer implementacion Registro de ubicaciones
+
     void crearUbicacion(UbicacionDto ubi) throws ServiciosException;
 
     void modificarUbicacion(UbicacionDto ubi) throws ServiciosException;

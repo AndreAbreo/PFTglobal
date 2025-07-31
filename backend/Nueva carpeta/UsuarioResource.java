@@ -35,7 +35,6 @@ public class UsuarioResource {
     @EJB
     private JwtService jwtService;
 
-    //defino variables static para repetidas
     private static final String EMAIL = "email";
     private static final String BEARER = "bearer";
 
@@ -54,13 +53,11 @@ public class UsuarioResource {
         }
 
         try {
-            // Generar el hash con el salt incluido
+
             String saltedHash = PasswordUtils.generateSaltedHash(usuario.getContrasenia());
 
-            // Asignar el valor hash (con salt) al usuario
             usuario.setContrasenia(saltedHash);
 
-            // Crear el usuario en el sistema
             this.er.crearUsuario(usuario);
 
             return Response.status(201).entity("{\"message\":\"Usuario creado correctamente\"}").build();
@@ -87,48 +84,40 @@ public class UsuarioResource {
     @Path("/modificar-propio-usuario")
     public Response modificarPropioUsuario(UsuarioDto usuario, @HeaderParam("Authorization") String authorizationHeader) {
         try {
-            // Extraer el token JWT del encabezado
+
             String token = authorizationHeader.substring(BEARER.length()).trim();
             Claims claims = jwtService.parseToken(token);
             String correoDelToken = claims.getSubject();
 
-            // Verificar si el correo del token coincide con el correo del objeto UsuarioDto
             if (!Objects.equals(correoDelToken, usuario.getEmail())) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity("{\"message\":\"No autorizado para modificar este usuario\"}").build();
             }
 
-            // Obtener el usuario actual desde la base de datos
             UsuarioDto usuarioActual = er.obtenerUsuario(usuario.getId());
             if (usuarioActual == null) {
                 return Response.status(Response.Status.NOT_FOUND).entity("{\"message\":\"Usuario no encontrado\"}").build();
             }
 
-
-            // Verificar si se proporciona una nueva contraseña
             if (usuario.getContrasenia() != null && !usuario.getContrasenia().isEmpty()) {
 
-                // Validar la nueva contraseña
                 if (!usuario.getContrasenia().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
 
                     return Response.status(Response.Status.BAD_REQUEST).entity("{\"message\":\"La contraseña debe tener al menos 8 caracteres, incluyendo letras y números.\"}").build();
                 }
 
-                // Generar un nuevo salt y hash para la nueva contraseña
                 String saltedHash = PasswordUtils.generateSaltedHash(usuario.getContrasenia());
                 usuario.setContrasenia(saltedHash);
 
             } else {
-                // Mantener la contraseña actual si no se cambia
+
                 usuario.setContrasenia(usuarioActual.getContrasenia());
             }
 
-            // Proteger otros campos que no se pueden modificar
             usuario.setNombreUsuario(usuarioActual.getNombreUsuario());
             usuario.setIdPerfil(usuarioActual.getIdPerfil());
             usuario.setEstado(usuarioActual.getEstado());
             usuario.setIdInstitucion(usuarioActual.getIdInstitucion());
 
-            // Proceder con la modificación
             er.modificarUsuario(usuario);
 
 
@@ -187,14 +176,13 @@ public class UsuarioResource {
         if (nombreUsuario != null) filtros.put("nombreUsuario", nombreUsuario);
         if (email != null) filtros.put(EMAIL, email);
 
-        // Si no se envía el filtro de estado, por defecto se buscan usuarios activos
         if (estado == null || estado.isEmpty()) {
             filtros.put("estado", "ACTIVO");
         } else if (!estado.equals("default")) {
-            // Si el estado es "default", no agregamos ningún filtro de estado
+
             filtros.put("estado", estado);
         }
-        // Lógica para el filtro de perfil (tipo de usuario)
+
         if (tipoUsuario != null && !tipoUsuario.isEmpty() && !tipoUsuario.equals("default")) {
             filtros.put("tipoUsuario", tipoUsuario);
         }
@@ -262,7 +250,6 @@ public class UsuarioResource {
                         .entity("{\"error\":\"Usuario no pertenece al AD\"}").build();
             }
 
-            // Validación tradicional contra base de datos
             UsuarioDto user = er.login(loginRequest.getEmail(), loginRequest.getPassword());
             if (user == null || !user.getEstado().equals(Estados.ACTIVO)) {
                 return Response.status(Response.Status.UNAUTHORIZED)
@@ -282,7 +269,7 @@ public class UsuarioResource {
 
     @POST
     @Path("/login")
-    // In UsuarioResource.java
+
     public Response login(LoginRequest loginRequest) {
         if (loginRequest == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("{\"error\":\"Pedido de login nulo\"}").build();
@@ -292,14 +279,13 @@ public class UsuarioResource {
 
         if (user != null && user.getEstado().equals(Estados.ACTIVO)) {
             try {
-                // Verificar la contraseña usando el hash con el salt incluido
+
                 boolean isValid = PasswordUtils.verifyPassword(loginRequest.getPassword(), user.getContrasenia());
 
                 if (!isValid) {
                     return Response.status(Response.Status.UNAUTHORIZED).entity("{\"error\":\"Contraseña incorrecta\"}").build();
                 }
 
-                // Generar el token
                 String token = jwtService.generateToken(user.getEmail(), user.getIdPerfil().getNombrePerfil());
                 LoginResponse loginResponse = new LoginResponse(token, user);
 
@@ -321,7 +307,7 @@ public class UsuarioResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("{\"error\":\"Token de Google nulo\"}").build();
         }
         try {
-            // Validar el idToken con Google
+
             String idTokenString = googleLoginRequest.getIdToken();
             TokenVerifier tokenVerifier = TokenVerifier.newBuilder()
                     .setAudience("103181333646-gp6uip6g6k1rg6p52tsidphj3gt22qut.apps.googleusercontent.com")
@@ -336,26 +322,23 @@ public class UsuarioResource {
             String email = (String) payload.get(EMAIL);
             String name = (String) payload.get("name");
 
-            // Verificar si el usuario ya existe en el sistema
             UsuarioDto user = er.findUserByEmail(email);
             boolean userNeedsAdditionalInfo = false;
 
             if (user == null) {
-                // El usuario no existe, pedir más información para completar el registro
+
                 user = new UsuarioDto();
                 user.setEmail(email);
                 user.setNombre(name);
                 userNeedsAdditionalInfo = true;
             } else if (!user.getEstado().equals(Estados.ACTIVO)) {
-                // Si el usuario no está activo, devolver un error
+
                 return Response.status(Response.Status.FORBIDDEN).entity("{\"error\":\"Cuenta inactiva, por favor contacte al administrador\"}").build();
             }
 
-            // Generar un JWT para este usuario si ya existe
             String perfilNombre = (user.getIdPerfil() != null) ? user.getIdPerfil().getNombrePerfil() : "Usuario";
             String token = jwtService.generateToken(email, perfilNombre);  // Generar un nuevo JWT válido para este usuario
 
-            // Enviar la respuesta al cliente con el token y la indicación de si necesita completar más información
             GoogleLoginResponse loginResponse = new GoogleLoginResponse(token, userNeedsAdditionalInfo, user);
             return Response.ok(loginResponse).build();
 
@@ -370,7 +353,7 @@ public class UsuarioResource {
     @POST
     @Path("/renovar-token")
     public Response renovarToken(@HeaderParam("Authorization") String authorizationHeader) {
-        // Validar si el header contiene el token
+
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\": \"Falta el token de autorización.\"}")
@@ -381,21 +364,17 @@ public class UsuarioResource {
             String token = authorizationHeader.substring(BEARER.length()).trim();
             Claims claims = jwtService.parseToken(token);
 
-            // Verificar si el token ha expirado
             if (claims.getExpiration().before(new Date())) {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .entity("{\"error\": \"El token ha expirado.\"}")
                         .build();
             }
 
-            // Obtener el email y perfil del token antiguo
             String email = claims.get(EMAIL, String.class);
             String perfil = claims.get("perfil", String.class);
 
-            // Generar un nuevo token
             String nuevoToken = jwtService.generateToken(email, perfil);
 
-            // Devolver el nuevo token en formato JSON
             Map<String, String> responseMap = new HashMap<>();
             responseMap.put("token", nuevoToken);
 
@@ -466,7 +445,6 @@ public class UsuarioResource {
     public static class GoogleLoginRequest {
         private String idToken;
 
-        // Getters y setters
         public String getIdToken() {
             return idToken;
         }
@@ -482,14 +460,12 @@ public class UsuarioResource {
         private boolean userNeedsAdditionalInfo;
         private UsuarioDto user; // Añade este campo
 
-        // Constructor
         public GoogleLoginResponse(String token, boolean userNeedsAdditionalInfo, UsuarioDto user) {
             this.token = token;
             this.userNeedsAdditionalInfo = userNeedsAdditionalInfo;
             this.user = user;
         }
 
-        // Getters y setters
         public String getToken() {
             return token;
         }

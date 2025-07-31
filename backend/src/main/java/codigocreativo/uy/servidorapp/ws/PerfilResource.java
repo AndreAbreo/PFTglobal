@@ -95,7 +95,7 @@ public class PerfilResource {
     })
     @SecurityRequirement(name = "BearerAuth")
     public Response eliminarPerfil(@Parameter(description = "ID del perfil a inactivar", required = true) @QueryParam("id") Long id) {
-        // Validar que el ID no sea null
+
         if (id == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(String.format(ERROR_JSON_FORMAT, "El ID del perfil es obligatorio"))

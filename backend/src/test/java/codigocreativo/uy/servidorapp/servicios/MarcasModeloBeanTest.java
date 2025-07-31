@@ -38,13 +38,11 @@ class MarcasModeloBeanTest {
         MockitoAnnotations.openMocks(this);
         marcasModeloBean = new MarcasModeloBean(marcasModeloMapper);
 
-        // Utiliza reflexión para asignar el EntityManager privado
         Field emField = MarcasModeloBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(marcasModeloBean, em);
     }
 
-    // ========== TESTS PARA CREAR MARCAS MODELO ==========
 
     @Test
     void testCrearMarcasModelo_conDtoNulo() {
@@ -78,7 +76,6 @@ class MarcasModeloBeanTest {
         MarcasModeloDto dto = new MarcasModeloDto();
         dto.setNombre("MarcaExistente");
 
-        // Mock para simular que ya existe una marca con ese nombre
         @SuppressWarnings("unchecked")
         TypedQuery<MarcasModelo> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(MarcasModelo.class))).thenReturn(queryMock);
@@ -96,7 +93,6 @@ class MarcasModeloBeanTest {
         dto.setNombre("NuevaMarca");
         MarcasModelo entity = new MarcasModelo();
 
-        // Mock para nombre único - debe lanzar NoResultException
         @SuppressWarnings("unchecked")
         TypedQuery<MarcasModelo> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(MarcasModelo.class))).thenReturn(queryMock);
@@ -112,7 +108,6 @@ class MarcasModeloBeanTest {
         verify(em, times(1)).flush();
     }
 
-    // ========== TESTS PARA MODIFICAR MARCAS MODELO ==========
 
     @Test
     void testModificarMarcasModelo_conDtoNulo() {
@@ -184,7 +179,6 @@ class MarcasModeloBeanTest {
         verify(em, times(1)).flush();
     }
 
-    // ========== TESTS PARA OBTENER MARCA ==========
 
     @Test
     void testObtenerMarca_conIdNulo() {
@@ -218,7 +212,6 @@ class MarcasModeloBeanTest {
         verify(marcasModeloMapper).toDto(entity);
     }
 
-    // ========== TESTS PARA LISTAR MARCAS ==========
 
     @Test
     void testObtenerMarcasLista_exitoso() {
@@ -239,7 +232,6 @@ class MarcasModeloBeanTest {
         verify(marcasModeloMapper).toDto(entities);
     }
 
-    // ========== TESTS PARA ELIMINAR MARCA ==========
 
     @Test
     void testEliminarMarca_conIdNulo() {
@@ -278,21 +270,18 @@ class MarcasModeloBeanTest {
         assertEquals("Marca no encontrada", exception.getMessage());
     }
 
-    // ========== TESTS DE MANEJO DE EXCEPCIONES ==========
 
     @Test
     void testCrearMarcasModelo_errorBaseDatos() {
         MarcasModeloDto dto = new MarcasModeloDto();
         dto.setNombre("NuevaMarca");
 
-        // Mock para nombre único exitoso
         @SuppressWarnings("unchecked")
         TypedQuery<MarcasModelo> queryMock = mock(TypedQuery.class);
         when(em.createQuery(anyString(), eq(MarcasModelo.class))).thenReturn(queryMock);
         when(queryMock.setParameter("nombre", "NUEVAMARCA")).thenReturn(queryMock);
         when(queryMock.getSingleResult()).thenThrow(new NoResultException("No existe"));
 
-        // Error en persist
         when(marcasModeloMapper.toEntity(dto)).thenReturn(new MarcasModelo());
         doThrow(new RuntimeException("Error de BD")).when(em).persist(any());
 

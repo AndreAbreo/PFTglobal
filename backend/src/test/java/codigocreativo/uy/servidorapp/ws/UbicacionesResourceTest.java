@@ -38,7 +38,6 @@ class UbicacionesResourceTest {
         ubicacionDto.setSector(Sectores.POLICLINICO.getValor());
     }
 
-    // ========== TESTS PARA LISTAR UBICACIONES ==========
 
     @Test
     void testListarUbicaciones_exitoso() throws ServiciosException {
@@ -79,7 +78,6 @@ class UbicacionesResourceTest {
         verify(er, times(1)).listarUbicaciones();
     }
 
-    // ========== TESTS PARA BUSCAR POR ID ==========
 
     @Test
     void testBuscarPorId_exitoso() throws ServiciosException {
@@ -109,9 +107,8 @@ class UbicacionesResourceTest {
         verify(er, times(1)).obtenerUbicacionPorId(id);
     }
 
-    // ========== TESTS OBSOLETOS REMOVIDOS ==========
-    // Los siguientes tests fueron removidos porque ya no aplicaban después de la refactorización:
-    // - Métodos de creación, modificación y eliminación que no están implementados en el resource
-    // - Tests de respuestas HTTP complejas que ahora son estándar
-    // - Tests de estado que se asignan automáticamente en el bean
+
+
+
+
 }

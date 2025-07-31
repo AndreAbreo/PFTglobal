@@ -29,7 +29,6 @@ public class Funcionalidad implements Serializable {
     @JsonIgnoreProperties("funcionalidad")
     private List<FuncionalidadesPerfiles> funcionalidadesPerfiles;
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

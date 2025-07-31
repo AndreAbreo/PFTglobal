@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".main.MainActivity">
 
-    <!-- Contenido principal en un ScrollView -->
+    
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
 
-            <!-- Título principal y menú -->
+            
             <TextView
                 android:id="@+id/mamedNamed"
                 android:layout_width="0dp"
@@ -44,7 +44,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <!-- Descripción de la aplicación y logo -->
+            
             <TextView
                 android:id="@+id/mamedDesc"
                 android:layout_width="0dp"
@@ -66,7 +66,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Fila de botones con CardViews -->
+            
             <LinearLayout
                 android:id="@+id/row1"
                 android:layout_width="0dp"
@@ -79,7 +79,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mamedimagen">
 
-                <!-- Card de Usuarios -->
+                
                 <androidx.cardview.widget.CardView
                     android:id="@+id/usuarioCard"
                     android:layout_width="0dp"
@@ -117,7 +117,7 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <!-- Card de Proveedores -->
+                
                 <androidx.cardview.widget.CardView
                     android:id="@+id/proveedorCard"
                     android:layout_width="0dp"
@@ -336,7 +336,7 @@
 
     </ScrollView>
 
-    <!-- NavigationView para el menú lateral -->
+    
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"

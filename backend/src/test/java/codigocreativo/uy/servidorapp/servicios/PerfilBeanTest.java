@@ -38,7 +38,6 @@ class PerfilBeanTest {
         MockitoAnnotations.openMocks(this);
         perfilBean = new PerfilBean(perfilMapper);
 
-        // Use reflection to set the private EntityManager field
         Field emField = PerfilBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(perfilBean, em);

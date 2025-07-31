@@ -19,11 +19,11 @@ class JwtTokenFilterTest {
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
         filter = spy(new JwtTokenFilter());
-        // Inyectar el mock de funcionalidadService usando reflexión
+
         var field = JwtTokenFilter.class.getDeclaredField("funcionalidadService");
         field.setAccessible(true);
         field.set(filter, funcionalidadService);
-        // Hacer accesibles los métodos privados/protegidos para el test
+
         for (String methodName : new String[]{"validateToken", "isValidUserInfo", "hasPermission"}) {
             var m = JwtTokenFilter.class.getDeclaredMethod(methodName, methodName.equals("validateToken") ? new Class[]{String.class} : new Class[]{String.class, String.class});
             m.setAccessible(true);
@@ -102,7 +102,7 @@ class JwtTokenFilterTest {
 
     @Test
     void testPermissionCheckThrowsException() throws Exception {
-        // Arrange: set up a valid token and user info
+
         when(requestContext.getUriInfo()).thenReturn(mock(jakarta.ws.rs.core.UriInfo.class));
         when(requestContext.getUriInfo().getPath()).thenReturn("/api/privado");
         when(requestContext.getHeaderString(anyString())).thenReturn("Bearer tokenValido");
@@ -112,13 +112,10 @@ class JwtTokenFilterTest {
         doReturn(claims).when(filter).validateToken(anyString());
         doReturn(true).when(filter).isValidUserInfo(anyString(), anyString());
 
-        // Arrange: make hasPermission throw an exception
         doThrow(new RuntimeException("DB error")).when(filter).hasPermission(anyString(), anyString());
 
-        // Act
         filter.filter(requestContext);
 
-        // Assert
         verify(requestContext).abortWith(argThat(resp -> resp.getStatus() == Response.Status.UNAUTHORIZED.getStatusCode()));
     }
 } 

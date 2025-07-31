@@ -17,10 +17,8 @@ class TipoEquipoViewModel : ViewModel() {
 
     private val dataRepository = DataRepository()
 
-    // MutableLiveData para observar cambios en los modelos
     val tipoEquipoList = MutableLiveData<List<TipoEquipo>>()
 
-    // Cargar modelos desde la API
     fun loadModelos(token: String) {
         viewModelScope.launch {
             try {
@@ -38,20 +36,18 @@ class TipoEquipoViewModel : ViewModel() {
                 result.onSuccess { tipoEquipos ->
                     tipoEquipoList.value = tipoEquipos // Actualiza la lista de modelos en LiveData
                 }.onFailure { error ->
-                    // Maneja errores aquí si es necesario
+
                 }
             } catch (e: Exception) {
-                // Maneja excepciones aquí si es necesario
+
             }
         }
     }
 
-    // Obtener un modelo específico por ID
     fun getModeloById(id: Int): TipoEquipo? {
         return tipoEquipoList.value?.find { it.id == id }
     }
 
-    // Actualizar el estado de un modelo
     fun actualizarEstadoModelo(id: Int, nuevoEstado: Estado) {
         tipoEquipoList.value = tipoEquipoList.value?.map { tipoEquipo ->
             if (tipoEquipo.id == id) {

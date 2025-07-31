@@ -39,19 +39,15 @@ class DetalleModeloFragment(
         idInput = view.findViewById(R.id.idInput)
         estadoSpinner = view.findViewById(R.id.estadoSpinner)
 
-        // Populate fields with data from the modelo object
         idInput.text = modelo.id.toString()
         nombreInput.setText(modelo.nombre)
         marcaPickerFragment.setSelectedMarca(modelo.idMarca.nombre)
 
-
-        // Populate estadoSpinner with Estado enum values
         val estadoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, Estado.values())
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         estadoSpinner.adapter = estadoAdapter
         estadoSpinner.setSelection(Estado.entries.indexOf(modelo.estado))
 
-        // Configurar el botón de confirmar
         btnConfirmar.setOnClickListener {
             val nuevoNombre = nombreInput.text.toString()
             val nuevoMarca = marcaPickerFragment.getSelectedMarca()

@@ -27,16 +27,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@types/*": ["./src/types/*"]
-    },
-    "target": "ES2017"
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+      "@*.ts",
+    "***.ts"
   ],
   "exclude": [
     "node_modules"

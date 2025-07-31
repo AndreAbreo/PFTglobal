@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Title -->
+    
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- ID del usuario -->
+        
         <TextView
             android:id="@+id/idTextView"
             android:layout_width="0dp"
@@ -36,7 +36,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- EditText for ID -->
+        
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/idInput"
             android:layout_width="0dp"
@@ -53,7 +53,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- Cedula del usuario -->
+        
         <TextView
             android:id="@+id/cedulaTextView"
             android:layout_width="0dp"
@@ -64,7 +64,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- EditText for ID -->
+        
         <EditText
             android:id="@+id/cedulaInput"
             android:layout_width="0dp"
@@ -81,7 +81,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- Nombre del usuario -->
+        
         <TextView
             android:id="@+id/nombreTextView"
             android:layout_width="0dp"
@@ -92,7 +92,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- EditText for Nombre -->
+        
         <EditText
             android:id="@+id/nombreInput"
             android:layout_width="0dp"
@@ -109,7 +109,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- Apellido del usuario -->
+        
         <TextView
             android:id="@+id/apellidoTextView"
             android:layout_width="0dp"
@@ -120,7 +120,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- EditText for ID -->
+        
         <EditText
             android:id="@+id/apellidoInput"
             android:layout_width="0dp"
@@ -136,7 +136,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- Fecha Nacimiento del usuario -->
+        
         <TextView
             android:id="@+id/fechaNacimientoTextView"
             android:layout_width="0dp"
@@ -147,7 +147,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- EditText for fecha de nacimiento -->
+        
         <EditText
             android:id="@+id/fechaNacimientoInput"
             android:layout_width="0dp"
@@ -163,7 +163,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- Email del usuario -->
+        
         <TextView
             android:id="@+id/emailTextView"
             android:layout_width="0dp"
@@ -174,7 +174,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- EditText for ID -->
+        
         <EditText
             android:id="@+id/emailInput"
             android:layout_width="0dp"
@@ -190,7 +190,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- Telefono del usuario -->
+        
         <TextView
             android:id="@+id/telefonoTextView"
             android:layout_width="0dp"
@@ -201,7 +201,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- EditText for ID -->
+        
         <EditText
             android:id="@+id/telefonoInput"
             android:layout_width="0dp"
@@ -217,7 +217,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- Nombre de usuario del usuario -->
+        
         <TextView
             android:id="@+id/nombreUsuarioTextView"
             android:layout_width="0dp"
@@ -228,7 +228,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- EditText for  nombreusuario-->
+        
         <EditText
             android:id="@+id/nombreUsuarioInput"
             android:layout_width="0dp"
@@ -244,7 +244,7 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
-        <!-- Institucion del usuario -->
+        
         <TextView
             android:id="@+id/institucionTextView"
             android:layout_width="0dp"
@@ -262,7 +262,7 @@
             android:layout_weight="1"
             android:paddingBottom="5dp" />
     </LinearLayout>
-    <!-- Perfil del usuario -->
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -279,7 +279,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- Contenedor para SelectorPerfilFragment -->
+        
         <FrameLayout
             android:id="@+id/fragmentPerfilPicker"
             android:layout_width="0dp"
@@ -296,7 +296,7 @@
         android:gravity="center"
         android:layout_marginBottom="16dp">
 
-        <!-- Estado del usuario -->
+        
         <TextView
             android:id="@+id/estadoTextView"
             android:layout_width="0dp"
@@ -307,7 +307,7 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-        <!-- Spinner estado -->
+        
         <Spinner
             android:id="@+id/estadoSpinner"
             android:layout_width="0dp"
@@ -316,7 +316,7 @@
             android:paddingBottom="16dp" />
     </LinearLayout>
 
-    <!-- Confirm Button -->
+    
     <Button
         android:id="@+id/btnConfirmar"
         android:layout_width="wrap_content"

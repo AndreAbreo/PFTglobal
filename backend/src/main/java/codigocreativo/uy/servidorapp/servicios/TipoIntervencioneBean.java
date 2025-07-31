@@ -47,7 +47,7 @@ public class TipoIntervencioneBean implements TipoIntervencioneRemote {
 
     @Override
     public void eliminarTipoIntervencion(Long id) {
-        //no puede borrar solo poner como estado inactivo
+
         em.createQuery("UPDATE TiposIntervencione t SET t.estado = 'INACTIVO' WHERE t.id = :id")
                 .setParameter("id", id)
                 .executeUpdate();

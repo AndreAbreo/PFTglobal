@@ -35,19 +35,17 @@ public class IntervencionBean implements IntervencionRemote {
 
     @Override
     public void actualizar(IntervencionDto intervencion) throws ServiciosException {
-        //Se "transforma" el DTO a una entidad
+
         Intervencion intervencionEntity = intervencionMapper.toEntity(intervencion, new CycleAvoidingMappingContext());
 
-        //Se actualiza la entidad (no el DTO)
         em.merge(intervencionEntity);
     }
 
     @Override
     public List<IntervencionDto> obtenerTodas() throws ServiciosException {
-        //Se obtienen todas las entidades
+
         List<Intervencion> intervenciones = em.createQuery("SELECT i FROM Intervencion i", Intervencion.class).getResultList();
 
-        //Se transforman la lista de entidades en una lista de DTOs (hay un metodo que recibe una lista y devuelve otra lista ya transformada)
         return intervencionMapper.toDto(intervenciones, new CycleAvoidingMappingContext());
     }
 

@@ -13,7 +13,6 @@ import java.util.Date;
 @Stateless
 public class JwtService {
 
-    // Decodificar la clave secreta en Base64
     private final Key secretKey = Keys.hmacShaKeyFor(DatatypeConverter.parseBase64Binary(System.getenv("SECRET_KEY")));
 
     public String generateToken(String email, String nombrePerfil) {

@@ -193,7 +193,7 @@ class FuncionalidadResourceTest {
     @Test
     void testEliminarFuncionalidadConIdNull() throws ServiciosException {
         FuncionalidadDto funcionalidadDto = new FuncionalidadDto();
-        // No establecer el ID, dejarlo null
+
 
         Response response = funcionalidadResource.eliminar(funcionalidadDto);
 

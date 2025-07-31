@@ -28,7 +28,6 @@ public class FuncionalidadesPerfiles implements Serializable {
         this.perfil = perfil;
     }
 
-    // Getters y Setters
     public FuncionalidadesPerfilesId getId() {
         return id;
     }

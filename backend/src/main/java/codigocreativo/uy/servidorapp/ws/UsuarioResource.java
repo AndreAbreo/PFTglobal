@@ -63,10 +63,9 @@ public class UsuarioResource {
                     .build();
         }
         try {
-            // Debug: mostrar la contraseña antes de validar
+
             System.out.println("DEBUG - Contraseña recibida: " + usuario.getContrasenia());
-            
-            // Validar la contraseña antes de hashearla
+
             er.validarContrasenia(usuario.getContrasenia());
             
             String saltedHash = PasswordUtils.generateSaltedHash(usuario.getContrasenia());
@@ -106,19 +105,16 @@ public class UsuarioResource {
             String token = authorizationHeader.substring(BEARER.length()).trim();
             Claims claims = jwtService.parseToken(token);
             String emailSolicitante = claims.getSubject();
-            
-            // Validar permisos de administrador
+
             er.validarModificacionPorAdministrador(emailSolicitante, usuario.getId());
-            
-            // Obtener el usuario actual
+
             UsuarioDto usuarioActual = er.obtenerUsuario(usuario.getId());
             if (usuarioActual == null) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("{\"error\":\"Usuario no encontrado\"}")
                         .build();
             }
-            
-            // Validar contraseña si se proporciona una nueva
+
             if (usuario.getContrasenia() != null && !usuario.getContrasenia().isEmpty()) {
                 er.validarContrasenia(usuario.getContrasenia());
                 String saltedHash = PasswordUtils.generateSaltedHash(usuario.getContrasenia());
@@ -127,13 +123,12 @@ public class UsuarioResource {
                 usuario.setContrasenia(usuarioActual.getContrasenia());
             }
 
-            // Mantener campos que no deberían modificarse
             usuario.setNombreUsuario(usuarioActual.getNombreUsuario());
-            // El perfil puede ser modificado por administradores
+
             if (usuario.getIdPerfil() == null) {
                 usuario.setIdPerfil(usuarioActual.getIdPerfil());
             }
-            // El estado puede ser modificado por administradores
+
             if (usuario.getEstado() == null) {
                 usuario.setEstado(usuarioActual.getEstado());
             }
@@ -181,10 +176,8 @@ public class UsuarioResource {
             Claims claims = jwtService.parseToken(token);
             String correoDelToken = claims.getSubject();
 
-            // Validar que el usuario puede modificar sus propios datos
             er.validarModificacionPropia(correoDelToken, usuario.getId());
 
-            // Obtener el usuario actual
             UsuarioDto usuarioActual = er.obtenerUsuario(usuario.getId());
             if (usuarioActual == null) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -192,17 +185,15 @@ public class UsuarioResource {
                         .build();
             }
 
-            // Solo procesar la contraseña si se proporciona una nueva
             if (usuario.getContrasenia() != null && !usuario.getContrasenia().isEmpty()) {
                 er.validarContrasenia(usuario.getContrasenia());
                 String saltedHash = PasswordUtils.generateSaltedHash(usuario.getContrasenia());
                 usuario.setContrasenia(saltedHash);
             } else {
-                // Si no se proporciona contraseña, mantener la actual
+
                 usuario.setContrasenia(usuarioActual.getContrasenia());
             }
 
-            // Mantener campos que no deberían modificarse
             usuario.setNombreUsuario(usuarioActual.getNombreUsuario());
             usuario.setIdPerfil(usuarioActual.getIdPerfil());
             usuario.setEstado(usuarioActual.getEstado());
@@ -271,7 +262,7 @@ public class UsuarioResource {
             @HeaderParam("Authorization") String authorizationHeader
     ) {
         try {
-            // Validar que el ID del usuario no sea null
+
             if (idUsuarioAInactivar == null) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .entity("{\"error\":\"ID del usuario a inactivar es requerido\"}")
@@ -283,14 +274,12 @@ public class UsuarioResource {
             String emailSolicitante = claims.getSubject();
             String perfilSolicitante = claims.get(PERFIL, String.class);
 
-            // Verificar que el usuario es administrador o aux administrativo
             if (!ADMINISTRADOR.equals(perfilSolicitante) && !SUPER_ADMIN.equals(perfilSolicitante) && !"Aux Administrativo".equals(perfilSolicitante)) {
                 return Response.status(Response.Status.FORBIDDEN)
                         .entity("{\"message\":\"Requiere ser Administrador o Aux Administrativo para inactivar usuarios\"}")
                         .build();
             }
 
-            // Verificar que el usuario existe
             UsuarioDto usuarioAInactivar = er.obtenerUsuario(idUsuarioAInactivar);
             if (usuarioAInactivar == null) {
                 return Response.status(Response.Status.NOT_FOUND)
@@ -298,14 +287,12 @@ public class UsuarioResource {
                         .build();
             }
 
-            // Verificar que no se está inactivando a sí mismo
             if (emailSolicitante.equals(usuarioAInactivar.getEmail())) {
                 return Response.status(Response.Status.FORBIDDEN)
                         .entity("{\"message\":\"No puedes inactivar tu propia cuenta\"}")
                         .build();
             }
 
-            // Verificar que no se está inactivando a otro administrador
             if (ADMINISTRADOR.equals(usuarioAInactivar.getIdPerfil().getNombrePerfil()) || SUPER_ADMIN.equals(usuarioAInactivar.getIdPerfil().getNombrePerfil())) {
                 return Response.status(Response.Status.FORBIDDEN)
                         .entity("{\"message\":\"No puedes inactivar a otro administrador\"}")
@@ -358,24 +345,20 @@ public class UsuarioResource {
         try {
             Map<String, String> filtros = new HashMap<>();
 
-            // Agregar filtros si están presentes
             if (cedula != null && !cedula.isEmpty()) filtros.put("cedula", cedula);
             if (nombre != null && !nombre.isEmpty()) filtros.put("nombre", nombre);
             if (apellido != null && !apellido.isEmpty()) filtros.put("apellido", apellido);
             if (nombreUsuario != null && !nombreUsuario.isEmpty()) filtros.put("nombreUsuario", nombreUsuario);
             if (email != null && !email.isEmpty()) filtros.put(EMAIL, email);
 
-            // Filtro por estado
             if (estado != null && !estado.isEmpty() && !estado.equalsIgnoreCase("default")) {
                 filtros.put("estado", estado);
             }
 
-            // Filtro por tipo de usuario (rol)
             if (tipoUsuario != null && !tipoUsuario.isEmpty() && !tipoUsuario.equalsIgnoreCase("default")) {
                 filtros.put("tipoUsuario", tipoUsuario);
             }
 
-            // Llamar al servicio con los filtros armados
             List<UsuarioDto> usuarios = er.obtenerUsuariosFiltrado(filtros);
             return Response.ok(usuarios).build();
 
@@ -477,7 +460,6 @@ public class UsuarioResource {
                         .entity("{\"error\":\"Usuario no pertenece al AD\"}").build();
             }
 
-            // Validación tradicional contra base de datos
             UsuarioDto user = er.login(loginRequest.getEmail(), loginRequest.getPassword());
             if (user == null || !user.getEstado().equals(Estados.ACTIVO)) {
                 return Response.status(Response.Status.UNAUTHORIZED)
@@ -549,7 +531,7 @@ public class UsuarioResource {
         }
 
         try {
-            // Verificar el token de Google
+
             TokenVerifier verifier = TokenVerifier.newBuilder()
                     .setAudience("103181333646-gp6uip6g6k1rg6p52tsidphj3gt22qut.apps.googleusercontent.com")
                     .build();
@@ -557,12 +539,11 @@ public class UsuarioResource {
             JsonWebToken token = verifier.verify(googleLoginRequest.getIdToken());
             String email = token.getPayload().get("email").toString();
 
-            // Buscar o crear usuario
             UsuarioDto user = er.findUserByEmail(email);
             boolean userNeedsAdditionalInfo = false;
 
             if (user == null) {
-                // Usuario nuevo, necesitará información adicional
+
                 userNeedsAdditionalInfo = true;
                 user = new UsuarioDto();
                 user.setEmail(email);
@@ -600,7 +581,6 @@ public class UsuarioResource {
             String email = claims.getSubject();
             String perfil = claims.get(PERFIL, String.class);
 
-            // Generar nuevo token
             String newToken = jwtService.generateToken(email, perfil);
             return Response.ok("{\"token\":\"" + newToken + "\"}").build();
         } catch (Exception e) {

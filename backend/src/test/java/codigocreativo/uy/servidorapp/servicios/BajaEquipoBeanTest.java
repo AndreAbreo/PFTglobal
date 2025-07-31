@@ -47,17 +47,14 @@ class BajaEquipoBeanTest {
         MockitoAnnotations.openMocks(this);
         bajaEquipoBean = new BajaEquipoBean(bajaEquipoMapper);
 
-        // Inyectar el EntityManager usando reflexión
         Field emField = BajaEquipoBean.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(bajaEquipoBean, em);
 
-        // Inyectar el UsuarioRemote usando reflexión
         Field usuarioRemoteField = BajaEquipoBean.class.getDeclaredField("usuarioRemote");
         usuarioRemoteField.setAccessible(true);
         usuarioRemoteField.set(bajaEquipoBean, usuarioRemote);
 
-        // Inyectar el EquipoRemote usando reflexión
         Field equipoRemoteField = BajaEquipoBean.class.getDeclaredField("equipoRemote");
         equipoRemoteField.setAccessible(true);
         equipoRemoteField.set(bajaEquipoBean, equipoRemote);
@@ -129,7 +126,6 @@ class BajaEquipoBeanTest {
 
         assertDoesNotThrow(() -> bajaEquipoBean.crearBajaEquipo(bajaEquipoDto, "test@test.com"));
 
-        // Verificar que se estableció la fecha por defecto
         assertNotNull(bajaEquipoDto.getFecha());
         verify(em).persist(bajaEquipoEntity);
         verify(em).flush();
@@ -202,7 +198,6 @@ class BajaEquipoBeanTest {
 
         assertDoesNotThrow(() -> bajaEquipoBean.crearBajaEquipo(bajaEquipoDto, "test@test.com"));
 
-        // Verificar que se estableció el estado por defecto
         assertEquals("INACTIVO", bajaEquipoDto.getEstado());
         verify(em).persist(bajaEquipoEntity);
         verify(em).flush();
@@ -223,7 +218,6 @@ class BajaEquipoBeanTest {
 
         assertDoesNotThrow(() -> bajaEquipoBean.crearBajaEquipo(bajaEquipoDto, "test@test.com"));
 
-        // Verificar que se estableció la fecha por defecto
         assertNotNull(bajaEquipoDto.getFecha());
         verify(em).persist(bajaEquipoEntity);
         verify(em).flush();
@@ -287,8 +281,7 @@ class BajaEquipoBeanTest {
         usuario.setEmail("test@test.com");
 
         when(usuarioRemote.findUserByEmail("test@test.com")).thenReturn(usuario);
-        
-        // Mockear la consulta para simular que ya existe una baja
+
         jakarta.persistence.TypedQuery<Long> mockQuery = mock(jakarta.persistence.TypedQuery.class);
         when(mockQuery.setParameter(anyString(), any())).thenReturn(mockQuery);
         when(mockQuery.getSingleResult()).thenReturn(1L);
@@ -303,9 +296,7 @@ class BajaEquipoBeanTest {
         verify(equipoRemote, never()).eliminarEquipo(any());
     }
 
-    /**
-     * Método auxiliar para crear un BajaEquipoDto válido con todos los campos obligatorios
-     */
+    
     private BajaEquipoDto crearBajaEquipoDtoValido() {
         BajaEquipoDto bajaEquipoDto = new BajaEquipoDto();
         bajaEquipoDto.setRazon("Equipo obsoleto");

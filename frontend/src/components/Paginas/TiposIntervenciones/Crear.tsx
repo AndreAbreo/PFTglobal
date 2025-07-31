@@ -3,21 +3,18 @@ import React, { useState } from "react";
 import fetcher from "@/components/Helpers/Fetcher";
 
 const CrearTipoIntervencion: React.FC = () => {
-  // Campos del formulario
+
   const [nombreTipo, setNombreTipo] = useState("");
 
-  // Estados de UI
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Validación de campos obligatorios
   const isFormValid = () => {
     return nombreTipo.trim() !== "";
   };
 
-  // Envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -48,10 +45,8 @@ const CrearTipoIntervencion: React.FC = () => {
         body: tipoIntervencion,
       });
 
-      // El endpoint crear devuelve status 201 sin contenido, por lo que result será null
       setMessage("Tipo de intervención creado exitosamente");
-      
-      // Limpiar formulario
+
       setNombreTipo("");
 
     } catch (err: any) {
@@ -120,7 +115,7 @@ const CrearTipoIntervencion: React.FC = () => {
         </div>
       </form>
 
-      {/* Modal de confirmación */}
+      {}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white dark:bg-boxdark p-8 rounded-lg shadow-lg max-w-md w-full mx-4">

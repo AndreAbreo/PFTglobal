@@ -113,7 +113,6 @@ class UsuarioTest {
         usuario.setApellido("Pérez");
         usuario.setEmail("juan.perez@example.com");
 
-        // Mockear métodos de Institucion y Perfil
         institucion.setNombre("InstitucionEjemplo");
         perfil.setNombrePerfil("PerfilEjemplo");
 

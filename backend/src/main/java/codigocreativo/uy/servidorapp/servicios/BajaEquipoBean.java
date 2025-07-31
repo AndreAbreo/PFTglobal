@@ -51,18 +51,15 @@ public class BajaEquipoBean implements BajaEquipoRemote {
     public void crearBajaEquipo(BajaEquipoDto bajaEquipo, String emailUsuario) throws ServiciosException {
         LOGGER.info("Iniciando proceso de baja para equipo ID: " + 
                    (bajaEquipo != null && bajaEquipo.getIdEquipo() != null ? bajaEquipo.getIdEquipo().getId() : "null"));
-        
-        // Validar que la baja no sea null
+
         if (bajaEquipo == null) {
             throw new ServiciosException(ERROR_BAJA_NULL);
         }
-        
-        // Validar campos obligatorios
+
         validarCampoObligatorio(bajaEquipo.getRazon(), ERROR_RAZON_OBLIGATORIA);
         validarCampoObligatorio(bajaEquipo.getIdEquipo(), ERROR_EQUIPO_OBLIGATORIO);
         validarCampoObligatorio(emailUsuario, ERROR_USUARIO_SESION);
-        
-        // Verificar si ya existe una baja para este equipo
+
         Long idEquipo = bajaEquipo.getIdEquipo().getId();
         LOGGER.info("Verificando si existe baja para equipo ID: " + idEquipo);
         
@@ -72,40 +69,34 @@ public class BajaEquipoBean implements BajaEquipoRemote {
         }
         
         LOGGER.info("No existe baja previa, procediendo con la creación");
-        
-        // Obtener el usuario desde la sesión usando el email
+
         UsuarioDto usuario = usuarioRemote.findUserByEmail(emailUsuario);
         if (usuario == null) {
             throw new ServiciosException("Usuario no encontrado con el email: " + emailUsuario);
         }
-        
-        // Asignar el usuario obtenido de la sesión
+
         bajaEquipo.setIdUsuario(usuario);
-        
-        // Establecer estado como INACTIVO por defecto
+
         bajaEquipo.setEstado("INACTIVO");
-        
-        // Si no se especifica fecha, usar la fecha actual
+
         if (bajaEquipo.getFecha() == null) {
             bajaEquipo.setFecha(LocalDate.now());
         }
         
         LOGGER.info("Persistiendo baja del equipo");
-        // Persistir la baja del equipo
+
         BajaEquipo entity = bajaEquipoMapper.toEntity(bajaEquipo, new CycleAvoidingMappingContext());
         em.persist(entity);
         
         LOGGER.info("Estableciendo estado del equipo como INACTIVO");
-        // Establecer el estado del equipo como INACTIVO
+
         equipoRemote.eliminarEquipo(bajaEquipo);
         
         em.flush();
         LOGGER.info("Baja del equipo completada exitosamente");
     }
     
-    /**
-     * Verifica si ya existe una baja para el equipo especificado
-     */
+    
     private boolean existeBajaParaEquipo(Long idEquipo) {
         try {
             LOGGER.info("Ejecutando consulta para verificar baja del equipo ID: " + idEquipo);
@@ -118,14 +109,12 @@ public class BajaEquipoBean implements BajaEquipoRemote {
             return count > 0;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al verificar si existe baja para equipo ID: " + idEquipo, e);
-            // Si hay algún error en la consulta, asumimos que no existe
+
             return false;
         }
     }
     
-    /**
-     * Valida que un campo no sea null o vacío
-     */
+    
     private void validarCampoObligatorio(Object campo, String mensajeError) throws ServiciosException {
         if (campo == null) {
             throw new ServiciosException(mensajeError);

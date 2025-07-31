@@ -16,10 +16,8 @@ class ProveedorViewModel : ViewModel() {
 
     private val dataRepository = DataRepository()
 
-    // MutableLiveData para observar cambios en los proveedores
     val proveedorList = MutableLiveData<List<Proveedor>>()
 
-    // Cargar proveedores desde la API
     fun loadproveedores(token: String) {
         viewModelScope.launch {
             try {
@@ -37,20 +35,18 @@ class ProveedorViewModel : ViewModel() {
                 result.onSuccess { proveedores ->
                     proveedorList.value = proveedores // Actualiza la lista de proveedores en LiveData
                 }.onFailure { error ->
-                    // Maneja errores aquí si es necesario
+
                 }
             } catch (e: Exception) {
-                // Maneja excepciones aquí si es necesario
+
             }
         }
     }
 
-    // Obtener un proveedor específico por ID
     fun getProveedorById(id: Int): Proveedor? {
         return proveedorList.value?.find { it.idProveedor == id }
     }
 
-    // Actualizar el estado de un proveedor
     fun actualizarEstadoProveedor(id: Int, nuevoEstado: Estado) {
         proveedorList.value = proveedorList.value?.map { proveedor ->
             if (proveedor.idProveedor == id) {

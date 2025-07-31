@@ -54,7 +54,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Firebase Authentication
     implementation(platform(libs.firebase.bom.v3340))
     implementation(libs.firebase.auth.ktx)
 
@@ -62,17 +61,13 @@ dependencies {
     implementation (libs.androidx.credentials.play.services.auth)
     implementation (libs.googleid)
 
-    // Google Play Services para autenticación con Google
     implementation(libs.play.services.auth)
 
-    // Retrofit y GSON
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    // OkHttpClient para manejar peticiones HTTP
     implementation(libs.okhttp)
 
-    // Coroutines para llamadas asíncronas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
 
     implementation (libs.jwtdecode)
@@ -83,7 +78,6 @@ dependencies {
     implementation (libs.androidx.credentials.play.services.auth.v120beta03)
     implementation (libs.play.services.auth.v2070)
 
-    // Glide para cargar imágenes
     implementation(libs.glide)
 
 }

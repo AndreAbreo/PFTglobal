@@ -33,7 +33,6 @@ class EquipoAdapter(
     override fun onBindViewHolder(holder: EquipoViewHolder, position: Int) {
         val equipo = equipoList[position]
 
-        // Cargar imagenes con Glide
         Glide.with(activity)
             .load(equipo.imagen)
             .centerCrop()

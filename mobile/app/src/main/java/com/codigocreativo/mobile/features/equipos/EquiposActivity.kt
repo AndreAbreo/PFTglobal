@@ -41,7 +41,6 @@ class EquiposActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_equipos)
 
-        // Configurar RecyclerView
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = EquipoAdapter(filteredList, this) { equipo ->
@@ -49,10 +48,9 @@ class EquiposActivity : AppCompatActivity() {
         }
         recyclerView.adapter = adapter
 
-        // Obtener el token JWT almacenado
         val token = SessionManager.getToken(this)
         if (token != null) {
-            // Cargar los equipos desde el API
+
             loadEquipos(token)
         } else {
             Snackbar.make(
@@ -62,10 +60,8 @@ class EquiposActivity : AppCompatActivity() {
             ).show()
         }
 
-        // Configurar filtros
         setupFilters()
 
-        // Action listener de Ingresar Equipo
         findViewById<Button>(R.id.btn_ingresar).setOnClickListener {
             val bottomSheetFragment = IngresarEquipoFragment { equipo ->
                 if (token != null) {
@@ -108,7 +104,7 @@ class EquiposActivity : AppCompatActivity() {
             }
             bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
         }
-        // Action listener de Volver al Menú
+
         findViewById<Button>(R.id.btn_volver_menu).setOnClickListener {
             val intent = Intent(this, DashboardActivity::class.java)
             startActivity(intent)
@@ -128,7 +124,6 @@ class EquiposActivity : AppCompatActivity() {
                     val position = viewHolder.adapterPosition
                     val equipo = adapter.equipoList[position]
 
-                    // Show confirmation dialog
                     AlertDialog.Builder(this@EquiposActivity).apply {
                         setTitle("Confirmar baja")
                         setMessage("¿Estás seguro que deseas dar de baja al equipo ${equipo.nombre}?")
@@ -256,13 +251,11 @@ class EquiposActivity : AppCompatActivity() {
         val filterName: EditText = findViewById(R.id.filter_name)
         val filterStatus: Spinner = findViewById(R.id.filter_status)
 
-        // Configuración del spinner de estado
         val statusAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, Estado.values())
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         filterStatus.adapter = statusAdapter
 
-        // Listener para aplicar filtros
         val applyFilters = {
             val token = getSharedPreferences("app_prefs", MODE_PRIVATE).getString("jwt_token", null)
             val nombre = filterName.text.toString().takeIf { it.isNotEmpty() }
@@ -295,19 +288,16 @@ class EquiposActivity : AppCompatActivity() {
         }
     }
 
-    // Método de filtro para equipos
     private fun filterEquipos() {
         val nameFilter =
             findViewById<EditText>(R.id.filter_name).text.toString().lowercase(Locale.getDefault())
         val statusFilter = findViewById<Spinner>(R.id.filter_status).selectedItem as Estado
 
-        // Filtrar la lista de equipos
         filteredList = equiposList.filter { equipos ->
             equipos.nombre.lowercase(Locale.getDefault()).contains(nameFilter) &&
                     (statusFilter == Estado.ACTIVO || statusFilter == Estado.INACTIVO || equipos.estado == statusFilter)
         }.toMutableList()
 
-        // Actualizar el RecyclerView con la lista filtrada
         adapter.updateList(filteredList)
     }
 }

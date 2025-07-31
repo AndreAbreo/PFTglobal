@@ -1,6 +1,5 @@
-# Arquitectura del Backend
 
-## 1. Stack Tecnológico
+
 * **Lenguaje:** Java 17
 * **Framework Principal:** Jakarta EE 10.0.0 (Enterprise Java Platform)
 * **Gestión de Dependencias:** Maven 3.8.1
@@ -9,7 +8,6 @@
 * **Base de Datos:** Oracle Database (con OracleDialect)
 * **Documentación API:** OpenAPI 3.1.1 + Swagger UI 4.15.5
 
-## 2. Arquitectura de la API REST
 * **Descripción:** API RESTful basada en JAX-RS diseñada para gestionar el mantenimiento de equipos biomédicos en hospitales. Implementa un sistema completo de autenticación JWT, autorización basada en roles, y operaciones CRUD para todas las entidades del dominio.
 
 * **Endpoints Principales:**
@@ -38,7 +36,6 @@
 | `GET` | `/api/funcionalidades/listar` | `Lista funcionalidades disponibles por perfil` |
 | `GET` | `/api/openapi.json` | `Documentación OpenAPI de la API` |
 
-## 3. Persistencia de Datos
 * **Framework de Persistencia:** JPA 3.0 con Hibernate 6.2.4.Final
 * **Configuración de Creación de Esquema:**
     *Configuración encontrada en `src/main/resources/META-INF/persistence.xml`*
@@ -51,7 +48,6 @@
 * **Datasource:** `java:/OracleDS` - Configurado como JTA datasource en el servidor de aplicaciones
 * **Estrategia de Esquema:** `validate` - No crea ni modifica esquemas automáticamente, solo valida que coincidan con las entidades
 
-## 4. Patrones de Diseño Implementados
 
 * **Patrón 1: Enterprise JavaBeans (EJB)**
     * **Propósito:** Manejo de la lógica de negocio mediante componentes empresariales con gestión automática de transacciones, inyección de dependencias y ciclo de vida.
@@ -90,8 +86,6 @@
     * **Implementación:** Hibernate actúa como Data Mapper, traduciendo entre objetos Java y la base de datos relacional, manteniendo a las entidades independientes de SQL y operaciones de almacenamiento.
 
 
-## 5. Seguridad
-
 * **Mecanismo de Autenticación:** Sistema dual con JWT local y OAuth2 con Google. Los usuarios pueden autenticarse mediante credenciales locales o su cuenta Google. JWT generado con librería `io.jsonwebtoken` (jjwt 0.11.5).
 
 * **Autorización:** Sistema basado en roles con control granular mediante la tabla `FUNCIONALIDADES_PERFILES`. Se utilizan filtros JAX-RS (`@Provider`) para validar permisos en cada endpoint según el perfil del usuario autenticado.
@@ -104,9 +98,7 @@
 
 * **Integración con Active Directory:** TODO: documentar.
 
-## 6. Arquitectura de Componentes
 
-### 6.1 Estructura de Paquetes
 ```
 codigocreativo.uy.servidorapp/
 ├── config/          # Configuraciones (OpenAPI, Jackson)
@@ -120,7 +112,6 @@ codigocreativo.uy.servidorapp/
 └── ws/              # Resources JAX-RS (endpoints REST)
 ```
 
-### 6.2 Modelo de Datos
 El sistema gestiona las siguientes entidades principales:
 * **USUARIOS**: Gestión de usuarios con roles y perfiles
 * **EQUIPOS**: Equipos biomédicos con información completa
@@ -129,7 +120,6 @@ El sistema gestiona las siguientes entidades principales:
 * **INSTITUCIONES**: Instituciones médicas
 * **AUDITORIAS**: Trazabilidad de operaciones
 
-### 6.3 Características Técnicas
 * **Transacciones:** Gestionadas automáticamente por el contenedor EJB
 * **Inyección de Dependencias:** CDI (Context and Dependency Injection)
 * **Validaciones:** Librerías especializadas (ej: CIUY para validación de cédulas uruguayas)

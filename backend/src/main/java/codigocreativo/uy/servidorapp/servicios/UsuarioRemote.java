@@ -21,8 +21,7 @@ public interface UsuarioRemote {
     UsuarioDto login(String usuario, String password);
     UsuarioDto findUserByEmail(String email);
     boolean hasPermission(String email, String requiredRole);
-    
-    // Nuevos métodos para lógica de negocio
+
     void validarContrasenia(String contrasenia) throws ServiciosException;
     void validarInactivacionUsuario(String emailSolicitante, String cedulaUsuarioAInactivar) throws ServiciosException;
     void inactivarUsuario(String emailSolicitante, String cedulaUsuarioAInactivar) throws ServiciosException;

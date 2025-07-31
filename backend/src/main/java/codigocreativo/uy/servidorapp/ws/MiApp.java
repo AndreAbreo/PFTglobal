@@ -17,8 +17,7 @@ public class MiApp extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new HashSet<>();
-        
-        // Recursos o web services
+
         resources.add(UbicacionesResource.class);
         resources.add(ModeloResource.class);
         resources.add(IntervencionesResource.class);
@@ -32,10 +31,8 @@ public class MiApp extends Application {
         resources.add(TipoIntervencionesResource.class);
         resources.add(ProveedoresResource.class);
 
-        // OpenApi
         resources.add(OpenApiResource.class);
-        
-        // Filtros y configuraciones
+
         resources.add(AuditoriaFilter.class);
         resources.add(JwtTokenFilter.class);
         resources.add(CORSFilter.class);

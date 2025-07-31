@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Inicializa el botón de Google Sign-In
         val googleSignInButton: SignInButton = findViewById(R.id.googleSignInButton)
         googleSignInButton.setOnClickListener {
             startGoogleSignIn()
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Inicializa el botón para el login común
         val traditionalLoginButton: Button = findViewById(R.id.loginButton)
         traditionalLoginButton.setOnClickListener {
             val emailEditText: EditText = findViewById(R.id.usernameEditText)
@@ -108,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                     if (jwt != null) {
                         SessionManager.saveSessionData(this@MainActivity, jwt.token, jwt.user)
                         Log.d("MainActivity", "JWT recibido: ${jwt.token}")
-                        //Login exitoso, guardo datos y envio al usuario al dashborad
+
                         val intent = Intent(this@MainActivity, DashboardActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -134,9 +132,9 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val jwtResponse = response.body()
                     if (jwtResponse != null) {
-                        // Guardar el JWT y el objeto Usuario
+
                         SessionManager.saveSessionData(this@MainActivity, jwtResponse.token, jwtResponse.user)
-                        //Login exitoso, guardo datos y envio al usuario al dashborad
+
                         val intent = Intent(this@MainActivity, DashboardActivity::class.java)
                         startActivity(intent)
                         finish()

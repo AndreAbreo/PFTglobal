@@ -5,9 +5,7 @@ import codigocreativo.uy.servidorapp.enumerados.Estados;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * DTO for {@link codigocreativo.uy.servidorapp.entidades.MarcasModelo}
- */
+
 public class MarcasModeloDto implements Serializable {
     private Long id;
     private String nombre;

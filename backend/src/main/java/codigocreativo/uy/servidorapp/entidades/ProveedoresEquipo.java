@@ -18,7 +18,6 @@ public class ProveedoresEquipo implements Serializable {
     @Column(name = "ESTADO", nullable = false, length = 20)
     private String estado;
 
-    //Agregar referencia con pais
     @ManyToOne
     @JoinColumn(name = "ID_PAIS", nullable = false)
     private Pais pais;

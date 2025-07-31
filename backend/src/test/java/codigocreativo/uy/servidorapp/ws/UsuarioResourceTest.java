@@ -51,8 +51,7 @@ class UsuarioResourceTest {
 
         try (Response response = usuarioResource.crearUsuario(usuario)) {
 
-            // Check if the response is either CREATED (success) or BAD_REQUEST (cedula validation failed)
-            // This handles the case where the test cedula might not be valid according to the algorithm
+
             if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
                 assertEquals("{\"message\":\"Usuario creado correctamente\"}", response.getEntity());
                 verify(usuarioRemote, times(1)).crearUsuario(any(UsuarioDto.class));
@@ -67,7 +66,7 @@ class UsuarioResourceTest {
 
     @Test
     void testCrearUsuarioWithNullUsuario() throws ServiciosException {
-        // Ahora el Resource maneja el usuario nulo tempranamente, sin llamar al Bean
+
         try (Response response = usuarioResource.crearUsuario(null)) {
             assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
             assertEquals("{\"message\":\"Usuario nulo\"}", response.getEntity());
@@ -80,7 +79,7 @@ class UsuarioResourceTest {
         UsuarioDto usuario = new UsuarioDto();
         usuario.setCedula("12345678");
         usuario.setContrasenia("password123");
-        // El email nulo se valida en el Bean
+
         doThrow(new ServiciosException("El email es obligatorio")).when(usuarioRemote).crearUsuario(any(UsuarioDto.class));
 
         try (Response response = usuarioResource.crearUsuario(usuario)) {
@@ -96,7 +95,7 @@ class UsuarioResourceTest {
         usuario.setEmail("");
         usuario.setCedula("12345678");
         usuario.setContrasenia("password123");
-        // El email vacío se valida en el Bean
+
         doThrow(new ServiciosException("El email es obligatorio")).when(usuarioRemote).crearUsuario(any(UsuarioDto.class));
 
         try (Response response = usuarioResource.crearUsuario(usuario)) {
@@ -112,7 +111,7 @@ class UsuarioResourceTest {
         usuario.setEmail("test@example.com");
         usuario.setCedula("5555575"); // Cédula inválida
         usuario.setContrasenia("password123");
-        // La cédula inválida se valida en el Bean
+
         doThrow(new ServiciosException("La cédula no es válida: 5555575")).when(usuarioRemote).crearUsuario(any(UsuarioDto.class));
 
         try (Response response = usuarioResource.crearUsuario(usuario)) {
@@ -306,8 +305,7 @@ class UsuarioResourceTest {
         Claims claims = mock(Claims.class);
         when(claims.getSubject()).thenReturn("authorized@example.com");
         when(jwtService.parseToken(anyString())).thenReturn(claims);
-        
-        // Mock the validation to throw the expected exception
+
         doThrow(new ServiciosException("No autorizado para modificar este usuario"))
                 .when(usuarioRemote).validarModificacionPropia("authorized@example.com", 1L);
 
@@ -475,7 +473,6 @@ class UsuarioResourceTest {
 
         when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
 
-        // Agregamos el parámetro cedula (puede ser null si no querés filtrarlo)
         Response response = usuarioResource.filtrarUsuarios("12345678", "John", "Doe", null, null, null, null);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
@@ -490,7 +487,6 @@ class UsuarioResourceTest {
         List<UsuarioDto> expectedList = Arrays.asList(new UsuarioDto(), new UsuarioDto());
         when(usuarioRemote.obtenerUsuariosFiltrado(anyMap())).thenReturn(expectedList);
 
-        // Ahora pasamos los 7 parámetros correctamente
         Response response = usuarioResource.filtrarUsuarios(
                 "12345678",         // cedula
                 "John",             // nombre
@@ -664,8 +660,8 @@ class UsuarioResourceTest {
 
     @Test
     void testGoogleLoginSuccess() {
-        // Skip this test as it requires complex Google API mocking
-        // The actual implementation creates TokenVerifier internally which is hard to mock
+
+
         assertTrue(true); // Placeholder test
     }
 
@@ -682,13 +678,13 @@ class UsuarioResourceTest {
 
     @Test
     void testGoogleLoginNewUser() {
-        // Skip this test as it requires complex Google API mocking
+
         assertTrue(true); // Placeholder test
     }
 
     @Test
     void testGoogleLoginInactiveUser() {
-        // Skip this test as it requires complex Google API mocking
+
         assertTrue(true); // Placeholder test
     }
 

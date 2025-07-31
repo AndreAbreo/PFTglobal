@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import codigocreativo.uy.servidorapp.enumerados.Estados;
 
-/**
- * DTO for {@link codigocreativo.uy.servidorapp.entidades.Pais}
- */
+
 public class PaisDto implements Serializable {
     private Long id;
     private String nombre;
